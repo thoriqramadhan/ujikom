@@ -31,8 +31,8 @@ export default function Login({ status, canResetPassword }) {
             <Head title="Log in" />
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
-            <div className="w-[185px] h-[185px] bg-[#F1F1F1] mb-[20px] rounded-full self-center"></div>
-            <h1 className='self-center text-[25px] font-[600] mb-[30px]'>Selamat Datang Kembali</h1>
+            <div className='w-[185px] h-[185px] bg-[#F1F1F1] mb-[20px] rounded-full self-center sm:absolute sm:-top-12 sm:mb-[5px]'></div>
+            <h1 className='self-center text-[25px] font-[600] mb-[30px] sm:mt-[65px]'>{errors.email ? '' : 'Selamat Datang Kembali'}</h1>
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
@@ -73,13 +73,13 @@ export default function Login({ status, canResetPassword }) {
                             checked={data.remember}
                             onChange={(e) => setData('remember', e.target.checked)}
                         />
-                        <span className="ms-2 block text-sm text-gray-600 dark:text-gray-400">Remember me</span>
+                        <span className="ms-2 block text-sm text-gray-600 ">Remember me</span>
                     </label>
                     </div>
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="text-md text-gray-600 font-normal dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+                            className="text-md text-gray-600 font-normal  hover:text-gray-900 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                         >
                             Lupa Sandi?
                         </Link>
@@ -88,7 +88,7 @@ export default function Login({ status, canResetPassword }) {
 
                 </div>
 
-                <PrimaryButton className="w-full h-[60px] mt-[27px] rounded-[16px] justify-center text-[18px]" disabled={processing}>
+                <PrimaryButton className="w-full h-[60px] mt-[27px] rounded-[16px] justify-center text-[18px] sm:mt-[px]" disabled={processing}>
                         Masuk
                 </PrimaryButton>
 
