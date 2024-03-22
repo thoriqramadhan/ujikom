@@ -1,12 +1,11 @@
 import React from 'react';
+import { Head} from '@inertiajs/react';
 
-const Kasir = () => {
+export default function Kasir(){
   return (
-    <div>
-      <h1>Kasir</h1>
-      <p>kasir</p>
-    </div>
-  );
-};
-
-export default Kasir;
+    <>
+    <Head title='Kasir'/>
+    <p>Hellow</p>
+    </>
+  )
+}
