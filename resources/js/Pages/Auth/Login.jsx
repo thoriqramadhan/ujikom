@@ -32,7 +32,7 @@ export default function Login({ status, canResetPassword }) {
 
             {status && <div className="mb-4 font-medium text-sm text-green-600">{status}</div>}
             <div className='w-[185px] h-[185px] bg-[#F1F1F1] mb-[20px] rounded-full self-center sm:absolute sm:-top-12 sm:mb-[5px]'></div>
-            <h1 className='self-center text-[25px] font-[600] mb-[30px] sm:mt-[65px]'>{errors.email ? '' : 'Selamat Datang Kembali'}</h1>
+            <h1 className='self-center text-[25px] font-[600] mb-[30px] sm:mt-[65px]'>{errors.email || errors.password ? '' : 'Selamat Datang Kembali'}</h1>
             <form onSubmit={submit}>
                 <div>
                     <InputLabel htmlFor="email" value="Email" />
