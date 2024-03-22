@@ -16,13 +16,13 @@ export default function ForgotPassword({ status }) {
     };
 
     return (
-        <GuestLayout>
+        <div className='flex px-[46px] h-[100vh] items-center justify-center'>
             <Head title="Forgot Password" />
-
-            <div className="mb-4 text-sm text-gray-600 dark:text-gray-400">
-                Forgot your password? No problem. Just let us know your email address and we will email you a password
-                reset link that will allow you to choose a new one.
+            <div className="flex flex-col w-full sm:w-[423px] sm:border sm:shadow-lg sm:px-[46px] sm:py-[38px] sm:rounded-[30px]">
+            <div className="mb-4 text-[22px] font-bold text-gray-600 self-center dark:text-gray-400">
+                Lupa Sandi?
             </div>
+            <p className='text-[22px] w-[300px] mb-[29px] text-center self-center opacity-60'>Kirim email pemulihan untuk masuk</p>
 
             {status && <div className="mb-4 font-medium text-sm text-green-600 dark:text-green-400">{status}</div>}
 
@@ -39,12 +39,13 @@ export default function ForgotPassword({ status }) {
 
                 <InputError message={errors.email} className="mt-2" />
 
-                <div className="flex items-center justify-end mt-4">
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Email Password Reset Link
+                <div className="flex items-center justify-end mt-5">
+                    <PrimaryButton className="w-full rounded-2xl py-3 justify-center" disabled={processing}>
+                        <p className='font-[600] text-[18px]'>Kirim</p>
                     </PrimaryButton>
                 </div>
             </form>
-        </GuestLayout>
+            </div>
+        </div>
     );
 }
