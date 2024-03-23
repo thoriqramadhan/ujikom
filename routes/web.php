@@ -37,7 +37,7 @@ Route::get('/', function () {
 
     //page untuk kasir
     Route::get('/kasir', function () {
-        return Inertia::render('Kasir');
+        return Inertia::render('Kasir/Kasir');
     });
   
     //Routes yang bisa diakses hanya oleh admin di masukkan ke sini
