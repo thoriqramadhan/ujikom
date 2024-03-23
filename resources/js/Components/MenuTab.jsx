@@ -5,7 +5,7 @@ function MenuTab() {
     const [activeTab, setActiveTab] = useState('Semua')
     console.log(activeTab)
   return (
-    <div className="flex w-full h-fit gap-x-4 px-[37px]">
+    <div className="flex w-full h-fit gap-x-4 px-[37px] mb-[30px]">
         <MenuItemTab name={'Semua'} active={activeTab} setActiveTab={setActiveTab}/>
         <MenuItemTab name={'Latte'} active={activeTab} setActiveTab={setActiveTab}/>
         <MenuItemTab name={'Late'} active={activeTab} setActiveTab={setActiveTab}/>

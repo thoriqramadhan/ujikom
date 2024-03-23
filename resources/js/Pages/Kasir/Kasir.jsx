@@ -1,28 +1,41 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Head} from '@inertiajs/react';
 import MenuHeader from '@/Components/MenuHeader';
 import TextInput from '@/Components/TextInput';
 import MenuTab from '@/Components/MenuTab';
-import MenuItemTab from '@/Components/MenuItemTab';
+import MenuCard from '@/Components/MenuCard';
+import SideNav from '@/Components/SideNav';
+import MenuHistory from '@/Components/MenuHistory';
 
 export default function Kasir(){
+  const [openSide,setOpenSide] = useState(false)
   return (
     <>
     <Head title='Kasir'/>
-    <div className="w-full h-[100vh]">
-
-      <div className="" id='body'>
+    <div className="w-full h-[100vh] flex ">
+      <SideNav/>
+      <div className="flex flex-col flex-1 h-[100vh] ml-16 overflow-scroll" id='body'>
         <div className="pt-[55px] px-[30px] flex justify-between">
           <MenuHeader/>
           <TextInput className="h-[50px] w-[60%]" placeholder='Cari menu'/>
         </div>
-        <div className="bg-[#F9F9F9] w-full h-[100vh] pt-[40px] mt-[46px]">
+        
+        <div className="bg-[#F9F9F9] h-fit pt-[40px] mt-[46px]">
         <MenuTab/>
+        <div className="w-full h-fit flex gap-6 px-[35px] justify-center flex-wrap">
+        <MenuCard/>
+        <MenuCard/>
+        <MenuCard/>
+        <MenuCard/>
+        <MenuCard/>
+        <MenuCard/>
         </div>
-        <div className="w-full h-fit ">
-          
+
         </div>
+
       </div>
+      <MenuHistory openSide={openSide} setOpenSide={setOpenSide}/>
+      <div onClick={()=> setOpenSide(true)} className={`w-[50px] h-[50px] bg-[#7D5E42] rounded-full fixed flex justify-center items-center text-2xl text-white right-4 top-1/2 cursor-pointer ${openSide ? 'hidden' : 'block'}`}>{'<'}</div>
     </div>
     </>
   )
