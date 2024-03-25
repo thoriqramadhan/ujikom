@@ -1,6 +1,8 @@
 <?php
 
+use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Menu;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -35,10 +37,16 @@ Route::get('/', function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-    //page untuk kasir
-    Route::get('/kasir', function () {
-        return Inertia::render('Kasir/Kasir');
-    });
+    // //page untuk kasir
+    // Route::middleware('auth')->group(function () {
+        // Halaman untuk kasir
+        Route::get('/kasir', function () {
+            $menus = Menu::all(); // Fetch all products
+            return Inertia::render('Kasir/Kasir', [
+                'menus' => $menus
+            ]);
+        });
+    // });
   
     //Routes yang bisa diakses hanya oleh admin di masukkan ke sini
     Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
