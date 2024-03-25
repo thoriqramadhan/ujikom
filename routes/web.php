@@ -40,12 +40,7 @@ Route::get('/', function () {
     // //page untuk kasir
     // Route::middleware('auth')->group(function () {
         // Halaman untuk kasir
-        Route::get('/kasir', function () {
-            $menus = Menu::all(); // Fetch all products
-            return Inertia::render('Kasir/Kasir', [
-                'menus' => $menus
-            ]);
-        });
+        Route::get('/kasir', [MenuController::class, 'index']);
     // });
   
     //Routes yang bisa diakses hanya oleh admin di masukkan ke sini
