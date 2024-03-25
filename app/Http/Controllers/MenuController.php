@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
 use App\Models\Menu;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -14,9 +15,11 @@ class MenuController extends Controller
     public function index()
     {
         $menus = Menu::all();
+        $categories = Category::all();
 
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
+            'categories' => $categories
         ]);
     }
 
