@@ -8,8 +8,10 @@ import MenuCard from '@/Components/MenuCard';
 import SideNav from '@/Components/SideNav';
 import MenuHistory from '@/Components/MenuHistory';
 
-export default function Kasir(props) {
+export default function Kasir({menus}) {
   const [openSide, setOpenSide] = useState(false);
+  const [selectedFood , setSelectedFood] = useState([]);
+  console.log(menus)
 
   return (
     <>
@@ -28,14 +30,14 @@ export default function Kasir(props) {
           <div className="bg-[#F9F9F9] h-fit pt-[40px] mt-[46px]">
             <MenuTab />
             <div className="w-full h-fit flex gap-6 px-[35px] justify-center flex-wrap">
-              {props.menus.map(menu => (
-                <MenuCard key={menu.id} nama={menu.nama} harga={menu.harga} />
+              {menus.map(menu => (
+                <MenuCard key={menu.id} id={menu.id} nama={menu.nama} harga={menu.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
               ))}
             </div>
           </div>
 
         </div>
-        <MenuHistory openSide={openSide} setOpenSide={setOpenSide} />
+        <MenuHistory openSide={openSide} setOpenSide={setOpenSide} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
         <div onClick={() => setOpenSide(true)} className={`w-[50px] h-[50px] bg-[#7D5E42] rounded-full fixed flex justify-center items-center text-2xl text-white right-4 top-1/2 cursor-pointer ${openSide ? 'hidden' : 'block'}`}>{'<'}</div>
       </div>
     </>
