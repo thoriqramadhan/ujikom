@@ -17,7 +17,10 @@ export default function Kasir(){
       <div className="flex flex-col flex-1 h-[100vh] ml-16 overflow-scroll" id='body'>
         <div className="pt-[55px] px-[30px] flex justify-between">
           <MenuHeader/>
-          <TextInput className="h-[50px] w-[60%]" placeholder='Cari menu'/>
+          <div className="w-[60%] h-fit relative">
+            <div className="w-[25px] h-[25px] bg-black absolute left-2 bottom-3 rounded-full"></div>
+          <TextInput className="pl-[40px] h-[50px] w-[100%]" placeholder='Cari menu'/>
+          </div>
         </div>
         
         <div className="bg-[#F9F9F9] h-fit pt-[40px] mt-[46px]">
