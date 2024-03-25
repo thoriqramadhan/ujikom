@@ -34,7 +34,7 @@ function MenuHistory({openSide, setOpenSide}) {
             </div>
           </div>
           <div className="mb-[20px] mx-[20px] h-[50px] mt-[20px] flex gap-3 justify-center">
-            <button className='flex-1 border-2 rounded-[18px]  font-bold'>Nanti</button>
+            <button onClick={()=> setOpenSide(false)} className='flex-1 border-2 rounded-[18px]  font-bold'>Nanti</button>
             <button className='flex-1 rounded-[18px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
           </div>
         </div>
