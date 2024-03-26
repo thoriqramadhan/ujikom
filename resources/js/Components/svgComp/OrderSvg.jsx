@@ -2,7 +2,7 @@ import React from 'react'
 import TextSvg from './TextSvg'
 
 function OrderSvg({clickedAt , setClickedAt}) {
-    const name = 'Settings'
+    const name = 'Order'
     function clickHandler(){
         setClickedAt(name)
       }

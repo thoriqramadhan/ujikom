@@ -1,12 +1,12 @@
 // Kasir.jsx
 import React, { useState } from 'react';
 import { Head } from '@inertiajs/react';
-import MenuHeader from '@/Components/MenuHeader';
+import MenuHeader from '@/Components/Menu/MenuHeader';
 import TextInput from '@/Components/TextInput';
-import MenuTab from '@/Components/MenuTab';
-import MenuCard from '@/Components/MenuCard';
+import MenuTab from '@/Components/Menu/MenuTab';
+import MenuCard from '@/Components/Menu/MenuCard';
 import SideNav from '@/Components/SideNav';
-import MenuHistory from '@/Components/MenuHistory';
+import MenuHistory from '@/Components/Menu/MenuHistory';
 
 export default function Kasir({menus , categories}) {
   const [openSide, setOpenSide] = useState(false);

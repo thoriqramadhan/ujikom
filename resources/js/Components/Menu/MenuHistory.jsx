@@ -1,7 +1,7 @@
 import React from 'react'
-import DashedLine from './DashedLine'
+import DashedLine from '../DashedLine'
 import HistoryCard from './HistoryCard'
-import TextInput from './TextInput'
+import TextInput from '../TextInput'
 
 function MenuHistory({openSide, setOpenSide , selectedFood , setSelectedFood}) {
   const subHarga = selectedFood.reduce((total , item) => {
