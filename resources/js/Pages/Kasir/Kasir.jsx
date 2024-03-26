@@ -8,11 +8,11 @@ import MenuCard from '@/Components/MenuCard';
 import SideNav from '@/Components/SideNav';
 import MenuHistory from '@/Components/MenuHistory';
 
-export default function Kasir({menus}) {
+export default function Kasir({menus , categories}) {
   const [openSide, setOpenSide] = useState(false);
   const [selectedFood , setSelectedFood] = useState([]);
   console.log(menus)
-
+  console.log(categories)
   return (
     <>
       <Head title='Kasir' />
@@ -28,12 +28,7 @@ export default function Kasir({menus}) {
           </div>
 
           <div className="bg-[#F9F9F9] h-fit pt-[40px] mt-[46px]">
-            <MenuTab />
-            <div className="w-full h-fit flex gap-6 px-[35px] justify-center flex-wrap">
-              {menus.map(menu => (
-                <MenuCard key={menu.id} id={menu.id} nama={menu.nama} harga={menu.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
-              ))}
-            </div>
+            <MenuTab categories={categories} menus={menus} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
           </div>
 
         </div>
