@@ -1,4 +1,5 @@
 import React, { useState , useEffect} from 'react'
+import TrashSvg from '../svgComp/TrashSvg';
 
 function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
   const [number , setNumber] = useState(1)
@@ -28,15 +29,22 @@ function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
       }
     });
   }
+  function deleteHandler(nama){
+    const updatedSelectedFood = selectedFood.filter(item => item.name !== nama)
+    const newSubTotal = updatedSelectedFood.reduce((total,item)=> total + item.harga , 0)
+    setSubTotal(newSubTotal)
+    setSelectedFood(updatedSelectedFood)
+    console.log(newSubTotal)
+
+  }
   useEffect(() => {
     const newSelectedFood =  updateHarga(selectedFood , name , subTotal)
     setSelectedFood(newSelectedFood)
   },[subTotal])
-  const updatedSelectedFood = updateHarga(selectedFood, 1, 20);
   return (
     <div className="w-full h-[100px] bg-[#F9F9F9] rounded-[20px] shrink-0 flex items-center relative border shadow-sm ">
-      <div className="w-[25px] h-[25px] bg-black rounded-full absolute right-2 top-2 cursor-pointer">
-
+      <div onClick={() => deleteHandler(name)} className="w-[25px] h-[25px] absolute right-2 top-2 cursor-pointer">
+        <TrashSvg />
       </div>
                 <div className="w-[80px] h-[75px] bg-[#D9D9D9] ml-[12px] rounded-[15px]">
                 </div>

@@ -2,7 +2,6 @@
 import React, { useEffect } from 'react';
 
 function MenuCard({id, nama, harga , selectedFood, setSelectedFood }) {
-  console.log(selectedFood)
   function selectedFoodHandler(){
     const isAlreadySelected = selectedFood.find(item => item.id === id || item.name === name)
     if(!isAlreadySelected){

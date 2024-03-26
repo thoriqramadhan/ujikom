@@ -7,12 +7,11 @@ import MenuTab from '@/Components/Menu/MenuTab';
 import MenuCard from '@/Components/Menu/MenuCard';
 import SideNav from '@/Components/SideNav';
 import MenuHistory from '@/Components/Menu/MenuHistory';
+import SearchSvg from '@/Components/svgComp/SearchSvg';
 
 export default function Kasir({menus , categories}) {
   const [openSide, setOpenSide] = useState(false);
   const [selectedFood , setSelectedFood] = useState([]);
-  console.log(menus)
-  console.log(categories)
   return (
     <>
       <Head title='Kasir' />
@@ -22,7 +21,7 @@ export default function Kasir({menus , categories}) {
           <div className="pt-[55px] px-[30px] flex justify-between">
             <MenuHeader />
             <div className="w-[60%] h-fit relative">
-              <div className="w-[25px] h-[25px] bg-black absolute left-2 bottom-3 rounded-full"></div>
+              <SearchSvg/>
               <TextInput className="pl-[40px] h-[50px] w-[100%]" placeholder='Cari menu' />
             </div>
           </div>

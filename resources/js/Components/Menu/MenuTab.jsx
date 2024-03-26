@@ -3,7 +3,7 @@ import MenuItemTab from './MenuItemTab'
 import MenuCard from './MenuCard'
 
 function MenuTab({categories , menus , selectedFood , setSelectedFood}) {
-    const [activeTab, setActiveTab] = useState('Makanan')
+    const [activeTab, setActiveTab] = useState('Semua')
 
     let activeCategories;
     let menuOnCategories = menus
@@ -14,11 +14,6 @@ function MenuTab({categories , menus , selectedFood , setSelectedFood}) {
         return menu.categories_id === activeCategories.id;
       });
     }
-
-      console.log(activeTab)
-      console.log(menus)
-      console.log(activeCategories)
-      console.log(menuOnCategories)
   return (
     <>
     <div className="flex w-full h-fit gap-x-4 px-[37px] mb-[30px]">
