@@ -10,7 +10,7 @@ function DashedLine() {
               <div className="w-[40px] h-[3px] rounded-lg bg-black opacity-20"></div>
               <div className="w-[40px] h-[3px] rounded-lg bg-black opacity-20"></div>
               <div className="w-[20px] h-[3px] rounded-lg bg-black opacity-20"></div>
-            </div>
+    </div>
   )
 }
 
