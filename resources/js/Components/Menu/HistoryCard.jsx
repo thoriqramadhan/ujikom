@@ -2,8 +2,10 @@ import React, { useState , useEffect} from 'react'
 import TrashSvg from '../svgComp/TrashSvg';
 
 function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
-  const [number , setNumber] = useState(1)
-  const [subTotal , setSubTotal] = useState(harga)
+  let dataStrg = JSON.parse(localStorage.getItem('ORDER_HISTORY')) || []
+  let lastData = dataStrg.find(item => item.name == name) || {}
+  const [number , setNumber] = useState(!lastData || lastData.items || 1)
+  const [subTotal , setSubTotal] = useState(!lastData || lastData.totalHarga || harga)
 
   function incrementHandler(){
     const newNumber = number + 1;
@@ -18,11 +20,10 @@ function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
     setNumber(newNumber);
     setSubTotal(harga * newNumber);
   }
-  function updateHarga(selectedFood, name, newHarga) {
+  function updateHarga(selectedFood, name, newHarga , items) {
     return selectedFood.map(item => {
       if (item.name === name) {
-        // Jika ID cocok, ubah harga item
-        return { ...item, totalHarga: newHarga };
+        return { ...item, totalHarga: newHarga , items:items};
       } else {
         // Jika ID tidak cocok, kembalikan item tanpa perubahan
         return item;
@@ -30,16 +31,17 @@ function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
     });
   }
   function deleteHandler(nama){
-    const updatedSelectedFood = selectedFood.filter(item => item.name !== nama)
-    const newSubTotal = updatedSelectedFood.reduce((total,item)=> total + item.harga , 0)
+    const newSelectedFood = selectedFood.filter(item => item.name !== nama)
+    const newSubTotal = newSelectedFood.reduce((total,item)=> total + item.harga , 0)
     setSubTotal(newSubTotal)
-    setSelectedFood(updatedSelectedFood)
-    console.log(newSubTotal)
+    setSelectedFood(newSelectedFood)
+    localStorage.setItem('ORDER_HISTORY' ,  JSON.stringify(newSelectedFood))
 
   }
   useEffect(() => {
-    const newSelectedFood =  updateHarga(selectedFood , name , subTotal)
+    const newSelectedFood =  updateHarga(selectedFood , name , subTotal ,number)
     setSelectedFood(newSelectedFood)
+    localStorage.setItem('ORDER_HISTORY' , JSON.stringify(newSelectedFood))
   },[subTotal])
   return (
     <div className="w-full h-[100px] bg-[#F9F9F9] rounded-[20px] shrink-0 flex items-center relative border shadow-sm ">
@@ -50,11 +52,11 @@ function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
                 </div>
                 <div className="flex flex-col ml-[10px]">
                     <p className='text-[20px] font-bold mb-[8px]'>{name}</p>
-                    <p className='font-bold opacity-40'>{subTotal}K</p>
+                    <p className='font-bold opacity-40'>{lastData.totalHarga || subTotal}K</p>
                 </div>
                 <div className="flex h-[100%] justify-end items-end pb-[10px] pr-[10px] flex-1">
                     <div onClick={decreaseHandler} className="w-[25px] h-[25px] bg-[#D9D9D9] rounded-full flex justify-center items-center text-white cursor-pointer">-</div>
-                    <p className='mx-[6px]'>{number}</p>
+                    <p className='mx-[6px]'>{ lastData.items || number}</p>
                     <div onClick={incrementHandler} className="w-[25px] h-[25px] bg-[#D9D9D9] rounded-full flex justify-center items-center text-white cursor-pointer">+</div>
                 </div>
     </div>

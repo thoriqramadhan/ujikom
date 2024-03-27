@@ -8,6 +8,7 @@ function MenuHistory({openSide, setOpenSide , selectedFood , setSelectedFood}) {
     return total + item.totalHarga
   },0)
   const tax = subHarga * 0.1
+
   return (
     <div className={`h-[100vh] w-[400px] pl-[29px] pr-[40px] bg-white shadow-lg border transition-all duration-500 fixed right-0 ${openSide ? 'transform translate-x-0' : 'transform translate-x-[1000px]'} `}>
         <div onClick={()=> setOpenSide(false)} className="w-[70px] h-[70px] shadow-lg bg-[#7D5E42] text-white rounded-full absolute -left-10 top-1/2 cursor-pointer z-10 text-2xl flex justify-center items-center">{'<'}</div> 
