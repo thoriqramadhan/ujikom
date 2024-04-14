@@ -2,7 +2,7 @@ import React from 'react'
 
 function BodyLayout({children , className}) {
   return (
-    <div className={`flex flex-col flex-1 h-[100vh] ml-16 overflow-scroll ${className || ''}`}>
+    <div className={`flex flex-col flex-1 h-fit ml-16 ${className || ''}`}>
         {children}
     </div>
   )
