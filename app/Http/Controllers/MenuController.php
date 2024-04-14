@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Category;
 use App\Models\Menu;
+use App\Models\Order;
+use App\Models\OrderItem;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -16,10 +18,14 @@ class MenuController extends Controller
     {
         $menus = Menu::all();
         $categories = Category::all();
+        $orders = Order::all();
+        $orderitems = OrderItem::all();
 
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
-            'categories' => $categories
+            'categories' => $categories,
+            'orders' => $orders,
+            'orderitems' => $orderitems
         ]);
     }
 
