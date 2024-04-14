@@ -24,9 +24,9 @@ function MenuTab({categories , menus , selectedFood , setSelectedFood}) {
     </div>
     {menus.length == 0 || menuOnCategories.length == 0 ? 
     <div className="w-full h-[100vh] flex justify-center items-center">
-      <p className='text-3xl font-bold'>Tidak ada data menu</p>
+      <p className='text-3xl font-bold text-center'>Tidak ada data menu</p>
     </div> :
-    <div className="w-full h-fit flex gap-6 px-[35px] justify-center flex-wrap">
+    <div className="w-full h-fit flex gap-6 px-[35px] justify-start flex-wrap">
     {activeTab === 'Semua' ?
         menus.map(menu => (
           <MenuCard key={menu.id} id={menu.id} nama={menu.nama} harga={menu.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>

@@ -1,6 +1,6 @@
 import React from 'react'
 
-function MenuHeader() {
+function LogoDate() {
     const currentDate = new Date();
     const month = ['Januari', 'Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','Desember']
     const day = ['Minggu','Senin' ,'Selasa','Rabu','Kamis',"Jum'at",'Sabtu']
@@ -12,4 +12,4 @@ function MenuHeader() {
   )
 }
 
-export default MenuHeader
+export default LogoDate

@@ -26,7 +26,7 @@ export default function Kasir({menus , categories}) {
       <Head title='Kasir' />
       <div className="w-full h-[100vh] flex ">
         <SideNav clickedAt={clickedAt} setClickedAt={setClickedAt}/>
-        {UI}
+          {UI}
       </div>
     </>
   )
