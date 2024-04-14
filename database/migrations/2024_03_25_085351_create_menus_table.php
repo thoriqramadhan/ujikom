@@ -16,6 +16,7 @@ return new class extends Migration
             $table->foreignId('categories_id')->onDelete('cascade');
             $table->string('nama');
             $table->integer('harga');
+            $table->text('image')->nullable();
             $table->timestamps();
         });
     }
