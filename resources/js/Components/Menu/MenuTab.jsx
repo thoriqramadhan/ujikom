@@ -3,7 +3,7 @@ import MenuItemTab from './MenuItemTab'
 import MenuCard from './MenuCard'
 
 function MenuTab({categories , menus , selectedFood , setSelectedFood}) {
-    const [activeTab, setActiveTab] = useState('Makanan')
+    const [activeTab, setActiveTab] = useState('Semua')
 
     let activeCategories;
     let menuOnCategories = menus
@@ -14,11 +14,6 @@ function MenuTab({categories , menus , selectedFood , setSelectedFood}) {
         return menu.categories_id === activeCategories.id;
       });
     }
-
-      console.log(activeTab)
-      console.log(menus)
-      console.log(activeCategories)
-      console.log(menuOnCategories)
   return (
     <>
     <div className="flex w-full h-fit gap-x-4 px-[37px] mb-[30px]">
@@ -29,9 +24,9 @@ function MenuTab({categories , menus , selectedFood , setSelectedFood}) {
     </div>
     {menus.length == 0 || menuOnCategories.length == 0 ? 
     <div className="w-full h-[100vh] flex justify-center items-center">
-      <p className='text-3xl font-bold'>Tidak ada data menu</p>
+      <p className='text-3xl font-bold text-center'>Tidak ada data menu</p>
     </div> :
-    <div className="w-full h-fit flex gap-6 px-[35px] justify-center flex-wrap">
+    <div className="w-full h-fit flex gap-6 px-[35px] justify-start flex-wrap">
     {activeTab === 'Semua' ?
         menus.map(menu => (
           <MenuCard key={menu.id} id={menu.id} nama={menu.nama} harga={menu.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>

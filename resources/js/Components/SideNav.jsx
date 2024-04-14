@@ -4,8 +4,7 @@ import MenuSvg from './svgComp/MenuSvg'
 import SettingsSvg from './svgComp/SettingsSvg'
 import OrderSvg from './svgComp/OrderSvg'
 
-function SideNav() {
-  const [clickedAt , setClickedAt] = useState('Menu')
+function SideNav({clickedAt , setClickedAt}) {
   return (
     <div className="h-[100vh] w-16 fixed top-0 left-0 z-10 flex flex-col" id='sidenav'>
         <div className="h-[70%] flex flex-col items-center gap-y-8 mt-[15px]">
