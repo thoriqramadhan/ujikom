@@ -37,7 +37,6 @@ function Order() {
         <tr className='rounded-2xl bg-[#F3F3F3] h-[60px]'>
           <th className='flex-1 opacity-60'>Nama Pembeli</th>
           <th className='flex-1 opacity-60'>Waktu</th>
-          <th className='flex-2 opacity-60'>Detail</th>
           <th className='flex-2 opacity-60'>Status</th>
           <th></th>
         </tr>
@@ -46,7 +45,6 @@ function Order() {
           <tr className='h-fit border-bottom-1'>
           <TableData text={'Jones el nino'}/>
           <TableData text={'08.35'}/>
-          <TableData className={'w-[450px] text-start'} text={'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eos, optio.'}/>
           <TableData text={'Dalam Pembuatan'}/>
           <div className="h-[60px] w-[100%] flex items-center justify-center">
             <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
