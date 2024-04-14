@@ -15,6 +15,7 @@ class Menu extends Model
         'categories_id',
         'nama',
         'harga',
+        'image'
     ];
 
     // Relationships
