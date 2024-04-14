@@ -5,9 +5,7 @@ import SearchSvg from '../svgComp/SearchSvg'
 import TextInput from '../TextInput'
 import TableData from '../TableData'
 
-const data = ['','']
-
-function Order() {
+function Order({orders}) {
   const [pagination , setPagination] = useState(1)
   function incrementHandler(){
     setPagination(prevState => prevState + 1)
@@ -40,12 +38,12 @@ function Order() {
           <th className='flex-2 opacity-60'>Status</th>
           <th></th>
         </tr>
-        {data.map(data => {
+        {orders.map(order => {
         return (
           <tr className='h-fit border-bottom-1'>
-          <TableData text={'Jones el nino'}/>
-          <TableData text={'08.35'}/>
-          <TableData text={'Dalam Pembuatan'}/>
+          <TableData text={order.customer_name}/>
+          <TableData text={order.order_time}/>
+          <TableData text={order.status}/>
           <div className="h-[60px] w-[100%] flex items-center justify-center">
             <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
             <span className='mr-[2px]'>I</span>

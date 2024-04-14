@@ -8,13 +8,14 @@ import History from '@/Components/History/History';
 import Settings from '@/Components/Settings/Settings';
 
 export default function Kasir({menus , categories , orders}) {
+  console.log(orders)
   const [clickedAt , setClickedAt] = useState('Menu')
   const [UI , setUI] = useState(<Menu menus={menus} categories={categories}/>)
   useEffect(()=> {
     if(clickedAt == 'Menu'){
       setUI(<Menu menus={menus} categories={categories}/>)
     }else if(clickedAt == 'Order'){
-      setUI(<Order/>)
+      setUI(<Order orders={orders}/>)
     }else if(clickedAt == 'History'){
       setUI(<History />)
     }else{
