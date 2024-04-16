@@ -1,36 +1,35 @@
 import BodyLayout from '@/Layouts/BodyLayout'
-import React from 'react'
+import React, { useState } from 'react'
 import LogoDate from '../Logo_date'
+import SettingInput from '../SettingInput'
 import TextInput from '../TextInput'
 
 function Settings() {
+  const [user , setUser] = useState({
+    firstName : 'Fachry',
+    lastName : 'Fauzan'
+  })
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
         <LogoDate/>
         <div className="flex flex-col w-full mt-[45px]">
           <div className="flex items-center">
           <div className="h-[100px] w-[100px] bg-gray-200 rounded-full"></div>
-          <p className='text-[30px] font-bold ml-[25px]'>Fachry Fauzan</p>
+          <p className='text-[30px] font-bold ml-[25px]'>{user.firstName} {user.lastName}</p>
           </div>
           <p className='mt-[15px]'>Disini adalah tempat anda mengatur akun anda dan lainnya ✒️</p>
         </div>
         <div className="flex gap-x-[30px] mt-[50px]">
-          <div className="flex-1">
-            <p>Nama Depan</p>
-            <TextInput placeholder='Fachry' className='w-full mt-[10px]'/>
-          </div>
-          <div className="flex-1">
-            <p>Nama Belakang</p>
-            <TextInput placeholder='Fauzan' className='w-full mt-[10px]'/>
-          </div>
+          <SettingInput header={'First Name'} initialValues={user.firstName} placeholder='First Name' user={user} setUser={setUser} selection={'firstName'} className='flex-1'/>
+          <SettingInput header={'Last Name'} initialValues={user.lastName} placeholder='Last Name' user={user} setUser={setUser} selection={'lastName'} className='flex-1'/>
         </div>
         <div className="mt-[30px]">
           <p>Email</p>
-          <TextInput placeholder='Email' type='email' className='w-full mt-[10px]'/>
+          <TextInput value={'Email'} placeholder='Email' type='email' className='w-full mt-[10px]'/>
         </div>
         <div className="mt-[30px]">
           <p>Password</p>
-          <TextInput placeholder='password' type='password' className='w-full mt-[10px]'/>
+          <TextInput value={'password'} placeholder='password' type='password' className='w-full mt-[10px]'/>
         </div>
         <div className="bg-[#FFF4F4] w-full h-[130px] my-[20px] px-[40px] py-[35px] flex justify-between rounded-xl">
           <div className="">
