@@ -2,6 +2,7 @@ import BodyLayout from '@/Layouts/BodyLayout'
 import React, { useState } from 'react'
 import LogoDate from '../Logo_date'
 import SettingInput from '../SettingInput'
+import Bluetooth from '../svgComp/Bluetooth'
 import TextInput from '../TextInput'
 
 function Settings() {
@@ -36,8 +37,9 @@ function Settings() {
             <p className='font-bold text-xl'>Sandingkan dengan printer</p>
             <p className='opacity-50'>Sandingkan dengan printer agar bisa memprint struk pembelian</p>
           </div>
-          <div className="flex items-center">
-          <button className='bg-[#0000FF] text-white px-[19px] py-[12px] rounded-xl'>Sambungkan</button>
+          <div className="flex items-center relative">
+          <button className='bg-[#0000FF] text-white px-[19px] py-[12px] rounded-xl pl-[50px]'>Sambungkan</button>
+          <Bluetooth className={'absolute left-[19px]'}/>
           </div>
         </div>
     </BodyLayout>
