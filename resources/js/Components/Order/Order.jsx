@@ -5,17 +5,71 @@ import SearchSvg from '../svgComp/SearchSvg'
 import TextInput from '../TextInput'
 import TableData from '../TableData'
 
+const posts = [
+  {customer_name : 'thoriq',
+  order_time :'08.00',
+  status: 'lunas'},
+  {customer_name : 'thoriq',
+  order_time :'08.00',
+  status: 'lunas'},
+  {customer_name : 'thoriq',
+  order_time :'08.00',
+  status: 'lunas'},
+  {customer_name : 'thoriq',
+  order_time :'08.00',
+  status: 'lunas'},
+  {customer_name : 'thoriq',
+  order_time :'08.00',
+  status: 'lunas'},
+  {customer_name : 'yones',
+  order_time :'08.00',
+  status: 'lunas'},
+  {customer_name : 'yones',
+  order_time :'08.00',
+  status: 'lunas'},
+  {customer_name : 'yones',
+  order_time :'08.00',
+  status: 'lunas'},
+  {customer_name : 'yones',
+  order_time :'08.00',
+  status: 'lunas'},
+  {customer_name : 'yones',
+  order_time :'08.00',
+  status: 'lunas'},
+  {customer_name : 'yones',
+  order_time :'08.00',
+  status: 'lunas'},
+  // ...data lainnya
+];
+
+
 function Order({orders}) {
-  const [pagination , setPagination] = useState(1)
-  function incrementHandler(){
-    setPagination(prevState => prevState + 1)
+  const [currentPage , setcurrentPage] = useState(1)
+  const [postPerPage,  setPostPerPage] = useState(5)
+  const pageNumbers = []
+
+  for (let i = 1; i <= Math.ceil(posts.length / postPerPage); i++) {
+    pageNumbers.push(i);
   }
-  function decrementHandler(){
-    if(pagination == 1){
+  console.log(posts.length / postPerPage)
+  console.log(pageNumbers)
+  
+
+  function incrementHandler(){
+    if(currentPage == pageNumbers.length){
       return
     }
-    setPagination(prevState => prevState - 1)
+    setcurrentPage(prevState => prevState + 1)
   }
+  function decrementHandler(){
+    if(currentPage == 1){
+      return
+    }
+    setcurrentPage(prevState => prevState - 1)
+  }
+  const indexOfLastPost = currentPage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
 
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
@@ -27,7 +81,7 @@ function Order({orders}) {
         </div>
         <div className="h-[50px] w-fit flex gap-x-4">
           <div onClick={decrementHandler} className="h-[50px] w-[50px] bg-white border-2 rounded-xl flex justify-center items-center cursor-pointer">{'<'}</div>
-          <div className="h-[50px] w-[50px] bg-white border-2 rounded-xl flex justify-center items-center">{pagination}</div>
+          <div className="h-[50px] w-[50px] bg-white border-2 rounded-xl flex justify-center items-center">{currentPage}</div>
           <div onClick={incrementHandler} className="h-[50px] w-[50px] bg-white border-2 rounded-xl flex justify-center items-center cursor-pointer">{'>'}</div>
         </div>
       </div>
@@ -38,7 +92,7 @@ function Order({orders}) {
           <th className='flex-2 opacity-60'>Status</th>
           <th></th>
         </tr>
-        {orders.map(order => {
+        {currentPosts.map(order => {
         return (
           <tr className='h-fit border-bottom-1'>
           <TableData text={order.customer_name}/>
