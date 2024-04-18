@@ -8,6 +8,7 @@ import Home from '@/Components/Home(Admin)/Home';
 import Kasir from '@/Components/Kasir(Admin)/Kasir';
 import Settings from '@/Components/Settings/Settings';
 import SettingsSvg from '@/Components/svgComp/SettingsSvg';
+import Menu from '@/Components/Menu(Admin)/Menu';
 
 
 
@@ -35,6 +36,7 @@ const Admin = () => {
   const [screenWidth , setScreenWidth] = useState(window.innerWidth)
   window.addEventListener('resize' , ()=>{
     setScreenWidth(window.innerWidth)
+    localStorage.setItem('SCREEN_WIDTH' , screenWidth)
   })
   useEffect(()=>{
     if(clickedAt == 'Home'){
@@ -42,7 +44,7 @@ const Admin = () => {
     }else if(clickedAt == 'Kasir'){
       setUI(<Kasir/>)
     }else if(clickedAt == 'Menu'){
-      setUI(<Kasir/>)
+      setUI(<Menu/>)
     }else{
       setUI(<Settings/>)
     }
