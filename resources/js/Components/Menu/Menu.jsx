@@ -11,6 +11,7 @@ function Menu({menus , categories}) {
     const [openSide, setOpenSide] = useState(false);
     const strg = JSON.parse(localStorage.getItem('ORDER_HISTORY'))
     const [selectedFood , setSelectedFood] = useState(strg || []);
+
   return (
     <>
     <BodyLayout>
@@ -27,7 +28,7 @@ function Menu({menus , categories}) {
           </div>
     </BodyLayout>
         <MenuHistory openSide={openSide} setOpenSide={setOpenSide} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
-      <div onClick={() => setOpenSide(true)} className={`w-[50px] h-[50px] bg-[#7D5E42] rounded-full fixed flex justify-center items-center text-2xl text-white right-4 top-1/2 cursor-pointer ${openSide ? 'hidden' : 'block'}`}>{'<'}</div>
+      <div onClick={()=> setOpenSide(true)} className={`w-[50px] h-[50px] bg-[#7D5E42] rounded-full fixed flex justify-center items-center text-2xl text-white right-4 top-1/2 cursor-pointer ${openSide ? 'hidden' : 'block'}`}>{'<'}</div>
     </>
   )
 }
