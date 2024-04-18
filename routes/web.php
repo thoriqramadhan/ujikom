@@ -37,6 +37,7 @@ Route::get('/', function () {
     // Route::middleware('auth')->group(function () {
         // Halaman untuk kasir
         Route::get('/kasir', [MenuController::class, 'index']);
+        Route::post('/kasir', [MenuController::class, 'store']);
     // });
   
     //Routes yang bisa diakses hanya oleh admin di masukkan ke sini
