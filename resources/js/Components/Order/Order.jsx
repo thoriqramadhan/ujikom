@@ -6,44 +6,46 @@ import TextInput from '../TextInput'
 import TableData from '../TableData'
 
 const posts = [
-  {customer_name : 'thoriq',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'thoriq',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'thoriq',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'thoriq',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'thoriq',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  // ...data lainnya
+  {customer_name : 'customer_name',
+  order_time :'order_time',
+  status: 'status'},
+  // {customer_name : 'thoriq',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'thoriq',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'thoriq',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'thoriq',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // // ...data lainnya
 ];
 
 
 function Order({orders}) {
+  const [dataOrder , setDataOrder] = useState(orders || '')
+  console.log(dataOrder)
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
   const pageNumbers = []
@@ -85,19 +87,19 @@ function Order({orders}) {
           <div onClick={incrementHandler} className="h-[50px] w-[50px] bg-white border-2 rounded-xl flex justify-center items-center cursor-pointer">{'>'}</div>
         </div>
       </div>
-      <table className=' mt-[24px] overflow-hidden rounded-xl'>
+      <table className='w-full mt-[24px] overflow-hidden rounded-xl'>
         <tr className='rounded-2xl bg-[#F3F3F3] h-[60px]'>
           <th className='flex-1 opacity-60'>Nama Pembeli</th>
           <th className='flex-1 opacity-60'>Waktu</th>
           <th className='flex-2 opacity-60'>Status</th>
           <th></th>
         </tr>
-        {currentPosts.map(order => {
+        {dataOrder.map(orders => {
         return (
           <tr className='h-fit border-bottom-1'>
-          <TableData text={order.customer_name}/>
-          <TableData text={order.order_time}/>
-          <TableData text={order.status}/>
+          <TableData text={orders.customer_name}/>
+          <TableData text={orders.order_time}/>
+          <TableData text={orders.status}/>
           <div className="h-[60px] w-[100%] flex items-center justify-center">
             <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
             <span className='mr-[2px]'>I</span>
