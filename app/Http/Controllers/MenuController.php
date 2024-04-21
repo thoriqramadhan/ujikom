@@ -43,7 +43,6 @@ class MenuController extends Controller
      */
     public function store(Request $request)
 {
-    dd($request);
     $customerData = $request->validate([
         'customer_name' => 'required',
     ]);
