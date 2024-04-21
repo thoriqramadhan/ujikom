@@ -46,6 +46,7 @@ class MenuController extends Controller
     $customerData = $request->validate([
         'customer_name' => 'required',
     ]);
+    
 
     // Ubah string JSON selectedFood menjadi array PHP
     $foodData = json_decode($request->input('selectedFood'), true);
