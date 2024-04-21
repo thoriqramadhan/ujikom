@@ -37,7 +37,7 @@ function MenuHistory({ openSide, setOpenSide, selectedFood, setSelectedFood }) {
       <div onClick={() => setOpenSide(false)} className="w-[70px] h-[70px] shadow-lg bg-[#7D5E42] text-white rounded-full absolute -left-10 top-1/2 cursor-pointer z-10 text-2xl flex justify-center items-center">{'<'}</div>
       <div className="mt-[20px]">
         <p className='font-bold text-[26px]'>Pesanan</p>
-        <input type='text' className="w-full mt-[5px]" placeholder="Nama pembeli" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
+        <TextInput className="w-full mt-[5px]" placeholder="Nama pembeli" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
       </div>
       <div className="w-full h-[300px] mt-[25px] overflow-y-scroll flex flex-col flex-nowrap gap-2">
         {selectedFood.map(food => <HistoryCard key={food.id} name={food.name} harga={food.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood} />)}
