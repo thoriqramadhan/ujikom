@@ -2,6 +2,7 @@ import { forwardRef, useEffect, useRef , useState } from 'react';
 
 export default forwardRef(function TextInput({ type = 'text', className = '', isFocused = false,placeholder, values, setValues, ...props }, ref) {
     const input = ref ? ref : useRef();
+    const [value , setValue] = useState(values || '')
     useEffect(() => {
         if (isFocused) {
             input.current.focus();
@@ -17,8 +18,9 @@ export default forwardRef(function TextInput({ type = 'text', className = '', is
             }
             placeholder={placeholder}
             ref={input}
-            value={values}
+            value={value}
             onChange={(event) => {
+                setValue(event.target.value)
                 setValues(event.target.value)
             }}
         />
