@@ -14,8 +14,11 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
         $table->id();
         $table->foreignId('order_id')->constrained()->onDelete('cascade');
-        $table->foreignId('menu_id')->constrained(); 
-        $table->integer('quantity');
+        $table->foreignId('menu_id')->constrained();
+        $table->string('name'); 
+        $table->integer('harga');
+        $table->integer('totalHarga');
+        $table->integer('items');
             $table->timestamps();
         });
     }

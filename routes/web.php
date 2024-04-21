@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
 use App\Models\Menu;
@@ -21,15 +22,10 @@ use Inertia\Inertia;
 Route::get('/', function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
 });
-
-    Route::get('/dashboard', function () {
-        return Inertia::render('Dashboard');
-    })->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::middleware('auth')->group(function () {
         Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -41,16 +37,15 @@ Route::get('/', function () {
     // Route::middleware('auth')->group(function () {
         // Halaman untuk kasir
         Route::get('/kasir', [MenuController::class, 'index']);
+        Route::post('/kasir', [MenuController::class, 'store']);
     // });
   
     //Routes yang bisa diakses hanya oleh admin di masukkan ke sini
-    Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
+    // Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
         //page untuk admin
-        Route::get('/admin', function () {
-            return Inertia::render('Admin');
-        });
+        Route::get('/admin', [AdminController::class, 'index']);
 
-    });
+    // });
     
     
 
