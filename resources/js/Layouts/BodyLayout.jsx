@@ -5,7 +5,7 @@ function BodyLayout({children , className}) {
   return (
     <>
     {screenWidth <= 750 ? 
-    <div className={`px-[30px] w-full h-fit ${className || ''}`}>
+    <div className={`px-[30px] pb-[80px] w-full h-[100vh] overflow-scroll ${className || ''}`}>
     {children}
     </div> :
     <div className={`flex flex-col flex-1 h-fit ml-16  ${className || ''}`}>

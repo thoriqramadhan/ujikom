@@ -54,6 +54,12 @@ const Admin = () => {
     <>
     <Head title='Admin'/>
     <div className="w-full h-[100vh] flex ">
+      {/* <div className="w-full pb-[80px]">
+        <div className="w-full h-full bg-sky-100 pb-[100px] relative">
+          <div className="h-[50px] w-[50px] bg-red-100 absolute bottom-0"></div>
+        </div>
+      </div> */}
+      {UI}
       <SideNav screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}>
             {screenWidth <= 750 ? '' : <div className="w-[40px] h-[40px] bg-black rounded-full"></div>}
             <HomeSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>
@@ -61,8 +67,6 @@ const Admin = () => {
             <MenuSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>
             {screenWidth <= 750 ? <SettingsSvg clickedAt={clickedAt} setClickedAt={setClickedAt}/> : ''}
       </SideNav>
-      
-    {UI}
     </div>
     </>
   );
