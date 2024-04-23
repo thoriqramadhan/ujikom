@@ -5,24 +5,26 @@ import SettingInput from '../SettingInput'
 import Bluetooth from '../svgComp/Bluetooth'
 import TextInput from '../TextInput'
 
-function Settings() {
-  const [user , setUser] = useState({
-    firstName : 'Fachry',
-    lastName : 'Fauzan'
-  })
+function Settings({users}) {
+  const [user, setUser] = useState(users[0]);
+  // const [user , setUser] = useState({
+  //   firstName : 'Fachry',
+  //   lastName : 'Fauzan'
+  // })
+  console.log(user)
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
         <LogoDate/>
         <div className="flex flex-col w-full mt-[45px]">
           <div className="flex items-center">
           <div className="h-[100px] w-[100px] bg-gray-200 rounded-full"></div>
-          <p className='text-[30px] font-bold ml-[25px]'>{user.firstName} {user.lastName}</p>
+          <p className='text-[30px] font-bold ml-[25px]'>{user.first_name} {user.last_name}</p>
           </div>
           <p className='mt-[15px]'>Disini adalah tempat anda mengatur akun anda dan lainnya ✒️</p>
         </div>
         <div className="flex gap-x-[30px] mt-[50px]">
-          <SettingInput header={'First Name'} initialValues={user.firstName} placeholder='First Name' user={user} setUser={setUser} selection={'firstName'} className='flex-1'/>
-          <SettingInput header={'Last Name'} initialValues={user.lastName} placeholder='Last Name' user={user} setUser={setUser} selection={'lastName'} className='flex-1'/>
+          <SettingInput header={'First Name'} initialValues={user.first_name} className='flex-1'/>
+          <SettingInput header={'Last Name'} initialValues={user.last_name}  className='flex-1'/>
         </div>
         <div className="mt-[30px]">
           <p>Email</p>
