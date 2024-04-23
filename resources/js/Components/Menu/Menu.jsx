@@ -12,6 +12,8 @@ function Menu({menus , categories}) {
     const strg = JSON.parse(localStorage.getItem('ORDER_HISTORY'))
     const [selectedFood , setSelectedFood] = useState(strg || []);
 
+    console.log(selectedFood)
+
   return (
     <>
     <BodyLayout>

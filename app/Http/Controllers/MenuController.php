@@ -8,6 +8,7 @@ use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -22,7 +23,7 @@ class MenuController extends Controller
         $categories = Category::all();
         $orders = Order::all();
         $orderitems = OrderItem::all();
-        $users = User::all();
+        $users = Auth::user();
 
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,

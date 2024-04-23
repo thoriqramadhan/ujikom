@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Admin;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class AdminController extends Controller
@@ -13,8 +14,10 @@ class AdminController extends Controller
      */
     public function index()
     {
+        $users = Auth::user();
+
         return Inertia::render('Admin/Admin', [
-        
+            'users' => $users
         ]);
     }
 

@@ -33,8 +33,16 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
 
         $request->session()->regenerate();
-
-        return redirect()->intended(RouteServiceProvider::HOME);
+    
+        // Mendapatkan informasi pengguna yang baru saja berhasil login
+        $user = $request->user();
+    
+        // Memeriksa peran pengguna dan mengarahkannya ke rute yang sesuai
+        if ($user->isAdmin()) {
+            return redirect('/admin');
+        } else {
+            return redirect('/kasir');
+        }
     }
 
     /**
@@ -48,6 +56,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect('/login');
     }
 }
