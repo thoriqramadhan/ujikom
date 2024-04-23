@@ -6,7 +6,6 @@ function HomeSvg({screenWidth, clickedAt,setClickedAt}) {
     function clickHandler(){
         setClickedAt(name)
     }
-    console.log(clickedAt)
   return (
     <div className="flex flex-col">
 

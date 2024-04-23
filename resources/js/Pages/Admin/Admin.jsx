@@ -11,25 +11,6 @@ import SettingsSvg from '@/Components/svgComp/SettingsSvg';
 import Menu from '@/Components/Menu(Admin)/Menu';
 
 
-
-// file DataContext.js
-
-
-// export const DataContext = createContext();
-
-// export const DataProvider = ({ children }) => {
-//   const [data, setData] = useState({
-//     key: screenWidth,
-//     // tambahkan data lainnya di sini
-//   });
-
-//   return (
-//     <DataContext.Provider value={{ data, setData }}>
-//       {children}
-//     </DataContext.Provider>
-//   );
-// };
-
 const Admin = () => {
   const [clickedAt , setClickedAt] = useState('Home')
   const [UI, setUI] = useState(<Home/>)
@@ -38,6 +19,7 @@ const Admin = () => {
     setScreenWidth(window.innerWidth)
     localStorage.setItem('SCREEN_WIDTH' , screenWidth)
   })
+
   useEffect(()=>{
     if(clickedAt == 'Home'){
       setUI(<Home/>)

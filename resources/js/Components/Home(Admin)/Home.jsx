@@ -15,6 +15,10 @@ const dailySell = [
   {
     name: 'Fachry',
     value: 11
+  },
+  {
+    name: 'Fachry',
+    value: 11
   }
 
 ]
@@ -55,7 +59,7 @@ function Home() {
         <div className="w-full h-fit pt-[50px] lg:grow lg:basis-1/2">
           <LogoDate/>
           {/* header */}
-          <div className="w-full h-fit mt-[35px] flex flex-col gap-y-[15px] lg:flex-row lg:gap-x-[25px]">
+          <div className="w-full h-fit mt-[35px] flex flex-col gap-y-[15px] lg:flex-row lg:gap-x-[20px]">
             <div className="h-[85px] w-full bg-[#F1F1F1] border-2 rounded-3xl cursor-pointer flex items-center px-[17px] lg:px-[10px] lg:justify-center">
               <div className="h-[58px] w-[58px] bg-gray-200 rounded-full font-bold flex items-center justify-center text-2xl"><p>Rp.</p></div>
               <div className="ml-2">
@@ -87,26 +91,16 @@ function Home() {
           <div className="w-full h-[260px] rounded-[25px] bg-white border px-[18px] pt-[28px]">
             <p className='text-xl font-bold'>Pantau Kasir Kamu 📹</p>
             <p className='opacity-50'>Apa karyawanmu aktif?</p>
-            <div className="mt-[15px]">
+            <div className="mt-[15px] h-[135px] overflow-scroll">
 
-              <div className="flex gap-x-[8px] justify-between items-center font-bold h-[45px] bg-gray-200 w-full px-[20px] rounded-[5px]">
+              {dailySell.map((items,index) => (
+                <div className={`${index % 2 === 0 ? 'bg-gray-200' : 'bg-white'} flex gap-x-[8px] justify-between items-center font-bold h-[45px] bg-gray-200 w-full px-[20px] rounded-[5px]`}>
                 <p>Fachry Fauzan</p>
-                <ul className='list-disc'>
+                <ul className='list-disc sm:list-none md:list-none lg:list-disc'>
                   <li>Sedang Aktif</li>
                 </ul>
               </div>
-              <div className="flex gap-x-[8px] justify-between items-center font-bold h-[45px] bg-white w-full px-[20px] rounded-[5px]">
-                <p>Fachry Fauzan</p>
-                <ul className='list-disc'>
-                  <li>Sedang Aktif</li>
-                </ul>
-              </div>
-              <div className="flex gap-x-[8px] justify-between items-center font-bold h-[45px] bg-gray-200 w-full px-[20px] rounded-[5px]">
-                <p>Fachry Fauzan</p>
-                <ul className='list-disc'>
-                  <li>Sedang Aktif</li>
-                </ul>
-              </div>
+              ))}
 
             </div>
           </div>
@@ -114,7 +108,7 @@ function Home() {
           <div className="w-full h-[260px] rounded-[25px] bg-white border px-[18px] pt-[28px]">
             <p className='text-xl font-bold'>Penjualan Hari ini</p>
             <p className='opacity-50'>Lihat apa saja yang terjual</p>
-            <div className="mt-[15px] even:bg-gray-200 odd:bg-white">
+            <div className="mt-[15px] h-[135px] overflow-scroll">
 
               {dailySell.map((items, index) => (
                 <div key={index} className={`${index % 2 === 0 ? 'bg-gray-200' : 'bg-white'} flex gap-x-[8px] justify-between items-center font-bold h-[45px] w-full px-[20px] rounded-[5px]`}>

@@ -20,9 +20,9 @@ function Settings() {
           </div>
           <p className='mt-[15px]'>Disini adalah tempat anda mengatur akun anda dan lainnya ✒️</p>
         </div>
-        <div className="flex gap-x-[30px] mt-[50px]">
-          <SettingInput header={'First Name'} initialValues={user.firstName} placeholder='First Name' user={user} setUser={setUser} selection={'firstName'} className='flex-1'/>
-          <SettingInput header={'Last Name'} initialValues={user.lastName} placeholder='Last Name' user={user} setUser={setUser} selection={'lastName'} className='flex-1'/>
+        <div className="flex flex-col gap-x-[30px] mt-[0px] md:flex-row md:mt-[50px]">
+          <SettingInput header={'First Name'} initialValues={user.firstName} placeholder='First Name' user={user} setUser={setUser} selection={'firstName'} className='mt-[30px] md:flex-1'/>
+          <SettingInput header={'Last Name'} initialValues={user.lastName} placeholder='Last Name' user={user} setUser={setUser} selection={'lastName'} className='mt-[30px] md:flex-1'/>
         </div>
         <div className="mt-[30px]">
           <p>Email</p>
