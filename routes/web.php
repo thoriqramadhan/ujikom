@@ -33,6 +33,10 @@ Route::get('/', function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
+//logout
+Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
+    
     // //page untuk kasir
     // Route::middleware('auth')->group(function () {
         // Halaman untuk kasir

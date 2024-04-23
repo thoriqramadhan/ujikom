@@ -13,4 +13,9 @@ class Order extends Model
     {
         return $this->hasMany(OrderItem::class);
     }
+
+    public function managements()
+    {
+        return $this->hasOne(Managements::class);
+    }
 }

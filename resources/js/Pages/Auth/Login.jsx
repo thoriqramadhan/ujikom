@@ -5,7 +5,8 @@ import InputError from '@/Components/InputError';
 import InputLabel from '@/Components/InputLabel';
 import PrimaryButton from '@/Components/PrimaryButton';
 import TextInput from '@/Components/TextInput';
-import { Head, Link, useForm } from '@inertiajs/react';
+import { Head, Link, useForm} from '@inertiajs/react';
+
 
 export default function Login({ status, canResetPassword }) {
     const { data, setData, post, processing, errors, reset } = useForm({
@@ -13,6 +14,7 @@ export default function Login({ status, canResetPassword }) {
         password: '',
         remember: false,
     });
+
 
     useEffect(() => {
         return () => {
@@ -23,8 +25,21 @@ export default function Login({ status, canResetPassword }) {
     const submit = (e) => {
         e.preventDefault();
 
-        post(route('login'));
+        post(route('login'), { // Kirim permintaan login
+            onSuccess: () => {
+                const currentUser = usePage().props.auth.user;
+
+                if (currentUser.isAdmin) {
+                    // Redirect ke halaman /admin jika pengguna adalah admin
+                    route('./resources/js/Pages/Admin/Admin.jsx');
+                } else {
+                    // Redirect ke halaman /kasir jika pengguna bukan admin
+                    route('./resources/js/Pages/Kasir/Kasir.jsx');
+                }
+            },
+        });
     };
+
 
     return (
         <GuestLayout>

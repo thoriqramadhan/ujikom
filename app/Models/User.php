@@ -49,4 +49,10 @@ class User extends Authenticatable
     {
         return $this->attributes['role'];
     }
+
+        public function isAdmin(): bool
+    {
+        // Implementasi logika untuk memeriksa peran admin di sini
+        return $this->role === 'admin';
+    }
 }
