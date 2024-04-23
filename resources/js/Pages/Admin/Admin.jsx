@@ -14,11 +14,7 @@ import Menu from '@/Components/Menu(Admin)/Menu';
 const Admin = () => {
   const [clickedAt , setClickedAt] = useState('Home')
   const [UI, setUI] = useState(<Home/>)
-  const [screenWidth , setScreenWidth] = useState(window.innerWidth)
-  window.addEventListener('resize' , ()=>{
-    setScreenWidth(window.innerWidth)
-    localStorage.setItem('SCREEN_WIDTH' , screenWidth)
-  })
+  const [screenWidth,setScreenWidth] = useState(window.innerWidth || JSON.parse(localStorage.getItem('SCREEN_WiDTH')))
 
   useEffect(()=>{
     if(clickedAt == 'Home'){
@@ -32,6 +28,10 @@ const Admin = () => {
     }
   },[clickedAt])
 
+  window.addEventListener('resize' , ()=>{
+    setScreenWidth(window.innerWidth)
+  })
+
   return (
     <>
     <Head title='Admin'/>
@@ -43,11 +43,11 @@ const Admin = () => {
       </div> */}
       {UI}
       <SideNav screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}>
-            {screenWidth <= 750 ? '' : <div className="w-[40px] h-[40px] bg-black rounded-full"></div>}
+            {screenWidth <= 1024 ? '' : <div className="w-[40px] h-[40px] bg-black rounded-full"></div>}
             <HomeSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>
             <KasirSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>
             <MenuSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>
-            {screenWidth <= 750 ? <SettingsSvg clickedAt={clickedAt} setClickedAt={setClickedAt}/> : ''}
+            {screenWidth <= 1024 ? <SettingsSvg clickedAt={clickedAt} setClickedAt={setClickedAt}/> : ''}
       </SideNav>
     </div>
     </>
