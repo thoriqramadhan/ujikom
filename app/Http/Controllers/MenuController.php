@@ -6,6 +6,7 @@ use App\Models\Category;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
@@ -21,12 +22,14 @@ class MenuController extends Controller
         $categories = Category::all();
         $orders = Order::all();
         $orderitems = OrderItem::all();
+        $users = User::all();
 
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
             'categories' => $categories,
             'orders' => $orders,
-            'orderitems' => $orderitems
+            'orderitems' => $orderitems,
+            'users' => $users
         ]);
     }
 
@@ -111,5 +114,17 @@ class MenuController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function updateUser(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required'
+        ]);
+
+        $input = $request->all();
+
+        User::create($input);
     }
 }
