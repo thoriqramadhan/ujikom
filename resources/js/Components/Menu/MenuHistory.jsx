@@ -2,23 +2,43 @@ import React, { useState } from 'react';
 import DashedLine from '../DashedLine';
 import HistoryCard from './HistoryCard';
 import TextInput from '../TextInput';
-import { Inertia } from '@inertiajs/inertia';
+// import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
 
-function MenuHistory({ openSide, setOpenSide, selectedFood, setSelectedFood }) {
+function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood }) {
   const [customerName, setCustomerName] = useState('');
   const subHarga = selectedFood.reduce((total, item) => {
     return total + item.totalHarga;
   }, 0);
   const tax = subHarga * 0.1;
+  console.log(selectedFood)
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(customerName == ''){
+      alert('Nama Pembeli Harus Diisi!')
+      return
+    }
 
     // Membuat objek FormData untuk mengirim data formulir
     const formData = new FormData();
     formData.append('customer_name', customerName);
     formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
+    setOpenModal(!openModal)
+    setModalData({
+      name: customerName,
+      subTotal : `${subHarga}K`,
+      tax: `${tax.toFixed(2)}K`,
+      total: `${subHarga + tax}K`,
+      menu: selectedFood.map(food => {
+        return {
+          name : food.name,
+          total: food.totalHarga,
+          items: food.items
+        }
+      })
+
+    })
 
     // Mengirim permintaan POST menggunakan Inertia.postFormData
     Inertia.post('/kasir', formData).then(() => {
@@ -37,7 +57,7 @@ function MenuHistory({ openSide, setOpenSide, selectedFood, setSelectedFood }) {
       <div onClick={() => setOpenSide(false)} className="w-[70px] h-[70px] shadow-lg bg-[#7D5E42] text-white rounded-full absolute -left-10 top-1/2 cursor-pointer z-10 text-2xl flex justify-center items-center">{'<'}</div>
       <div className="mt-[20px]">
         <p className='font-bold text-[26px]'>Pesanan</p>
-        <TextInput className="w-full mt-[5px]" require={true} placeholder="Nama pembeli" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
+        <TextInput className="w-full mt-[5px]" placeholder="Nama pembeli" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
       </div>
       <div className="w-full h-[300px] mt-[25px] overflow-y-scroll flex flex-col flex-nowrap gap-2">
         {selectedFood.map(food => <HistoryCard key={food.id} name={food.name} harga={food.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood} />)}
