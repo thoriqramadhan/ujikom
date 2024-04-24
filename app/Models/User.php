@@ -18,7 +18,8 @@ class User extends Authenticatable
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
+        'first_name',
+        'last_name',
         'email',
         'password',
         'role'
@@ -47,5 +48,11 @@ class User extends Authenticatable
     public function getRoleAttribute()
     {
         return $this->attributes['role'];
+    }
+
+        public function isAdmin(): bool
+    {
+        // Implementasi logika untuk memeriksa peran admin di sini
+        return $this->role === 'admin';
     }
 }

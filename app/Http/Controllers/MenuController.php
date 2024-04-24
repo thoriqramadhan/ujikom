@@ -6,7 +6,9 @@ use App\Models\Category;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 
@@ -19,14 +21,18 @@ class MenuController extends Controller
     {
         $menus = Menu::all();
         $categories = Category::all();
-        $orders = Order::all();
+        $orders = Order::where('status','belum dibayar')->get();
+        $orderselesai = Order::where('status','selesai')->get();
         $orderitems = OrderItem::all();
+        $users = Auth::user();
 
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
             'categories' => $categories,
             'orders' => $orders,
-            'orderitems' => $orderitems
+            'orderselesai' => $orderselesai,
+            'orderitems' => $orderitems,
+            'users' => $users
         ]);
     }
 
@@ -111,5 +117,17 @@ class MenuController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    public function updateUser(Request $request)
+    {
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required'
+        ]);
+
+        $input = $request->all();
+
+        User::create($input);
     }
 }

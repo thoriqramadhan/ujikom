@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('customer_name');
             $table->timestamp('order_time')->useCurrent();
-            $table->enum('status', ['diproses', 'selesai'])->default('diproses');
+            $table->enum('status', ['belum dibayar', 'selesai'])->default('belum dibayar');
             $table->timestamps();
         });
     }

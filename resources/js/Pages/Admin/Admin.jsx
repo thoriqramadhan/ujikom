@@ -30,7 +30,7 @@ import Menu from '@/Components/Menu(Admin)/Menu';
 //   );
 // };
 
-const Admin = () => {
+const Admin = ({users}) => {
   const [clickedAt , setClickedAt] = useState('Home')
   const [UI, setUI] = useState(<Home/>)
   const [screenWidth , setScreenWidth] = useState(window.innerWidth)
@@ -46,7 +46,7 @@ const Admin = () => {
     }else if(clickedAt == 'Menu'){
       setUI(<Menu/>)
     }else{
-      setUI(<Settings/>)
+      setUI(<Settings users={users} />)
     }
   },[clickedAt])
 

@@ -33,19 +33,24 @@ Route::get('/', function () {
         Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
+//logout
+Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])
+    ->name('logout');
+    
     // //page untuk kasir
     // Route::middleware('auth')->group(function () {
         // Halaman untuk kasir
         Route::get('/kasir', [MenuController::class, 'index']);
         Route::post('/kasir', [MenuController::class, 'store']);
+        Route::patch('/kasir', [MenuController::class, 'updateUser']);
     // });
   
     //Routes yang bisa diakses hanya oleh admin di masukkan ke sini
-    // Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
-        //page untuk admin
+    Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
+        // page untuk admin
         Route::get('/admin', [AdminController::class, 'index']);
 
-    // });
+    });
     
     
 
