@@ -11,6 +11,28 @@ function Menu({menus , categories}) {
     const [openSide, setOpenSide] = useState(false);
     const strg = JSON.parse(localStorage.getItem('ORDER_HISTORY'))
     const [selectedFood , setSelectedFood] = useState(strg || []);
+
+    const [modalData , setModalData] = useState(
+      {
+      name: 'Yudi Santoso',
+      subTotal : 100,
+      tax: 10 ,
+      total: 110,
+      menu: [
+        'Ayam',
+        'Sapi'
+      ]
+    }
+    )
+    const [buyersMoney , setBuyersMoney] = useState(0)
+    let total = parseFloat(modalData.total) - buyersMoney || 0
+    function clientHandler(e){
+      setBuyersMoney(parseFloat(e.target.value))
+    }
+    console.log(typeof modalData.subTotal , typeof modalData.tax)
+    // useEffect(()=>{
+    //   total = isNaN(modalData.subTotal) || isNaN(modalData.tax) ? 0 : modalData.subHarga - modalData.tax; 
+    // },[buyersMoney])
   return (
     <>
     <BodyLayout>
