@@ -1,8 +1,8 @@
 import React from 'react'
 
-function TableData({text , className}) {
+function TableData({text , className,prop}) {
   return (
-    <td className={`h-[60px] text-center align-middle ${className}`}>{text}</td>
+    <td className={`h-[60px] text-center align-middle ${className}`}>{text}{text ? prop : ''}</td>
   )
 }
 
