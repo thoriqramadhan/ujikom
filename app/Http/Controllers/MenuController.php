@@ -21,7 +21,8 @@ class MenuController extends Controller
     {
         $menus = Menu::all();
         $categories = Category::all();
-        $orders = Order::all();
+        $orders = Order::where('status','belum dibayar')->get();
+        $orderselesai = Order::where('status','selesai')->get();
         $orderitems = OrderItem::all();
         $users = Auth::user();
 
@@ -29,6 +30,7 @@ class MenuController extends Controller
             'menus' => $menus,
             'categories' => $categories,
             'orders' => $orders,
+            'orderselesai' => $orderselesai,
             'orderitems' => $orderitems,
             'users' => $users
         ]);
