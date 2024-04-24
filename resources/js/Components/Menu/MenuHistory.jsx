@@ -5,20 +5,40 @@ import TextInput from '../TextInput';
 // import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
 
-function MenuHistory({ openSide, setOpenSide, selectedFood, setSelectedFood }) {
+function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood }) {
   const [customerName, setCustomerName] = useState('');
   const subHarga = selectedFood.reduce((total, item) => {
     return total + item.totalHarga;
   }, 0);
   const tax = subHarga * 0.1;
+  console.log(selectedFood)
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    if(customerName == ''){
+      alert('Nama Pembeli Harus Diisi!')
+      return
+    }
 
     // Membuat objek FormData untuk mengirim data formulir
     const formData = new FormData();
     formData.append('customer_name', customerName);
     formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
+    setOpenModal(!openModal)
+    setModalData({
+      name: customerName,
+      subTotal : `${subHarga}K`,
+      tax: `${tax.toFixed(2)}K`,
+      total: `${subHarga + tax}K`,
+      menu: selectedFood.map(food => {
+        return {
+          name : food.name,
+          total: food.totalHarga,
+          items: food.items
+        }
+      })
+
+    })
 
     // Mengirim permintaan POST menggunakan Inertia.postFormData
     Inertia.post('/kasir', formData).then(() => {

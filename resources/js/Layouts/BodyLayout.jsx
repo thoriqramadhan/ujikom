@@ -1,7 +1,11 @@
 import React from 'react'
+import { useState } from 'react'
 
 function BodyLayout({children , className}) {
-  const screenWidth = localStorage.getItem('SCREEN_WIDTH')
+  const [screenWidth , setScreenWidth] = useState(window.innerWidth)
+  window.addEventListener('resize' , ()=>{
+    setScreenWidth(window.innerWidth)
+  })
   return (
     <>
     {screenWidth <= 750 ? 
