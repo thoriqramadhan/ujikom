@@ -7,43 +7,48 @@ import TableData from '../TableData'
 import { useState } from 'react';
 
 const posts = [
-  {customer_name : 'thoriq',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'thoriq',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'thoriq',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'thoriq',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'thoriq',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
-  {customer_name : 'yones',
-  order_time :'08.00',
-  status: 'lunas'},
+  {customer_name : 'customer_name',
+  order_time :'order_time',
+  status: 'status'},
+  // {customer_name : 'thoriq',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'thoriq',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'thoriq',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'thoriq',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'thoriq',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
+  // {customer_name : 'yones',
+  // order_time :'08.00',
+  // status: 'lunas'},
   // ...data lainnya
 ];
 
-function History() {
+function History({orderselesai}) {
+  const [dataOrderSelesai , setDataOrderSelesai] = useState(orderselesai || '')
+  console.log(dataOrderSelesai)
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
   const pageNumbers = []
@@ -51,8 +56,8 @@ function History() {
   for (let i = 1; i <= Math.ceil(posts.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
-  console.log(posts.length / postPerPage)
-  console.log(pageNumbers)
+  // console.log(posts.length / postPerPage)
+  // console.log(pageNumbers)
   
 
   function incrementHandler(){
@@ -93,12 +98,12 @@ function History() {
           <th className='flex-2 opacity-60'>Status</th>
           <th></th>
         </tr>
-        {currentPosts.map(order => {
+        {dataOrderSelesai.map(orderselesai => {
         return (
           <tr className='h-fit border-bottom-1'>
-          <TableData text={order.customer_name}/>
-          <TableData text={order.order_time}/>
-          <TableData text={order.status}/>
+          <TableData text={orderselesai.customer_name}/>
+          <TableData text={orderselesai.order_time}/>
+          <TableData text={orderselesai.status}/>
           <td>
           <div className="h-[60px] w-[100%] flex items-center justify-center">
             <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
