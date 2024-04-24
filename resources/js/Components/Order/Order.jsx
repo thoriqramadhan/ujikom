@@ -4,56 +4,35 @@ import LogoDate from '../Logo_date'
 import SearchSvg from '../svgComp/SearchSvg'
 import TextInput from '../TextInput'
 import TableData from '../TableData'
+import PaynmentModal from '../PaynmentModal'
 
-const posts = [
-  {customer_name : 'customer_name',
-  order_time :'order_time',
-  status: 'status'},
-  // {customer_name : 'thoriq',
-  // order_time :'08.00',
-  // status: 'lunas'},
-  // {customer_name : 'thoriq',
-  // order_time :'08.00',
-  // status: 'lunas'},
-  // {customer_name : 'thoriq',
-  // order_time :'08.00',
-  // status: 'lunas'},
-  // {customer_name : 'thoriq',
-  // order_time :'08.00',
-  // status: 'lunas'},
-  // {customer_name : 'yones',
-  // order_time :'08.00',
-  // status: 'lunas'},
-  // {customer_name : 'yones',
-  // order_time :'08.00',
-  // status: 'lunas'},
-  // {customer_name : 'yones',
-  // order_time :'08.00',
-  // status: 'lunas'},
-  // {customer_name : 'yones',
-  // order_time :'08.00',
-  // status: 'lunas'},
-  // {customer_name : 'yones',
-  // order_time :'08.00',
-  // status: 'lunas'},
-  // {customer_name : 'yones',
-  // order_time :'08.00',
-  // status: 'lunas'},
-  // // ...data lainnya
-];
-
-
-function Order({orders}) {
+function Order({orders ,  modalData = { name: 'Yudi Santoso',
+subTotal : 100,
+tax: 10 ,
+total: 110,
+menu: [
+  {
+    name:'Ayam',
+    item:1,
+    total:100
+  },
+  {
+    name:'Kambing',
+    item:1,
+    total:100
+  }
+]}, setModalData , openModal , setOpenModal}) {
   const [dataOrder , setDataOrder] = useState(orders || '')
   console.log(dataOrder)
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
+  const [openModals , setOpenModals] = useState(openModal)
   const pageNumbers = []
 
-  for (let i = 1; i <= Math.ceil(posts.length / postPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(dataOrder.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
-  console.log(posts.length / postPerPage)
+  console.log(dataOrder.length / postPerPage)
   console.log(pageNumbers)
   
 
@@ -71,8 +50,11 @@ function Order({orders}) {
   }
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
-
+  const currentPosts = dataOrder.slice(indexOfFirstPost, indexOfLastPost);
+  function paynmentHandler(){
+    console.log('In')
+    setOpenModals(!openModals)
+  }
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
       <LogoDate/>
@@ -92,7 +74,7 @@ function Order({orders}) {
           <th className='flex-1 opacity-60'>Nama Pembeli</th>
           <th className='flex-1 opacity-60'>Waktu</th>
           <th className='flex-2 opacity-60'>Status</th>
-          <th></th>
+          <th className='w-[200px]'></th>
         </tr>
         {dataOrder.map(orders => {
         return (
@@ -100,17 +82,27 @@ function Order({orders}) {
           <TableData text={orders.customer_name}/>
           <TableData text={orders.order_time}/>
           <TableData text={orders.status}/>
-          <div className="h-[60px] w-[100%] flex items-center justify-center">
-            <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
-            <span className='mr-[2px]'>I</span>
-            <span className="opacity-60">Edit</span>
-            </button>
+          <div className="flex flex-nowrap justify-center w-[250px]">
+
+            <div className="h-[60px] w-[200px] flex items-center justify-center">
+              <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
+              <span className='mr-[2px]'>I</span>
+              <span className="opacity-60">Edit</span>
+              </button>
+            </div>
+            <div className="h-[60px] w-[200px] flex items-center justify-center">
+              <button className='w-[100px] py-[7px] bg-[#7D5E42] text-white rounded-lg border-gray-400 border'> 
+              <span className='mr-[2px]'>I</span>
+              <span className="" onClick={paynmentHandler}>Bayar</span>
+              </button>
+            </div>
           </div>
         </tr>
         )
       })}
         
       </table>
+      <PaynmentModal modalData={modalData} openModal={openModals} paynmentHandler={paynmentHandler}/>
     </BodyLayout>
   )
 }

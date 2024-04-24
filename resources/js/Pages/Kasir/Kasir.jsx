@@ -13,11 +13,36 @@ import HistorySvg from '@/Components/svgComp/HistorySvg';
 export default function Kasir({menus , categories , orders}) {
   const [clickedAt , setClickedAt] = useState('Menu')
   const [UI , setUI] = useState(<Menu menus={menus} categories={categories}/>)
+  const [modalData , setModalData] = useState(
+    {
+    name: 'Yudi Santoso',
+    subTotal : 100,
+    tax: 10 ,
+    total: 110,
+    menu: [
+      {
+        name:'Ayam',
+        item:1,
+        total:100
+      },
+      {
+        name:'Kambing',
+        item:1,
+        total:100
+      }
+    ]
+  })
+  const [openModal , setOpenModal] = useState(true)
+  
+  useEffect(()=>{
+    localStorage.setItem('MODAL_DATA',JSON.stringify(modalData))
+  },[modalData])
+
   useEffect(()=> {
     if(clickedAt == 'Menu'){
-      setUI(<Menu menus={menus} categories={categories}/>)
+      setUI(<Menu menus={menus} categories={categories} modalData={modalData} setModalData={setModalData} openModal={openModal} setOpenModal={setOpenModal}/>)
     }else if(clickedAt == 'Order'){
-      setUI(<Order orders={orders}/>)
+      setUI(<Order orders={orders} modalData={modalData} setModalData={setModalData} openModal={openModal} setOpenModal={setOpenModal}/>)
     }else if(clickedAt == 'History'){
       setUI(<History />)
     }else{
