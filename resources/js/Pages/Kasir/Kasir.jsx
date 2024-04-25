@@ -13,6 +13,7 @@ import HistorySvg from '@/Components/svgComp/HistorySvg';
 export default function Kasir({menus , categories , orders, users, orderselesai}) {
   const [clickedAt , setClickedAt] = useState('Menu')
   const [UI , setUI] = useState(<Menu menus={menus} categories={categories}/>)
+  console.log(orderselesai)
   useEffect(()=> {
     if(clickedAt == 'Menu'){
       setUI(<Menu menus={menus} categories={categories}/>)

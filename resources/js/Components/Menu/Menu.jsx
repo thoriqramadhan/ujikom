@@ -8,6 +8,7 @@ import BodyLayout from '@/Layouts/BodyLayout';
 import LogoDate from '../Logo_date';
 import DashedLine from '../DashedLine';
 import TableData from '../TableData'
+import Modal from '../Modal';
 
 function Menu({menus , categories}) {
     const [openSide, setOpenSide] = useState(false);
@@ -30,6 +31,9 @@ function Menu({menus , categories}) {
     let total = parseFloat(modalData.total) - buyersMoney || 0
     function clientHandler(e){
       setBuyersMoney(parseFloat(e.target.value))
+    }
+    function closeHandler(){
+      setOpenModal(!openModal)
     }
     console.log(typeof modalData.subTotal , typeof modalData.tax)
     // useEffect(()=>{
@@ -54,9 +58,11 @@ function Menu({menus , categories}) {
         <MenuHistory openModal={openModal} setOpenModal={setOpenModal} setModalData={setModalData} openSide={openSide} setOpenSide={setOpenSide} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
       <div onClick={()=> setOpenSide(true)} className={`w-[50px] h-[50px] bg-[#7D5E42] rounded-full fixed flex justify-center items-center text-2xl text-white right-4 top-1/2 cursor-pointer ${openSide ? 'hidden' : 'block'}`}>{'<'}</div>
       
+      {/* Modal */}
       <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModal ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Bayar Pesanan</p>
         <p>Langsung bayar pesanan punya {modalData.name}</p>
+        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModal(!openModal)}>X</p>
         <div className="w-full h-fit mt-[10px] flex gap-x-[30px]">
           <div className="basis-2 flex-1 bg-white rounded-xl border ">
             <table className='w-full h-fit rounded-xl overflow-hidden bg-white'>
@@ -66,7 +72,7 @@ function Menu({menus , categories}) {
                 <th className='flex-1 opacity-60'>Harga</th>
               </tr>
               {
-                modalData.menu.map((orders , index) => (
+                modalData.menu.length == 0 ? <p className=''>Tidak ada data</p> : modalData.menu.map((orders , index) => (
                   <tr key={index} className='h-fit border-bottom-1'>
                     <TableData text={orders.name}/>
                     <TableData text={orders.items}/>
