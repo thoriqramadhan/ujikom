@@ -10,7 +10,7 @@ import DashedLine from '../DashedLine';
 import TableData from '../TableData'
 import Modal from '../Modal';
 
-function Menu({menus , categories}) {
+function Menu({menus , categories, managements}) {
     const [openSide, setOpenSide] = useState(false);
     const [openModal , setOpenModal] = useState(true)
     const strg = JSON.parse(localStorage.getItem('ORDER_HISTORY'))
@@ -37,6 +37,43 @@ function closeHandler(){
       setOpenModal(!openModal)
     }
     console.log(typeof modalData.subTotal , typeof modalData.tax)
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      if(customerName == ''){
+        alert('Nama Pembeli Harus Diisi!')
+        return
+      }
+  
+      // Membuat objek FormData untuk mengirim data formulir
+      const formData = new FormData();
+      formData.append('customer_name', customerName);
+      formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
+      setOpenModal(!openModal)
+      setModalData({
+        name: customerName,
+        subTotal : `${subHarga}K`,
+        tax: `${tax.toFixed(2)}K`,
+        total: `${subHarga + tax}K`,
+        menu: selectedFood.map(food => {
+          return {
+            name : food.name,
+            total: food.totalHarga,
+            items: food.items
+          }
+        })
+  
+      })
+  
+      // Mengirim permintaan POST menggunakan Inertia.postFormData
+      Inertia.post('/kasir', formData).then(() => {
+        // Mereset nilai formulir setelah submit
+        setCustomerName('');
+        setSelectedFood([]);// Mereset gambar menjadi null
+  
+        // Me-refresh halaman untuk mendapatkan daftar produk terbaru
+        Inertia.reload();
+      });
+    };
   return (
     <>
     <BodyLayout>
@@ -99,7 +136,7 @@ function closeHandler(){
             <p className='opacity-30 font-bold'>Kembalian</p>
             <p className='font-bold'>{total.toFixed(2) || 0}K</p>
           </div>
-          <button className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
+          <button onClick={handleSubmit} className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
         </div>
         </div>
       </div>

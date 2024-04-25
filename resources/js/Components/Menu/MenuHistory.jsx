@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import DashedLine from '../DashedLine';
 import HistoryCard from './HistoryCard';
 import TextInput from '../TextInput';
-// import { Inertia } from '@inertiajs/inertia';
+import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
 
 function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood }) {
@@ -51,6 +51,24 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
     });
   };
 
+  const handleSubmitOrder = (e) => {
+    e.preventDefault();
+    // Membuat objek FormData untuk mengirim data formulir
+    const formData = new FormData();
+    formData.append('customer_name', customerName);
+    formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
+
+    // Mengirim permintaan POST menggunakan Inertia.postFormData
+    Inertia.post('/kasir', formData).then(() => {
+      // Mereset nilai formulir setelah submit
+      setCustomerName('');
+      setSelectedFood([]);// Mereset gambar menjadi null
+
+      // Me-refresh halaman untuk mendapatkan daftar produk terbaru
+      Inertia.reload();
+  })
+  };
+
 
   return (
     <div className={`h-[100vh] w-[400px] pl-[29px] pr-[40px] bg-white shadow-lg border transition-all duration-500 fixed right-0 ${openSide ? 'transform translate-x-0' : 'transform translate-x-[1000px]'} `}>
@@ -79,8 +97,8 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
           </div>
         </div>
         <div className="mb-[20px] mx-[20px] h-[50px] mt-[20px] flex gap-3 justify-center">
-          <button onClick={() => setOpenSide(false)} className='flex-1 border-2 rounded-[18px]  font-bold'>Nanti</button>
-          <button onClick={handleSubmit} className='flex-1 rounded-[18px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
+          <button onClick={handleSubmitOrder} className='flex-1 border-2 rounded-[18px]  font-bold'>Nanti</button>
+          <button className='flex-1 rounded-[18px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
         </div>
       </div>
     </div>
