@@ -23,7 +23,7 @@ function Settings({ users }) {
             <div className="flex flex-col w-full mt-[45px]">
                 <div className="flex items-center">
                     <div className="h-[100px] w-[100px] bg-gray-200 rounded-full"></div>
-                    <p className='text-[30px] font-bold ml-[25px]'>{user.first_name} {user.last_name}</p>
+                    <p className='text-[30px] font-bold ml-[25px]'>{users.first_name} {users.last_name}</p>
                 </div>
                 <p className='mt-[15px]'>Disini adalah tempat anda mengatur akun anda dan lainnya ✒️</p>
             </div>
