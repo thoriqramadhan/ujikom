@@ -17,6 +17,7 @@ function Menu({menus , categories}) {
     const [selectedFood , setSelectedFood] = useState(strg || []);
     const [modalData , setModalData] = useState(
       {
+      id: +new Date,
       name: 'Yudi Santoso',
       subTotal : 100,
       tax: 10 ,
@@ -36,10 +37,6 @@ function Menu({menus , categories}) {
       setOpenModal(!openModal)
     }
     console.log(typeof modalData.subTotal , typeof modalData.tax)
-    // useEffect(()=>{
-    //   total = isNaN(modalData.subTotal) || isNaN(modalData.tax) ? 0 : modalData.subHarga - modalData.tax; 
-    // },[buyersMoney])
-
   return (
     <>
     <BodyLayout>
