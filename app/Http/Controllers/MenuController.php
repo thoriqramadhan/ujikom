@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Managements;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\OrderItem;
@@ -25,6 +26,7 @@ class MenuController extends Controller
         $orderselesai = Order::where('status','selesai')->get();
         $orderitems = OrderItem::all();
         $users = Auth::user();
+        $managements = Managements::all();
 
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
@@ -32,7 +34,8 @@ class MenuController extends Controller
             'orders' => $orders,
             'orderselesai' => $orderselesai,
             'orderitems' => $orderitems,
-            'users' => $users
+            'users' => $users,
+            'managements' => $managements
         ]);
     }
 
