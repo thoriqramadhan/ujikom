@@ -73,10 +73,12 @@ const posts = [
 ]
 
 function Order({orders, orderitems}) {
+  console.log(orders)
   const [dataOrder , setDataOrder] = useState(orders || '')
-  const [dataOrderItems , setDataOrderItems] = useState(orderitems || '')
+  const [ dataOrderItems , setDataOrderItems] = useState(orderitems || '')
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
+  const [openModalPayment , setOpenModalPayment] = useState(true)
   const pageNumbers = []
   
   for (let i = 1; i <= Math.ceil(posts.length / postPerPage); i++) {
@@ -88,14 +90,12 @@ function Order({orders, orderitems}) {
     const data = dataOrderItems.filter((item) => item.order_id === orderId);
     const order = orders.find(order => order.id === orderId);
   
-console.log(order);
     setModalData(data);
     console.log(modalData);
-    setOpenModal(!openModal);
+    setOpenModalPayment(!openModalPayment);
   }
   
   // modal datas
-  const [openModalPayment , setOpenModalPayment] = useState(true)
   const [openModalEdit , setOpenModalEdit] = useState(true)
   const [buyersMoney , setBuyersMoney] = useState(0)
   const [modalData, setModalData] = useState(itemPost)
@@ -122,13 +122,13 @@ console.log(order);
     setBuyersMoney(parseFloat(e.target.value))
   }
   function editHandler(id){
-    let editModalDatas = datas.find(items => items.id == id)
-    setIdNow(editModalDatas.id)
-    console.log(idNow)
-    setEditModalData(editModalDatas.menu)
-    console.log(editModalData)
+    const order = orders.find(order => order.id === id);
+    const data = dataOrderItems.filter((item) => item.order_id === id);
+    console.log(data , order)
+    setModalName(order.customer_name)
+    setEditModalData(data)
     setOpenModalEdit(!openModalEdit)
-    
+    console.log(editModalData)
   }
   
   const indexOfLastPost = currentPage * postPerPage;
@@ -189,9 +189,9 @@ console.log(order);
       <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModalPayment ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Bayar Pesanan</p>
         {modalData.map((modalOrder, index) => (
-  <p key={index[0]}>Langsung bayar pesanan punya {modalOrder ? modalOrder.customer_name : ''}</p>
+          <p key={index[0]}>Langsung bayar pesanan punya {modalOrder ? modalOrder.customer_name : ''}</p>
 ))}
-        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModal(!openModal)}>X</p>
+        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModalPayment(!openModalPayment)}>X</p>
         <div className="w-full h-fit mt-[10px] flex gap-x-[30px]">
           <div className="basis-2 flex-1 bg-white rounded-xl border ">
             <table className='w-full h-fit rounded-xl overflow-hidden bg-white'>
