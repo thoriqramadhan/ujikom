@@ -58,6 +58,13 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
       return
     }
     // Membuat objek FormData untuk mengirim data formulir
+    const order = {
+      customerName: customerName,
+      tax:tax,
+      totalHarga:subHarga + tax,
+      data: [...selectedFood]
+    }
+    console.log(order)
     const formData = new FormData();
     formData.append('customer_name', customerName);
     formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
