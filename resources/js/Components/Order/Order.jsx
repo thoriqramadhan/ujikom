@@ -71,8 +71,9 @@ const posts = [
   },
 ]
 
-function Order({orders}) {
+function Order({orders, orderitems}) {
   const [dataOrder , setDataOrder] = useState(orders || '')
+  const [dataOrderItems , setDataOrderItems] = useState(orderitems || '')
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
   const [modalData, setModalData] = useState(itemPost)
@@ -85,11 +86,15 @@ function Order({orders}) {
     pageNumbers.push(i);
   }
 
-  const [openModal , setOpenModal] = useState(false)
-  function paymentHandler(id){
-    const data = itemPost.filter(items => items.id == id)
-    setModalData(data)
-    setOpenModal(!openModal)
+  const [openModal , setOpenModal] = useState(true)
+  function paymentHandler(orderId) {
+    const data = dataOrderItems.filter((item) => item.order_id === orderId);
+    const order = orders.find(order => order.id === orderId);
+  
+// console.log(order);
+    setModalData([...data,order]);
+    console.log(modalData);
+    setOpenModal(!openModal);
   }
   function incrementHandler(){
     if(currentPage == pageNumbers.length){
@@ -135,7 +140,7 @@ function Order({orders}) {
           <th className='flex-2 opacity-60'>Status</th>
           <th className='w-[230px]'></th>
         </tr>
-        {posts.length == 0 ? <p>Tidak ada data</p> : currentPosts.map(orders => {
+        {dataOrder.map(orders => {
         return (
           <tr className='h-fit border-bottom-1'>
           <TableData text={orders.customer_name}/>
@@ -147,7 +152,7 @@ function Order({orders}) {
               <span className='mr-[2px]'>I</span>
               <span className="opacity-60">Edit</span>
               </button>
-            </div>
+            </div>  
             <div className="h-[60px] w-[100%] flex items-center justify-center">
               <button className='w-[100px] py-[7px] bg-[#7D5E42] rounded-lg border-gray-400 border text-white'> 
               <span className='mr-[2px]'>I</span>
@@ -164,7 +169,9 @@ function Order({orders}) {
       {/* Modal */}
       <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModal ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Bayar Pesanan</p>
-        <p>Langsung bayar pesanan punya {modalName}</p>
+        {modalData.map((modalOrder, index) => (
+  <p key={index[0]}>Langsung bayar pesanan punya {modalOrder ? modalOrder.customer_name : ''}</p>
+))}
         <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModal(!openModal)}>X</p>
         <div className="w-full h-fit mt-[10px] flex gap-x-[30px]">
           <div className="basis-2 flex-1 bg-white rounded-xl border ">
@@ -175,12 +182,12 @@ function Order({orders}) {
                 <th className='flex-1 opacity-60'>Harga</th>
               </tr>
               {
-                modalData[0].menu.length == 0 ? <p className=''>Tidak ada data</p> : modalData[0].menu.map((orders , index) => {
+                modalData.map((orderitems , index) => {
                   return (
                   <tr key={index} className='h-fit border-bottom-1'>
-                    <TableData text={orders.name}/>
-                    <TableData text={orders.items}/>
-                    <TableData text={orders.total} prop='K'/>
+                    <TableData text={orderitems.name}/>
+                    <TableData text={orderitems.items}/>
+                    <TableData text={orderitems.totalHarga} prop='K'/>
                   </tr>
                   )
                 }
