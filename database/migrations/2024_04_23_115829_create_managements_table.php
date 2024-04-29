@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('managements', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('customer_name')->constrained()->onDelete('cascade');
             $table->integer('sub_total');
             $table->integer('pajak');
             $table->integer('total');

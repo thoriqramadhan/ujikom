@@ -40,18 +40,23 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
     })
 
     // Mengirim permintaan POST menggunakan Inertia.postFormData
-    Inertia.post('/kasir', formData).then(() => {
-      // Mereset nilai formulir setelah submit
-      setCustomerName('');
-      setSelectedFood([]);// Mereset gambar menjadi null
+    // Inertia.post('/kasir', formData).then(() => {
+    //   // Mereset nilai formulir setelah submit
+    //   setCustomerName('');
+    //   setSelectedFood([]);// Mereset gambar menjadi null
 
-      // Me-refresh halaman untuk mendapatkan daftar produk terbaru
-      Inertia.reload();
-    });
+    //   // Me-refresh halaman untuk mendapatkan daftar produk terbaru
+    //   Inertia.reload();
+    // });
   };
 
   const handleSubmitOrder = (e) => {
     e.preventDefault();
+    
+    if(customerName == ''){
+      alert('Nama Pembeli Harus Diisi!')
+      return
+    }
     // Membuat objek FormData untuk mengirim data formulir
     const formData = new FormData();
     formData.append('customer_name', customerName);
@@ -97,7 +102,7 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
         </div>
         <div className="mb-[20px] mx-[20px] h-[50px] mt-[20px] flex gap-3 justify-center">
           <button onClick={handleSubmitOrder} className='flex-1 border-2 rounded-[18px]  font-bold'>Nanti</button>
-          <button className='flex-1 rounded-[18px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
+          <button onClick={handleSubmit} className='flex-1 rounded-[18px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
         </div>
       </div>
     </div>

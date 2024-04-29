@@ -83,6 +83,7 @@ class MenuController extends Controller
         ]);
     }  
 
+
     // Redirect atau response lainnya
     return redirect('/kasir');
 }
@@ -101,9 +102,22 @@ class MenuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $id)
+    public function edit(string $order_id)
     {
-        //
+        $orders = Order::where('status','belum dibayar')->get();
+        $orderselesai = Order::where('status','selesai')->get();
+        $orderitemsid = OrderItem::findOrFail($order_id);
+        $orderitems = OrderItem::all();
+        $users = Auth::user();
+        $managements = Managements::all();
+
+        return Inertia::render('Kasir/Kasir', [
+            'orders' => $orders,
+            'orderselesai' => $orderselesai,
+            'orderitems' => $orderitems,
+            'users' => $users,
+            'managements' => $managements,
+        ]);
     }
 
     /**
