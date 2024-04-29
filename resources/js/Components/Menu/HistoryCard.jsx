@@ -9,6 +9,7 @@ function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
 
   function incrementHandler(){
     const newNumber = number + 1;
+    
     setNumber(newNumber);
     setSubTotal(harga * newNumber);
   }
@@ -43,6 +44,7 @@ function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
     setSelectedFood(newSelectedFood)
     localStorage.setItem('ORDER_HISTORY' , JSON.stringify(newSelectedFood))
   },[subTotal])
+
   return (
     <div className="w-full h-[100px] bg-[#F9F9F9] rounded-[20px] shrink-0 flex items-center relative border shadow-sm ">
       <div onClick={() => deleteHandler(name)} className="w-[25px] h-[25px] absolute right-2 top-2 cursor-pointer">

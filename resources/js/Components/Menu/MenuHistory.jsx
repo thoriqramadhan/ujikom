@@ -11,7 +11,6 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
     return total + item.totalHarga;
   }, 0);
   const tax = subHarga * 0.1;
-  console.log(selectedFood)
 
   const handleSubmit = (e) => {
     e.preventDefault();
