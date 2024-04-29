@@ -82,6 +82,17 @@ function Order({orders, orderitems}) {
   for (let i = 1; i <= Math.ceil(posts.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
+
+  const [openModal , setOpenModal] = useState(true)
+  function paymentHandler(orderId) {
+    const data = dataOrderItems.filter((item) => item.order_id === orderId);
+    const order = orders.find(order => order.id === orderId);
+  
+console.log(order);
+    setModalData(data);
+    console.log(modalData);
+    setOpenModal(!openModal);
+  }
   
   // modal datas
   const [openModalPayment , setOpenModalPayment] = useState(true)
@@ -93,7 +104,7 @@ function Order({orders, orderitems}) {
   const [datas , setDatas] = useState(itemPost)
   const [editModalData , setEditModalData] = useState([])
   const [idNow,setIdNow] = useState('');
-  }
+  
   function incrementHandler(){
     if(currentPage == pageNumbers.length){
       return
@@ -177,6 +188,10 @@ function Order({orders, orderitems}) {
       {/* Modal payment */}
       <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModalPayment ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Bayar Pesanan</p>
+        {modalData.map((modalOrder, index) => (
+  <p key={index[0]}>Langsung bayar pesanan punya {modalOrder ? modalOrder.customer_name : ''}</p>
+))}
+        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModal(!openModal)}>X</p>
         <div className="w-full h-fit mt-[10px] flex gap-x-[30px]">
           <div className="basis-2 flex-1 bg-white rounded-xl border ">
             <table className='w-full h-fit rounded-xl overflow-hidden bg-white'>
