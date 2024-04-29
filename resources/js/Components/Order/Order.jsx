@@ -5,6 +5,7 @@ import SearchSvg from '../svgComp/SearchSvg'
 import TextInput from '../TextInput'
 import TableData from '../TableData'
 import DashedLine from '../DashedLine'
+import ModalHistoryCard from './ModalHistoryCard'
 
 const itemPost = [
   {
@@ -17,17 +18,17 @@ const itemPost = [
       {
         name : 'Ayam',
         total: 100,
-        items: 2
+        items: 1
       },
       {
         name : 'Sapi',
-        total: 100,
+        total: 200,
         items: 2
       },
       {
         name : 'Ayam',
-        total: 100,
-        items: 2
+        total: 300,
+        items: 3
       }
     ]
   },
@@ -75,21 +76,27 @@ function Order({orders}) {
   const [dataOrder , setDataOrder] = useState(orders || '')
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
-  const [modalData, setModalData] = useState(itemPost)
-  const [buyersMoney , setBuyersMoney] = useState(0)
-  const [modalName,setModalName] = useState('')
-  let total = parseFloat(modalData[0].total) - buyersMoney || 0
   const pageNumbers = []
-
+  
   for (let i = 1; i <= Math.ceil(posts.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
+  
+  // modal datas
+  const [openModalPayment , setOpenModalPayment] = useState(true)
+  const [openModalEdit , setOpenModalEdit] = useState(true)
+  const [buyersMoney , setBuyersMoney] = useState(0)
+  const [modalData, setModalData] = useState(itemPost)
+  let total = parseFloat(modalData[0].total) - buyersMoney || 0
+  const [modalName,setModalName] = useState('')
+  const [datas , setDatas] = useState(itemPost)
+  const [editModalData , setEditModalData] = useState([])
+  const [idNow,setIdNow] = useState('');
 
-  const [openModal , setOpenModal] = useState(false)
   function paymentHandler(id){
-    const data = itemPost.filter(items => items.id == id)
+    const data = datas.filter(items => items.id == id)
     setModalData(data)
-    setOpenModal(!openModal)
+    setOpenModalPayment(!openModalPayment)
   }
   function incrementHandler(){
     if(currentPage == pageNumbers.length){
@@ -107,13 +114,23 @@ function Order({orders}) {
     console.log('in')
     setBuyersMoney(parseFloat(e.target.value))
   }
+  function editHandler(id){
+    let editModalDatas = datas.find(items => items.id == id)
+    setIdNow(editModalDatas.id)
+    console.log(idNow)
+    setEditModalData(editModalDatas.menu)
+    console.log(editModalData)
+    setOpenModalEdit(!openModalEdit)
+    
+  }
   
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
   useEffect(()=>{
     setModalName(modalData[0].name)
-  },[modalData])
+    console.log(editModalData)
+  },[modalData ,editModalData])
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
       <LogoDate/>
@@ -142,7 +159,7 @@ function Order({orders}) {
           <TableData text={orders.order_time}/>
           <TableData text={orders.status}/>
           <div className="flex ">
-            <div className="h-[60px] w-[100%] flex items-center justify-center">
+            <div className="h-[60px] w-[100%] flex items-center justify-center" onClick={()=>{editHandler(orders.id)}}>
               <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
               <span className='mr-[2px]'>I</span>
               <span className="opacity-60">Edit</span>
@@ -161,11 +178,11 @@ function Order({orders}) {
         
       </table>
 
-      {/* Modal */}
-      <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModal ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
+      {/* Modal payment */}
+      <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModalPayment ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Bayar Pesanan</p>
         <p>Langsung bayar pesanan punya {modalName}</p>
-        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModal(!openModal)}>X</p>
+        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModalPayment(!openModalPayment)}>X</p>
         <div className="w-full h-fit mt-[10px] flex gap-x-[30px]">
           <div className="basis-2 flex-1 bg-white rounded-xl border ">
             <table className='w-full h-fit rounded-xl overflow-hidden bg-white'>
@@ -215,6 +232,48 @@ function Order({orders}) {
             )
             }
             <button className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
+          </div>
+        </div>
+      </div>
+
+      {/* Modal edit */}
+      <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000 overflow-y-hidden  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModalEdit ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
+        <p className='font-bold  mt-[30px] text-2xl'>Edit Pesanan</p>
+        <p>Edit pesanan punya {modalName}</p>
+        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModalEdit(!openModalEdit)}>X</p>
+
+        <div className="flex w-full h-fit gap-x-[30px] mt-[25px]">
+          <div className="flex-1">
+            <div className= " w-full h-[50px] relative">
+              <input type="text" className='w-full h-[50px] pl-[40px] rounded-xl' placeholder='Cari Menu'/>
+              <SearchSvg/>
+            </div>
+            {/* modal edit content */}
+            <div className="w-full h-[400px] justify-evenly flex gap-x-[10px] gap-y-[10px] flex-wrap overflow-scroll pt-[10px]">
+              {
+                editModalData.map(menu => (
+                  <div className="bg-white w-[230px] border shadow-lg  h-fit rounded-lg px-[15px] py-[15px]">
+                      <div className="w-full h-[150px] rounded-lg bg-gray-400"></div>
+                      <div className="h-fit w-full flex justify-between mt-2">
+                        <p className='font-bold text-[22px]'>{menu.name}</p>
+                        <p className='font-bold opacity-60 text-[20px]'>{menu.total}K</p>
+                      </div>
+                  </div>
+                ))
+              }
+              
+            </div>
+          </div>
+          {/* modal history */}
+          <div className="w-[330px] border px-[15px] py-[15px] flex flex-col ">
+            <div className="w-full h-[350px] overflow-scroll flex flex-col gap-y-[10px]">
+              {
+                editModalData.map(menu => (
+                  <ModalHistoryCard name={menu.name} item={menu.items} initialPrice={menu.total} setDatas={setDatas} datas={datas} menu={menu} id={idNow}/>
+                ))
+              }
+            </div>
+            <button className='mt-[20px] w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Simpan</button>
           </div>
         </div>
       </div>
