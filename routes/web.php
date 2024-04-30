@@ -41,7 +41,7 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController
     // Route::middleware('auth')->group(function () {
         // Halaman untuk kasir
         Route::get('/kasir', [MenuController::class, 'index']);
-        Route::post('/kasir', [MenuController::class, 'store']);
+        Route::post('/kasirstore', [MenuController::class, 'store']);
         Route::patch('/kasir', [MenuController::class, 'updateUser']);
         Route::get('/kasir/{id}', [MenuController::class, 'edit']);
     // });
