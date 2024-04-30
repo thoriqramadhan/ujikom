@@ -85,9 +85,9 @@ function Kasir({ users }) {
                 <div className="w-full overflow-hidden rounded-xl"></div>
                 <table className="w-full mt-[24px] overflow-hidden rounded-2xl">
                     <tr className="rounded-2xl bg-[#F3F3F3] h-[60px] border-[1px] border-gray-300">
-                        <th className="flex-1 opacity-60">Nama Kasir</th>
+                        <th className="flex-1 opacity-60">Nama Depan</th>
                         <th className="flex-1 opacity-60 hidden lg:table-cell ">
-                            Waktu
+                            Nama Belakang
                         </th>
                         <th className="flex-2 opacity-60 hidden lg:table-cell">
                             Email
