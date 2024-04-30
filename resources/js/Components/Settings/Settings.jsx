@@ -6,8 +6,8 @@ import Bluetooth from '../svgComp/Bluetooth'
 import TextInput from '../TextInput'
 import { Inertia } from '@inertiajs/inertia'
 
-function Settings({ users }) {
-    const [user, setUser] = useState(users);
+function Settings({ loginuser }) {
+    const [dataLoginUser, setLoginUser] = useState(loginuser);
 
     // Fungsi untuk logout
     const handleLogout = () => {
@@ -15,7 +15,7 @@ function Settings({ users }) {
         Inertia.post('/logout');
     };
 
-    console.log(users)
+    console.log(dataLoginUser)
 
     return (
         <BodyLayout className={'pt-[40px] px-[40px]'}>
@@ -23,13 +23,13 @@ function Settings({ users }) {
             <div className="flex flex-col w-full mt-[45px]">
                 <div className="flex items-center">
                     <div className="h-[100px] w-[100px] bg-gray-200 rounded-full"></div>
-                    <p className='text-[30px] font-bold ml-[25px]'>{users.first_name} {users.last_name}</p>
+                    <p className='text-[30px] font-bold ml-[25px]'>{dataLoginUser.first_name} {dataLoginUser.last_name}</p>
                 </div>
                 <p className='mt-[15px]'>Disini adalah tempat anda mengatur akun anda dan lainnya ✒️</p>
             </div>
             <div className="flex flex-col gap-x-[30px] mt-[0px] md:flex-row md:mt-[50px]">
-          <SettingInput header={'First Name'} initialValues={user.firstName} placeholder='First Name' user={user} setUser={setUser} selection={'firstName'} className='mt-[30px] md:flex-1'/>
-          <SettingInput header={'Last Name'} initialValues={user.lastName} placeholder='Last Name' user={user} setUser={setUser} selection={'lastName'} className='mt-[30px] md:flex-1'/>
+          <SettingInput header={'First Name'} initialValues={dataLoginUser.first_name} placeholder='First Name' user={loginuser} setUser={setLoginUser} selection={'firstName'} className='mt-[30px] md:flex-1'/>
+          <SettingInput header={'Last Name'} initialValues={dataLoginUser.last_name} placeholder='Last Name' user={loginuser} setUser={setLoginUser} selection={'lastName'} className='mt-[30px] md:flex-1'/>
         </div>
             <div className="mt-[30px]">
                 <p>Email</p>
