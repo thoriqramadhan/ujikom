@@ -128,7 +128,6 @@ function Order({orders, orderitems}) {
     setModalName(order.customer_name)
     setEditModalData(data)
     setOpenModalEdit(!openModalEdit)
-    console.log(editModalData)
   }
   
   const indexOfLastPost = currentPage * postPerPage;

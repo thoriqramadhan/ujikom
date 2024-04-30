@@ -26,7 +26,6 @@ class MenuController extends Controller
         $orderselesai = Order::where('status','selesai')->get();
         $orderitems = OrderItem::all();
         $users = Auth::user();
-        $managements = Managements::all();
 
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
@@ -34,8 +33,7 @@ class MenuController extends Controller
             'orders' => $orders,
             'orderselesai' => $orderselesai,
             'orderitems' => $orderitems,
-            'users' => $users,
-            'managements' => $managements
+            'users' => $users
         ]);
     }
 
@@ -51,42 +49,27 @@ class MenuController extends Controller
      * Store a newly created resource in storage.
      */
     public function store(Request $request)
-{
-    $customerData = $request->validate([
-        'customer_name' => 'required',
-    ]);
+    {
+        // Ubah string JSON order menjadi array PHP
+        $orderData = json_decode($request->input('order'), true);
+        
+        // Buat order baru dan simpan data pelanggan
+        Order::create([
+            'customer_name' => $orderData['customerName'],
+            'tax' => $orderData['tax'],
+            'totalHarga' => $orderData['totalHarga'],
+            'data' => json_encode($orderData['data']), // Ubah array menjadi string JSON sebelum menyimpannya
+        ]);
+        
+        // Redirect atau response lainnya
+        return redirect('/kasir');
+    }
+    
+    
+    
     
 
-    // Ubah string JSON selectedFood menjadi array PHP
-    $foodData = json_decode($request->input('selectedFood'), true);
 
-    // Validasi apakah $foodData adalah array
-    if (!is_array($foodData)) {
-        return redirect()->back()->withErrors(['selectedFood' => 'Format data makanan yang dipilih tidak valid']);
-    }
-
-    // Buat order dan simpan data pelanggan
-    $order = Order::create([
-        'customer_name' => $customerData['customer_name'],
-    ]);
-
-    // Iterasi melalui selectedFood dan simpan setiap item ke dalam order items
-    foreach ($foodData as $item) {
-        OrderItem::create([
-            'order_id' => $order->id,
-            'menu_id' => $item['id'],
-            'name' => $item['name'],
-            'harga' => $item['harga'],
-            'totalHarga' => $item['totalHarga'],
-            'items' => $item['items'],
-            // Tambahkan kolom lain sesuai kebutuhan
-        ]);
-    }  
-
-
-    // Redirect atau response lainnya
-    return redirect('/kasir');
-}
 
 
 
@@ -109,14 +92,12 @@ class MenuController extends Controller
         $orderitemsid = OrderItem::findOrFail($order_id);
         $orderitems = OrderItem::all();
         $users = Auth::user();
-        $managements = Managements::all();
 
         return Inertia::render('Kasir/Kasir', [
             'orders' => $orders,
             'orderselesai' => $orderselesai,
             'orderitems' => $orderitems,
-            'users' => $users,
-            'managements' => $managements,
+            'users' => $users
         ]);
     }
 

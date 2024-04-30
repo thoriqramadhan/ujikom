@@ -16,6 +16,9 @@ return new class extends Migration
             $table->string('customer_name');
             $table->timestamp('order_time')->useCurrent();
             $table->enum('status', ['belum dibayar', 'selesai'])->default('belum dibayar');
+            $table->integer('tax')->default(0);
+            $table->integer('totalHarga');
+            $table->json('data');
             $table->timestamps();
         });
     }

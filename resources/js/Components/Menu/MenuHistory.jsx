@@ -21,7 +21,7 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
 
     // Membuat objek FormData untuk mengirim data formulir
     const formData = new FormData();
-    formData.append('customer_name', customerName);
+    // formData.append('customer_name', customerName);
     formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
     setOpenModal(!openModal)
     setModalData({
@@ -66,13 +66,14 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
     }
     console.log(order)
     const formData = new FormData();
-    formData.append('customer_name', customerName);
-    formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
+    // formData.append('customer_name', customerName);
+    formData.append('order', JSON.stringify(order));
+    // formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
 
     // Mengirim permintaan POST menggunakan Inertia.postFormData
-    Inertia.post('/kasir', formData).then(() => {
+    Inertia.post('/kasirstore', formData).then(() => {
       // Mereset nilai formulir setelah submit
-      setCustomerName('');
+      // setCustomerName('');
       setSelectedFood([]);// Mereset gambar menjadi null
 
       // Me-refresh halaman untuk mendapatkan daftar produk terbaru
