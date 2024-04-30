@@ -20,7 +20,7 @@ export default function Kasir({menus , categories , orders, users, orderselesai,
     }else if(clickedAt == 'Order'){
       setUI(<Order orders={orders} managements={managements} orderitems={orderitems}/>)
     }else if(clickedAt == 'History'){
-      setUI(<History orderselesai={orderselesai} />)
+      setUI(<History orderselesai={orderselesai} orderitems={orderitems}/>)
     }else{
       setUI(<Settings users={users}/>)
     }
