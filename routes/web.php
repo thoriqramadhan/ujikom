@@ -50,6 +50,7 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController
     Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
         // page untuk admin
         Route::get('/admin', [AdminController::class, 'index']);
+        Route::post('/admin', [AdminController::class, 'store']);
 
     });
     

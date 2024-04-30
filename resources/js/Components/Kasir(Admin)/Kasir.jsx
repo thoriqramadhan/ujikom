@@ -9,6 +9,7 @@ import TrashSvg from "../svgComp/TrashSvg";
 import ViewHideSvg from "../svgComp/ViewHideSvg";
 import Dropdown from "../Dropdown";
 import DropdownSvg from "../svgComp/DropdownSvg";
+import { Inertia } from '@inertiajs/inertia';
 
 const dataOrder = [
     {
@@ -33,8 +34,41 @@ const dataOrder = [
     },
 ];
 
-function Kasir({ orders }) {
+function Kasir({ users }) {
+    const [DataUser , setDataUser] = useState(users || '')
+    console.log(DataUser);
     const [open, setOpen] = useState(false);
+    const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('');
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+    
+        // Membuat objek FormData untuk mengirim data formulir
+        const formData = new FormData();
+        formData.append('first_name', firstName);
+        formData.append('last_name', lastName);
+        formData.append('email', email);
+        formData.append('password', password);
+        formData.append('role', role); // Mengirim gambar sebagai bagian dari FormData
+    
+        // Mengirim permintaan POST menggunakan Inertia.postFormData
+        Inertia.post('/admin', formData).then(() => {
+          // Mereset nilai formulir setelah submit
+          setFirstName('');
+          setLastName('');
+          setEmail('');
+          setPassword('');
+          setRole('');
+           // Mereset gambar menjadi null
+    
+          // Me-refresh halaman untuk mendapatkan daftar produk terbaru
+          Inertia.reload();
+        });
+      };
     return (
         <BodyLayout>
             <div className="w-full  sm:px-[20px] lg:px-[35px] lg:flex-row lg:gap-x-[30px]">
@@ -56,20 +90,20 @@ function Kasir({ orders }) {
                             Waktu
                         </th>
                         <th className="flex-2 opacity-60 hidden lg:table-cell">
-                            Status
+                            Email
                         </th>
                         <th></th>
                     </tr>
-                    {dataOrder.map((orders) => {
+                    {DataUser.map((users) => {
                         return (
                             <tr className="h-fit border-bottom-1 border-x-[1px] border-gray-300 border-b-[1px]">
-                                <TableData text={orders.customer_name} />
+                                <TableData text={users.first_name} />
                                 <TableData
                                     className={"hidden lg:table-cell"}
-                                    text={orders.order_time}
+                                    text={users.last_name}
                                 />
                                 <TableData
-                                    text={orders.status}
+                                    text={users.email}
                                     className={"hidden lg:table-cell"}
                                 />
                                 <div className="h-[60px] w-[100%] flex items-center justify-center">
@@ -105,13 +139,17 @@ function Kasir({ orders }) {
                 <div className="mt-10">
                     <h1 className="text-xl font-[1000]">Tambah Kasir</h1>
                     <p>Tambah Kasir Anda 😀</p>
-
+                    <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="my-5 space-y-4 sm:flex-col">
                         <div className="flex flex-col gap-4 md:flex-row">
                             <div className="w-full border-[1.4px] border-gray-400 rounded-xl xl:basis-1/4">
                                 <TextInput
                                     className="w-full rounded-xl"
                                     type="text"
+                                    id="firstName"
+                                    value={firstName}
+                                    onChange={(e) => setFirstName(e.target.value)}
+                                    required
                                     placeholder="Nama Depan"
                                 />
                             </div>
@@ -119,6 +157,10 @@ function Kasir({ orders }) {
                                 <TextInput
                                     className="w-full rounded-xl"
                                     type="text"
+                                    id="lastName"
+                                    value={lastName}
+                                    onChange={(e) => setLastName(e.target.value)}
+                                    required
                                     placeholder="Nama Belakang"
                                 />
                             </div>
@@ -126,6 +168,10 @@ function Kasir({ orders }) {
                                 <TextInput
                                     className="w-full rounded-xl"
                                     type="text"
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    required
                                     placeholder="Email"
                                 />
                             </div>
@@ -136,6 +182,10 @@ function Kasir({ orders }) {
                             <div class="relative basis-1/4">
                                 <input
                                     type="text"
+                                    id="role"
+                                    value={role}
+                                    onChange={(e) => setRole(e.target.value)}
+                                    required
                                     class="w-full border-[1.4px] border-gray-400 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500"
                                     placeholder="Role"
                                 />
@@ -187,15 +237,20 @@ function Kasir({ orders }) {
                                 <TextInput
                                     className="w-full rounded-xl"
                                     type="password"
+                                    id="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    required
                                     placeholder="Password"
                                 />
                                 <ViewHideSvg />
                             </div>
-                            <button className="w-full h-fit bg-[#7d5e42] text-white py-2 rounded-lg xl:basis-1/4">
+                            <button className="w-full h-fit bg-[#7d5e42] text-white py-2 rounded-lg xl:basis-1/4" type="submit">
                                 Simpan
                             </button>
                         </div>
                     </div>
+                    </form>
                 </div>
                 <div className="hidden">
                     <div className="w-[350px] h-40px] border-[3px] mx-auto z-10 rounded-xl flex ">

@@ -30,7 +30,7 @@ import Menu from '@/Components/Menu(Admin)/Menu';
 //   );
 // };
 
-const Admin = ({users}) => {
+const Admin = ({users, loginuser}) => {
   const [clickedAt , setClickedAt] = useState('Home')
   const [UI, setUI] = useState(<Home/>)
   const [screenWidth,setScreenWidth] = useState(window.innerWidth || JSON.parse(localStorage.getItem('SCREEN_WiDTH')))
@@ -38,11 +38,11 @@ const Admin = ({users}) => {
     if(clickedAt == 'Home'){
       setUI(<Home/>)
     }else if(clickedAt == 'Kasir'){
-      setUI(<Kasir/>)
+      setUI(<Kasir users={users} />)
     }else if(clickedAt == 'Menu'){
       setUI(<Menu/>)
     }else{
-      setUI(<Settings users={users} />)
+      setUI(<Settings users={users} loginuser={loginuser} />)
     }
   },[clickedAt])
   window.addEventListener('resize' , ()=>{
