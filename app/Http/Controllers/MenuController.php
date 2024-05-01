@@ -26,6 +26,7 @@ class MenuController extends Controller
         $orderselesai = Order::where('status','selesai')->get();
         $orderitems = OrderItem::all();
         $users = Auth::user();
+        $loginuser = Auth::user();
 
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
@@ -33,7 +34,8 @@ class MenuController extends Controller
             'orders' => $orders,
             'orderselesai' => $orderselesai,
             'orderitems' => $orderitems,
-            'users' => $users
+            'users' => $users,
+            'loginuser' => $loginuser
         ]);
     }
 
