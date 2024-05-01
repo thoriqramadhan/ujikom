@@ -136,7 +136,7 @@ function History({orderselesai , orderitems}) {
         </tr>
         {
         dataOrderSelesai.length == 0 ? <p>Tidak ada data</p>  :
-         dataOrderSelesai.map(orderselesai => {
+         currentPosts.map(orderselesai => {
         return (
           <tr className='h-fit border-bottom-1'>
           <TableData text={orderselesai.customer_name}/>
