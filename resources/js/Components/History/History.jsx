@@ -6,6 +6,7 @@ import TextInput from '../TextInput'
 import TableData from '../TableData'
 import { useState } from 'react';
 import DashedLine from '../DashedLine'
+import { Head } from '@inertiajs/react'
 
 const itemPost = [
   {
@@ -59,9 +60,7 @@ const itemPost = [
 ];
 
 function History({orderselesai , orderitems}) {
-  console.log(orderselesai)
   const [dataOrderSelesai , setDataOrderSelesai] = useState(orderselesai || '')
-  console.log(dataOrderSelesai)
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
   const [menu , setMenu] = useState([])
@@ -76,7 +75,6 @@ function History({orderselesai , orderitems}) {
   for (let i = 1; i <= Math.ceil(dataOrderSelesai.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
-  console.log(orderselesai , orderitems)
   
 
   function incrementHandler(){
@@ -99,7 +97,6 @@ function History({orderselesai , orderitems}) {
     const orderNow = orderselesai.find(order => order.id === id)
     const parsedData = JSON.parse(orderNow.data)
 
-    console.log(parsedData)
     setOpenModal(!openModal)
 
     setMenu(parsedData)
@@ -110,7 +107,6 @@ function History({orderselesai , orderitems}) {
   useEffect(()=>{
     const bill = menu.reduce((accumulator,order) => accumulator + order.totalHarga, 0)
     const tax = bill * 0.1
-    console.log(bill,tax,menu)
     setBill({
       total: bill,
       tax:tax
@@ -119,6 +115,7 @@ function History({orderselesai , orderitems}) {
 
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
+      <Head title='History'/>
       <LogoDate/>
       <div className="flex justify-between mt-[25px]">
         <div className="h-[50px] w-fit relative ">

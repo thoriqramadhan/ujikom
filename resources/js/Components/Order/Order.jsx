@@ -6,6 +6,7 @@ import TextInput from '../TextInput'
 import TableData from '../TableData'
 import DashedLine from '../DashedLine'
 import ModalHistoryCard from './ModalHistoryCard'
+import { Head } from '@inertiajs/react'
 
 const itemPost = [
   {
@@ -154,6 +155,7 @@ function Order({orders, orderitems}) {
   },[editModalData,modalData])
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
+      <Head title='Order'/>
       <LogoDate/>
       <div className="flex justify-between mt-[25px]">
         <div className="h-[50px] w-fit relative ">

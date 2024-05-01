@@ -4,6 +4,7 @@ import HistoryCard from './HistoryCard';
 import TextInput from '../TextInput';
 import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
+import { Head } from '@inertiajs/react';
 
 function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood }) {
   const [customerName, setCustomerName] = useState('');
@@ -38,16 +39,6 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
       })
 
     })
-
-    // Mengirim permintaan POST menggunakan Inertia.postFormData
-    // Inertia.post('/kasir', formData).then(() => {
-    //   // Mereset nilai formulir setelah submit
-    //   setCustomerName('');
-    //   setSelectedFood([]);// Mereset gambar menjadi null
-
-    //   // Me-refresh halaman untuk mendapatkan daftar produk terbaru
-    //   Inertia.reload();
-    // });
   };
 
   const handleSubmitOrder = (e) => {
@@ -55,6 +46,9 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
     
     if(customerName == ''){
       alert('Nama Pembeli Harus Diisi!')
+      return
+    }else if(selectedFood.length == 0){
+      alert('Pesanan harus di isi!')
       return
     }
     // Membuat objek FormData untuk mengirim data formulir
@@ -71,27 +65,35 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
     // formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
 
     // Mengirim permintaan POST menggunakan Inertia.postFormData
+    localStorage.setItem('ORDER_HISTORY',JSON.stringify([]))
+    setCustomerName('')
+    setSelectedFood([])
     Inertia.post('/kasirstore', formData).then(() => {
       // Mereset nilai formulir setelah submit
       // setCustomerName('');
-      setSelectedFood([]);// Mereset gambar menjadi null
 
       // Me-refresh halaman untuk mendapatkan daftar produk terbaru
       Inertia.reload();
-  })
+    })
   };
 
 
   return (
     <div className={`h-[100vh] w-[400px] pl-[29px] pr-[40px] bg-white shadow-lg border transition-all duration-500 fixed right-0 ${openSide ? 'transform translate-x-0' : 'transform translate-x-[1000px]'} `}>
+      <Head title='Menu'/>
       <div onClick={() => setOpenSide(false)} className="w-[70px] h-[70px] shadow-lg bg-[#7D5E42] text-white rounded-full absolute -left-10 top-1/2 cursor-pointer z-10 text-2xl flex justify-center items-center">{'<'}</div>
       <div className="mt-[20px]">
         <p className='font-bold text-[26px]'>Pesanan</p>
         <TextInput className="w-full mt-[5px]" placeholder="Nama pembeli" value={customerName} onChange={(e) => setCustomerName(e.target.value)} />
       </div>
-      <div className="w-full h-[300px] mt-[25px] overflow-y-scroll flex flex-col flex-nowrap gap-2">
-        {selectedFood.map(food => <HistoryCard key={food.id} name={food.name} harga={food.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood} />)}
-      </div>
+        {selectedFood.length == 0 ? 
+        <div className="w-full h-[300px] mt-[25px] overflow-y-scroll flex justify-center items-center">
+          <p className='font-bold text-xl'>Tidak ada pesanan!</p>
+        </div>
+        :
+         <div className="w-full h-[300px] mt-[25px] overflow-y-scroll flex flex-col flex-nowrap gap-2">
+          {selectedFood.map(food => <HistoryCard key={food.id} name={food.name} harga={food.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood} />)}
+        </div>}
       <div className="w-[350px] h-fit bg-[#FFFFFF] shadow-lg border mt-[20px] rounded-[20px]">
         <div className="px-[30px] mt-[25px]">
           <div className="w-full flex justify-between">

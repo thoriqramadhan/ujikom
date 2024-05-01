@@ -9,6 +9,7 @@ import LogoDate from '../Logo_date';
 import DashedLine from '../DashedLine';
 import TableData from '../TableData'
 import Modal from '../Modal';
+import { Head } from '@inertiajs/react';
 
 function Menu({menus , categories, managements}) {
     const [openSide, setOpenSide] = useState(false);
@@ -79,6 +80,7 @@ function closeHandler(){
     },[modalData])
   return (
     <>
+    <Head title='Menu'/>
     <BodyLayout>
       <div className="pt-[40px] px-[40px] flex justify-between" id='header'>
             <LogoDate/>
