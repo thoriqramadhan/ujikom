@@ -22,7 +22,8 @@ class MenuController extends Controller
     {
         $menus = Menu::all();
         $categories = Category::all();
-        $orders = Order::where('status','belum dibayar')->get();
+        $orders = Order::all();
+        $orderbelumdibayar = Order::where('status','belum dibayar')->get();
         $orderselesai = Order::where('status','selesai')->get();
         $orderitems = OrderItem::all();
         $users = Auth::user();
@@ -32,6 +33,7 @@ class MenuController extends Controller
             'menus' => $menus,
             'categories' => $categories,
             'orders' => $orders,
+            'orderbelumdibayar' => $orderbelumdibayar,
             'orderselesai' => $orderselesai,
             'orderitems' => $orderitems,
             'users' => $users,
@@ -87,20 +89,17 @@ class MenuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(string $order_id)
+    public function edit($id)
     {
-        $orders = Order::where('status','belum dibayar')->get();
-        $orderselesai = Order::where('status','selesai')->get();
-        $orderitemsid = OrderItem::findOrFail($order_id);
-        $orderitems = OrderItem::all();
-        $users = Auth::user();
-
-        return Inertia::render('Kasir/Kasir', [
-            'orders' => $orders,
-            'orderselesai' => $orderselesai,
-            'orderitems' => $orderitems,
-            'users' => $users
-        ]);
+        // dd($id);
+        $order = Order::find($id);
+        if ($order) {
+            $order->status = 'selesai';
+            $order->save();
+        }
+    
+        // Redirect atau response lainnya
+        return redirect()->back();
     }
 
     /**

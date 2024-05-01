@@ -6,6 +6,7 @@ import TextInput from '../TextInput'
 import TableData from '../TableData'
 import DashedLine from '../DashedLine'
 import ModalHistoryCard from './ModalHistoryCard'
+import { Inertia } from '@inertiajs/inertia';
 
 const itemPost = [
   {
@@ -73,11 +74,11 @@ const posts = [
 ]
 
 
-function Order({orders, orderitems}) {
+function Order({orders, orderitems, orderbelumdibayar}) {
   for (const order of orders) {
     const parsedData = JSON.parse(order.data);
   }
-  const [dataOrder , setDataOrder] = useState(orders || '')
+  const [dataOrder , setDataOrder] = useState(orderbelumdibayar || '')
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
   const [openModalPayment , setOpenModalPayment] = useState(true)
@@ -95,7 +96,7 @@ function Order({orders, orderitems}) {
   for (let i = 1; i <= Math.ceil(posts.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
-
+console.log(orders.id)
   function editHandler(id){
     const orderNow = orders.find(order => order.id === id)
     const parsedData = JSON.parse(orderNow.data)
@@ -104,21 +105,29 @@ function Order({orders, orderitems}) {
     setEditModalData(parsedData)
     setOpenModalEdit(!openModalEdit)
   }
+  const [tes, setTes] = useState('');
   function paymentHandler(id) {
-    const orderNow = orders.find(order => order.id === id)
-    const parsedData = JSON.parse(orderNow.data)
-    console.log(orderNow , parsedData)
-    const subTotal = parsedData.reduce((init , current) => init + current.totalHarga , 0)
+    setTes(id);
+    const orderNow = orders.find(order => order.id === id);
+    if (!orderNow) {
+      console.error(`Order with id ${id} not found`);
+      return;
+    }
+    // tes = orderNow
+    const parsedData = JSON.parse(orderNow.data);
+    console.log(orderNow, parsedData);
+    const subTotal = parsedData.reduce((init, current) => init + current.totalHarga, 0);
     setBill({
-      subTotal:subTotal,
+      subTotal: subTotal,
       tax: subTotal * 0.1,
       total: subTotal + (subTotal * 0.1)
-    })
-
-    setModalName(orderNow.customer_name)
+    });
+  
+    setModalName(orderNow.customer_name);
     setModalData(parsedData);
     setOpenModalPayment(!openModalPayment);
   }
+  console.log(orders);
   
   // modal datas
   const [openModalEdit , setOpenModalEdit] = useState(true)
@@ -152,8 +161,43 @@ function Order({orders, orderitems}) {
     console.log(buyersMoney  -  bill.total)
     console.log(change)
   },[editModalData,modalData])
+
+  const [orderStatus, setOrderStatus] = useState({});
+
+  useEffect(() => {
+    // Inisialisasi status pesanan saat komponen dimuat
+    const initialOrderStatus = {};
+    orders.forEach(order => {
+      initialOrderStatus[order.id] = order.status;
+    });
+    setOrderStatus(initialOrderStatus);
+  }, [orders]);
+
+  const updateOrderStatus = (orderId, newStatus) => {
+    setOrderStatus(prevStatus => ({
+      ...prevStatus,
+      [orderId]: newStatus,
+    }));
+  };
+
+  const handlePayment = () => {
+    Inertia.post(`/kasir/${tes}`).then(() => {
+      console.log('Order marked as paid successfully.');
+      // Tambahkan tindakan lain jika diperlukan setelah pesanan berhasil diperbarui
+  
+      // Reset atau lakukan tindakan lainnya setelah pembayaran berhasil
+  
+      // Refresh halaman untuk mendapatkan daftar pesanan terbaru
+      Inertia.reload();
+    }).catch((error) => {
+      console.error('Failed to mark order as paid:', error);
+      // Tangani kesalahan jika gagal memperbarui pesanan
+    });
+  };
+  
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
+   
       <LogoDate/>
       <div className="flex justify-between mt-[25px]">
         <div className="h-[50px] w-fit relative ">
@@ -253,9 +297,12 @@ function Order({orders, orderitems}) {
               </>
             )
             }
-            <button className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
+            
+         
+  <button className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]' onClick={() => handlePayment()}>Bayar</button>
+
           </div>
-        </div>
+        </div>  
       </div>
 
       {/* Modal edit */}
