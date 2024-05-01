@@ -10,7 +10,7 @@ import MenuSvg from '@/Components/svgComp/MenuSvg';
 import OrderSvg from '@/Components/svgComp/OrderSvg';
 import HistorySvg from '@/Components/svgComp/HistorySvg';
 
-export default function Kasir({menus , categories , orders, users, orderselesai, managements, orderitems}) {
+export default function Kasir({menus , categories , orders, users, orderselesai, managements, orderitems, loginuser}) {
   const [clickedAt , setClickedAt] = useState('Menu')
   const [UI , setUI] = useState(<Menu menus={menus} categories={categories}/>)
   console.log(orderselesai)
@@ -22,7 +22,7 @@ export default function Kasir({menus , categories , orders, users, orderselesai,
     }else if(clickedAt == 'History'){
       setUI(<History orderselesai={orderselesai} orderitems={orderitems}/>)
     }else{
-      setUI(<Settings users={users}/>)
+      setUI(<Settings users={users} loginuser={loginuser}/>)
     }
   },[clickedAt])
   return (

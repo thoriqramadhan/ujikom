@@ -8,6 +8,7 @@ import { Inertia } from '@inertiajs/inertia'
 
 function Settings({ loginuser }) {
     const [dataLoginUser, setLoginUser] = useState(loginuser);
+    console.log(dataLoginUser);
 
     // Fungsi untuk logout
     const handleLogout = () => {
