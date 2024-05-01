@@ -59,11 +59,12 @@ const itemPost = [
 ];
 
 function History({orderselesai , orderitems}) {
+  console.log(orderselesai)
   const [dataOrderSelesai , setDataOrderSelesai] = useState(orderselesai || '')
   console.log(dataOrderSelesai)
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
-  const [menu , setMenu] = useState({})
+  const [menu , setMenu] = useState([])
   const [bill , setBill] = useState({
     total:0,
     tax:0,
@@ -95,18 +96,21 @@ function History({orderselesai , orderitems}) {
   const currentPosts = dataOrderSelesai.slice(indexOfFirstPost, indexOfLastPost);
 
   function detailHandler(id){
-    console.log(id)
-    const menu = orderitems.find(items => items.order_id === id)
-    const name = orderselesai.find(items => items.id === id)
+    const orderNow = orderselesai.find(order => order.id === id)
+    const parsedData = JSON.parse(orderNow.data)
+
+    console.log(parsedData)
     setOpenModal(!openModal)
-    setMenu(menu)
-    setCustomerName(name.customer_name)
+
+    setMenu(parsedData)
+    setCustomerName(orderNow.customer_name)
 
   }
   
   useEffect(()=>{
-    const bill = orderitems.reduce((accumulator,order) => accumulator + order.totalHarga, 0)
+    const bill = menu.reduce((accumulator,order) => accumulator + order.totalHarga, 0)
     const tax = bill * 0.1
+    console.log(bill,tax,menu)
     setBill({
       total: bill,
       tax:tax
@@ -170,12 +174,12 @@ function History({orderselesai , orderitems}) {
                     <th className='flex-1 opacity-60'>Harga</th>
                   </tr>
                   {
-                    orderselesai.map((orderitems , index) => {
+                    menu.map((orderitems , index) => {
                       return (
                       <tr key={index} className='h-fit border-bottom-1'>
-                        <TableData text={menu.name}/>
-                        <TableData text={menu.items}/>
-                        <TableData text={menu.totalHarga}/>
+                        <TableData text={orderitems.name}/>
+                        <TableData text={orderitems.items}/>
+                        <TableData text={`${orderitems.totalHarga}K`}/>
                       </tr>
                       )
                     }
