@@ -88,7 +88,7 @@ function Order({orders, orderitems}) {
     tax: 0,
     total: 0
   })
-  let change = bill.total - buyersMoney || 0
+  let change = buyersMoney  -  bill.total|| 0
   // 
   const pageNumbers = []
   
@@ -149,7 +149,9 @@ function Order({orders, orderitems}) {
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
   useEffect(()=>{
     console.log(orders)
-  },[editModalData])
+    console.log(buyersMoney  -  bill.total)
+    console.log(change)
+  },[editModalData,modalData])
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
       <LogoDate/>
@@ -246,7 +248,7 @@ function Order({orders, orderitems}) {
             <input type="number" name="" id="" className='mt-[20px]'  onChange={clientHandler} value={buyersMoney} placeholder='Uang Pembeli' />
             <div className="w-full flex justify-between mt-[20px] mb-[120px]">
               <p className='opacity-30 font-bold'>Kembalian</p>
-              <p className='font-bold'>{change| 0}K</p>
+              <p className='font-bold'>{change.toFixed(2) || 0}K</p>
             </div>
               </>
             )
