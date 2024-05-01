@@ -140,8 +140,8 @@ function History({orderselesai , orderitems}) {
         return (
           <tr className='h-fit border-bottom-1'>
           <TableData text={orderselesai.customer_name}/>
-          <TableData text={orderitems.subTotal}/>
-          <TableData text={orderitems.totalHarga} prop='K'/>
+          <TableData text={orderselesai.order_time}/>
+          <TableData text={orderselesai.status}/>
           <td>
           <div className="h-[60px] w-[100%] flex items-center justify-center" onClick={()=>{detailHandler(orderselesai.id)}}>
             <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
