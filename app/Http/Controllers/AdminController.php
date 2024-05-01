@@ -19,10 +19,12 @@ class AdminController extends Controller
     {
         $users = User::all();
         $loginuser = Auth::user();
+        $onlykasir = User::where('role','kasir')->get();
 
         return Inertia::render('Admin/Admin', [
             'users' => $users,
-            'loginuser' => $loginuser
+            'loginuser' => $loginuser,
+            'onlykasir' => $onlykasir
         ]);
     }
 

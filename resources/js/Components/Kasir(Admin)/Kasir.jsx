@@ -34,9 +34,10 @@ const dataOrder = [
     },
 ];
 
-function Kasir({ users }) {
+function Kasir({ users, onlykasir }) {
     const [DataUser , setDataUser] = useState(users || '')
-    console.log(DataUser);
+    const [DataOnlyKasir , setOnlyKasir] = useState(onlykasir || '')
+    console.log(DataOnlyKasir);
     const [open, setOpen] = useState(false);
     const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
@@ -94,16 +95,16 @@ function Kasir({ users }) {
                         </th>
                         <th></th>
                     </tr>
-                    {DataUser.map((users) => {
+                    {DataOnlyKasir.map((onlykasir) => {
                         return (
                             <tr className="h-fit border-bottom-1 border-x-[1px] border-gray-300 border-b-[1px]">
-                                <TableData text={users.first_name} />
+                                <TableData text={onlykasir.first_name} />
                                 <TableData
                                     className={"hidden lg:table-cell"}
-                                    text={users.last_name}
+                                    text={onlykasir.last_name}
                                 />
                                 <TableData
-                                    text={users.email}
+                                    text={onlykasir.email}
                                     className={"hidden lg:table-cell"}
                                 />
                                 <div className="h-[60px] w-[100%] flex items-center justify-center">
