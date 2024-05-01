@@ -72,34 +72,57 @@ const posts = [
   },
 ]
 
+
 function Order({orders, orderitems}) {
-  console.log(orders)
+  for (const order of orders) {
+    const parsedData = JSON.parse(order.data);
+  }
   const [dataOrder , setDataOrder] = useState(orders || '')
-  const [ dataOrderItems , setDataOrderItems] = useState(orderitems || '')
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
   const [openModalPayment , setOpenModalPayment] = useState(true)
+  // paymnet history data
+  const [buyersMoney , setBuyersMoney] = useState(0)
+  const [bill , setBill] = useState({
+    subTotal : 0,
+    tax: 0,
+    total: 0
+  })
+  let change = buyersMoney  -  bill.total|| 0
+  // 
   const pageNumbers = []
   
   for (let i = 1; i <= Math.ceil(posts.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
 
-  const [openModal , setOpenModal] = useState(true)
-  function paymentHandler(orderId) {
-    const data = dataOrderItems.filter((item) => item.order_id === orderId);
-    const order = orders.find(order => order.id === orderId);
-  
-    setModalData(data);
-    console.log(modalData);
+  function editHandler(id){
+    const orderNow = orders.find(order => order.id === id)
+    const parsedData = JSON.parse(orderNow.data)
+
+    setModalName(orderNow.customer_name)
+    setEditModalData(parsedData)
+    setOpenModalEdit(!openModalEdit)
+  }
+  function paymentHandler(id) {
+    const orderNow = orders.find(order => order.id === id)
+    const parsedData = JSON.parse(orderNow.data)
+    console.log(orderNow , parsedData)
+    const subTotal = parsedData.reduce((init , current) => init + current.totalHarga , 0)
+    setBill({
+      subTotal:subTotal,
+      tax: subTotal * 0.1,
+      total: subTotal + (subTotal * 0.1)
+    })
+
+    setModalName(orderNow.customer_name)
+    setModalData(parsedData);
     setOpenModalPayment(!openModalPayment);
   }
   
   // modal datas
   const [openModalEdit , setOpenModalEdit] = useState(true)
-  const [buyersMoney , setBuyersMoney] = useState(0)
   const [modalData, setModalData] = useState(itemPost)
-  let total = parseFloat(modalData[0].total) - buyersMoney || 0
   const [modalName,setModalName] = useState('')
   const [datas , setDatas] = useState(itemPost)
   const [editModalData , setEditModalData] = useState([])
@@ -118,25 +141,17 @@ function Order({orders, orderitems}) {
     setcurrentPage(prevState => prevState - 1)
   }
   function clientHandler(e){
-    console.log('in')
     setBuyersMoney(parseFloat(e.target.value))
-  }
-  function editHandler(id){
-    const order = orders.find(order => order.id === id);
-    const data = dataOrderItems.filter((item) => item.order_id === id);
-    console.log(data , order)
-    setModalName(order.customer_name)
-    setEditModalData(data)
-    setOpenModalEdit(!openModalEdit)
   }
   
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
   useEffect(()=>{
-    setModalName(modalData[0].name)
-    console.log(editModalData)
-  },[modalData ,editModalData])
+    console.log(orders)
+    console.log(buyersMoney  -  bill.total)
+    console.log(change)
+  },[editModalData,modalData])
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
       <LogoDate/>
@@ -187,9 +202,8 @@ function Order({orders, orderitems}) {
       {/* Modal payment */}
       <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModalPayment ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Bayar Pesanan</p>
-        {modalData.map((modalOrder, index) => (
-          <p key={index[0]}>Langsung bayar pesanan punya {modalOrder ? modalOrder.customer_name : ''}</p>
-))}
+        <p>Langsung bayar pesanan punya {modalName}</p>
+
         <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModalPayment(!openModalPayment)}>X</p>
         <div className="w-full h-fit mt-[10px] flex gap-x-[30px]">
           <div className="basis-2 flex-1 bg-white rounded-xl border ">
@@ -220,21 +234,21 @@ function Order({orders, orderitems}) {
               <>
               <div className="w-full flex justify-between">
               <p className='opacity-30 font-bold'>Sub Total</p>
-              <p className='font-bold'>{modalData[0].subTotal}K</p>
+              <p className='font-bold'>{bill.subTotal}K</p>
             </div>
             <div className="w-full flex justify-between">
               <p className='opacity-30 font-bold'>{'Pajak (10%)'}</p>
-              <p className='font-bold'>{modalData[0].tax}K</p>
+              <p className='font-bold'>{bill.tax}K</p>
             </div>
             <DashedLine />
             <div className="w-full flex justify-between mt-[20px]">
               <p className='opacity-30 font-bold'>Total</p>
-              <p className='font-bold'>{modalData[0].total}K</p>
+              <p className='font-bold'>{bill.total}K</p>
             </div>
             <input type="number" name="" id="" className='mt-[20px]'  onChange={clientHandler} value={buyersMoney} placeholder='Uang Pembeli' />
             <div className="w-full flex justify-between mt-[20px] mb-[120px]">
               <p className='opacity-30 font-bold'>Kembalian</p>
-              <p className='font-bold'>{total|| 0}K</p>
+              <p className='font-bold'>{change.toFixed(2) || 0}K</p>
             </div>
               </>
             )
@@ -245,6 +259,7 @@ function Order({orders, orderitems}) {
       </div>
 
       {/* Modal edit */}
+      
       <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000 overflow-y-hidden  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModalEdit ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Edit Pesanan</p>
         <p>Edit pesanan punya {modalName}</p>
@@ -264,8 +279,9 @@ function Order({orders, orderitems}) {
                       <div className="w-full h-[150px] rounded-lg bg-gray-400"></div>
                       <div className="h-fit w-full flex justify-between mt-2">
                         <p className='font-bold text-[22px]'>{menu.name}</p>
-                        <p className='font-bold opacity-60 text-[20px]'>{menu.total}K</p>
+                        <p className='font-bold opacity-60 text-[20px]'>{menu.totalHarga}K</p>
                       </div>
+                      <button className='mt-[20px] w-full rounded-[18px] py-[15px] font-bold border-2 bg-[#F3F3F3]'>Hapus</button>
                   </div>
                 ))
               }
@@ -277,7 +293,7 @@ function Order({orders, orderitems}) {
             <div className="w-full h-[350px] overflow-scroll flex flex-col gap-y-[10px]">
               {
                 editModalData.map(menu => (
-                  <ModalHistoryCard name={menu.name} item={menu.items} initialPrice={menu.total} setDatas={setDatas} datas={datas} menu={menu} id={idNow}/>
+                  <ModalHistoryCard name={menu.name} item={menu.items} initialPrice={menu.totalHarga} setDatas={setDatas} datas={datas} menu={menu} id={idNow}/>
                 ))
               }
             </div>
@@ -285,6 +301,7 @@ function Order({orders, orderitems}) {
           </div>
         </div>
       </div>
+      
     </BodyLayout>
   )
 }

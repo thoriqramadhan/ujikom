@@ -3,6 +3,7 @@ import { useState } from 'react';
 import TrashSvg from '../svgComp/TrashSvg';
 
 function ModalHistoryCard({name,item,initialPrice , setDatas , datas , menu , id}) {
+  console.log(initialPrice)
     const [number , setNumber] = useState(item || 1)
     const [subTotal , setSubTotal] = useState(initialPrice)
     function incrementHandler(){

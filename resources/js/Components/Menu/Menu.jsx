@@ -29,7 +29,7 @@ function Menu({menus , categories, managements}) {
     }
     )
     const [buyersMoney , setBuyersMoney] = useState(0)
-    let total = parseFloat(modalData.total) - buyersMoney || 0
+    let total = buyersMoney - parseFloat(modalData.total)|| 0
     function clientHandler(e){
       setBuyersMoney(parseFloat(e.target.value))
     }
@@ -74,6 +74,9 @@ function closeHandler(){
         Inertia.reload();
       });
     };
+    useEffect(()=>{
+      console.log(modalData)
+    },[modalData])
   return (
     <>
     <BodyLayout>
