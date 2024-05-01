@@ -43,7 +43,7 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController
         Route::get('/kasir', [MenuController::class, 'index']);
         Route::post('/kasirstore', [MenuController::class, 'store']);
         Route::patch('/kasir', [MenuController::class, 'updateUser']);
-        Route::get('/kasir/{id}', [MenuController::class, 'edit']);
+        Route::post('/kasir/{id}', [MenuController::class, 'edit']);
     // });
   
     //Routes yang bisa diakses hanya oleh admin di masukkan ke sini
