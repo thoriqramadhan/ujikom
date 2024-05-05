@@ -11,7 +11,7 @@ import TableData from '../TableData'
 import Modal from '../Modal';
 import { Head } from '@inertiajs/react';
 
-function Menu({menus , categories, managements}) {
+function Menu({menus , categories}) {
     const [openSide, setOpenSide] = useState(false);
     const [openModal , setOpenModal] = useState(true)
     const strg = JSON.parse(localStorage.getItem('ORDER_HISTORY'))
@@ -37,46 +37,52 @@ function Menu({menus , categories, managements}) {
 function closeHandler(){
       setOpenModal(!openModal)
     }
-    console.log(typeof modalData.subTotal , typeof modalData.tax)
-    const handleSubmit = (e) => {
-      e.preventDefault();
-      if(customerName == ''){
-        alert('Nama Pembeli Harus Diisi!')
-        return
-      }
+    // const handleSubmit = (e) => {
+    //   e.preventDefault();
   
-      // Membuat objek FormData untuk mengirim data formulir
-      const formData = new FormData();
-      formData.append('customer_name', customerName);
-      formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
-      setOpenModal(!openModal)
-      setModalData({
-        name: customerName,
-        subTotal : `${subHarga}K`,
-        tax: `${tax.toFixed(2)}K`,
-        total: `${subHarga + tax}K`,
-        menu: selectedFood.map(food => {
-          return {
-            name : food.name,
-            total: food.totalHarga,
-            items: food.items
-          }
-        })
+    //   // Membuat objek FormData untuk mengirim data formulir
+    //   const formData = new FormData();
+    //   formData.append('customer_name', modalData.name);
+    //   formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
+    //   setOpenModal(!openModal)
+    //   setModalData({
+    //     name: modalData.name,
+    //     subTotal : `${modalData.subTotal}K`,
+    //     tax: `${tax.toFixed(2)}K`,
+    //     total: `${subHarga + modalData.tax}K`,
+    //     menu: selectedFood.map(food => {
+    //       return {
+    //         name : food.name,
+    //         total: food.totalHarga,
+    //         items: food.items
+    //       }
+    //     })
+        
+    //   })
+      
+    //   const order = {
+    //     customerName: modalData.name,
+    //     tax:modalData.tax,
+    //     totalHarga:subHarga + tax,
+    //     data: [...selectedFood]
+    //   }
+      
+    //   formData.append('order', JSON.stringify(order));
+    //   localStorage.setItem('ORDER_HISTORY',JSON.stringify([]))
+    // setCustomerName('')
+    // console.log(order)
+    // setSelectedFood([])
+    //   // Mengirim permintaan POST menggunakan Inertia.postFormData
+    //   Inertia.post('/kasirstorespontan', formData).then(() => {
+    //     // Mereset nilai formulir setelah submit
+    //     // setCustomerName('');
+    //     // setSelectedFood([]);// Mereset gambar menjadi null
   
-      })
-  
-      // Mengirim permintaan POST menggunakan Inertia.postFormData
-      Inertia.post('/kasir', formData).then(() => {
-        // Mereset nilai formulir setelah submit
-        setCustomerName('');
-        setSelectedFood([]);// Mereset gambar menjadi null
-  
-        // Me-refresh halaman untuk mendapatkan daftar produk terbaru
-        Inertia.reload();
-      });
-    };
+    //     // Me-refresh halaman untuk mendapatkan daftar produk terbaru
+    //     Inertia.reload();
+    //   });
+    // };
     useEffect(()=>{
-      console.log(modalData)
     },[modalData])
   return (
     <>
@@ -141,7 +147,7 @@ function closeHandler(){
             <p className='opacity-30 font-bold'>Kembalian</p>
             <p className='font-bold'>{total.toFixed(2) || 0}K</p>
           </div>
-          <button onClick={handleSubmit} className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
+          <button  className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
         </div>
         </div>
       </div>
