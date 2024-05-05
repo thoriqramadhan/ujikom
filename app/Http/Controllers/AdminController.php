@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Admin;
+use App\Models\Category;
+use App\Models\Menu;
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
@@ -20,11 +22,15 @@ class AdminController extends Controller
         $users = User::all();
         $loginuser = Auth::user();
         $onlykasir = User::where('role','kasir')->get();
+        $menus = Menu::all();
+        $categories = Category::all();
 
         return Inertia::render('Admin/Admin', [
             'users' => $users,
             'loginuser' => $loginuser,
-            'onlykasir' => $onlykasir
+            'onlykasir' => $onlykasir,
+            'menus' => $menus,
+            'categories' => $categories
         ]);
     }
 

@@ -68,6 +68,25 @@ class MenuController extends Controller
         // Redirect atau response lainnya
         return redirect('/kasir');
     }
+
+    public function storeSpontan(Request $request)
+    {
+        dd($request);
+        // Ubah string JSON order menjadi array PHP
+        $orderData = json_decode($request->input('order'), true);
+        
+        // Buat order baru dan simpan data pelanggan
+        Order::create([
+            'customer_name' => $orderData['customerName'],
+            'tax' => $orderData['tax'],
+            'totalHarga' => $orderData['totalHarga'],
+            'data' => json_encode($orderData['data']),
+             // Ubah array menjadi string JSON sebelum menyimpannya
+        ]);
+        $orderData->status = 'selesai';
+        // Redirect atau response lainnya
+        return redirect('/kasir');
+    }
     
     
     
