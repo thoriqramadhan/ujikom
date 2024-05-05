@@ -2,19 +2,11 @@ import React from 'react'
 import { useState } from 'react';
 import TrashSvg from '../svgComp/TrashSvg';
 
-function ModalHistoryCard({name,item,initialPrice , setDatas , datas , menu , id}) {
+function ModalHistoryCard({name,item,initialPrice , menu , id}) {
   console.log(initialPrice)
     const [number , setNumber] = useState(item || 1)
     const [subTotal , setSubTotal] = useState(initialPrice)
     function incrementHandler(){
-      const newDatas = [...datas]
-      const menus = newDatas.find(item => item.id == id)
-      const newNumber = number + 1;
-      setNumber(newNumber);
-      setSubTotal(initialPrice * newNumber);
-      const newMenu = {...menu , total: subTotal}
-      console.log(newMenu)
-      console.log(newDatas, datas,  menus ,id)
     }
     function decreaseHandler(){
       if(number == 1){

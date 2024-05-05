@@ -7,79 +7,9 @@ import TableData from '../TableData'
 import DashedLine from '../DashedLine'
 import ModalHistoryCard from './ModalHistoryCard'
 import { Head } from '@inertiajs/react'
-import { Inertia } from '@inertiajs/inertia'
-
-const itemPost = [
-  {
-    id: 1,
-    name: 'Thoriq',
-    subTotal : `100K`,
-    tax: `10K`,
-    total: `110K`,
-    menu: [
-      {
-        name : 'Ayam',
-        total: 100,
-        items: 1
-      },
-      {
-        name : 'Sapi',
-        total: 200,
-        items: 2
-      },
-      {
-        name : 'Ayam',
-        total: 300,
-        items: 3
-      }
-    ]
-  },
-  {
-    id: 2,
-    name: 'Thor',
-    subTotal : `100K`,
-    tax: `10K`,
-    total: `110K`,
-    menu: [
-      {
-        name : 'Ayam',
-        total: 100,
-        items: 2
-      },
-      {
-        name : 'Babi',
-        total: 100,
-        items: 2
-      },
-      {
-        name : 'Ayam',
-        total: 100,
-        items: 2
-      }
-    ]
-  },
-];
-const posts = [
-  {
-    id:1,
-    customer_name: 'Thoriq',
-    order_time: '09:00',
-    status: 'belum selesai'
-  },
-  {
-    id:2,
-    customer_name: 'Thor',
-    order_time: '09:00',
-    status: 'belum selesai'
-  },
-]
-
+import {Inertia} from '@inertiajs/inertia'
 
 function Order({orders, orderitems, orderbelumdibayar}) {
-  for (const order of orders) {
-    const parsedData = JSON.parse(order.data);
-  }
-  const [dataOrder , setDataOrder] = useState(orderbelumdibayar || '')
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
   const [openModalPayment , setOpenModalPayment] = useState(true)
@@ -94,7 +24,7 @@ function Order({orders, orderitems, orderbelumdibayar}) {
   // 
   const pageNumbers = []
   
-  for (let i = 1; i <= Math.ceil(posts.length / postPerPage); i++) {
+  for (let i = 1; i <= Math.ceil(orderbelumdibayar.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
 console.log(orders.id)
@@ -132,13 +62,13 @@ console.log(orders.id)
   
   // modal datas
   const [openModalEdit , setOpenModalEdit] = useState(true)
-  const [modalData, setModalData] = useState(itemPost)
+  const [modalData, setModalData] = useState(orderbelumdibayar)
   const [modalName,setModalName] = useState('')
-  const [datas , setDatas] = useState(itemPost)
   const [editModalData , setEditModalData] = useState([])
   const [idNow,setIdNow] = useState('');
   
   function incrementHandler(){
+    console.log('in' , currentPage , pageNumbers)
     if(currentPage == pageNumbers.length){
       return
     }
@@ -156,7 +86,7 @@ console.log(orders.id)
   
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = posts.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = orderbelumdibayar.slice(indexOfFirstPost, indexOfLastPost);
   useEffect(()=>{
     console.log(orders)
     console.log(buyersMoney  -  bill.total)
@@ -218,7 +148,7 @@ console.log(orders.id)
           <th className='flex-2 opacity-60'>Status</th>
           <th className='w-[230px]'></th>
         </tr>
-        {dataOrder.map(orders => {
+        {currentPosts.map(orders => {
         return (
           <tr className='h-fit border-bottom border'>
           <TableData text={orders.customer_name}/>
@@ -341,7 +271,7 @@ console.log(orders.id)
             <div className="w-full h-[350px] overflow-scroll flex flex-col gap-y-[10px]">
               {
                 editModalData.map(menu => (
-                  <ModalHistoryCard name={menu.name} item={menu.items} initialPrice={menu.totalHarga} setDatas={setDatas} datas={datas} menu={menu} id={idNow}/>
+                  <ModalHistoryCard name={menu.name} item={menu.items} initialPrice={menu.totalHarga} menu={menu} id={idNow}/>
                 ))
               }
             </div>
