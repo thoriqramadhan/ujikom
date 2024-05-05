@@ -8,18 +8,21 @@ import BodyLayout from '@/Layouts/BodyLayout';
 import LogoDate from '../Logo_date';
 import DashedLine from '../DashedLine';
 import TableData from '../TableData'
-import Modal from '../Modal';
 import { Head } from '@inertiajs/react';
+import { Inertia } from '@inertiajs/inertia';
 
-function Menu({menus , categories}) {
+function Menu({menus , categories, order}) {
     const [openSide, setOpenSide] = useState(false);
     const [openModal , setOpenModal] = useState(true)
     const strg = JSON.parse(localStorage.getItem('ORDER_HISTORY'))
     const [selectedFood , setSelectedFood] = useState(strg || []);
+    const subHarga = selectedFood.reduce((total, item) => {
+      return total + item.totalHarga;
+    }, 0);
     const [modalData , setModalData] = useState(
       {
       id: +new Date,
-      name: 'Yudi Santoso',
+      customerName: 'Yudi Santoso',
       subTotal : 100,
       tax: 10 ,
       total: 110,
@@ -29,6 +32,8 @@ function Menu({menus , categories}) {
       ]
     }
     )
+    useEffect(()=>{
+    },[modalData])
     const [buyersMoney , setBuyersMoney] = useState(0)
     let total = buyersMoney - parseFloat(modalData.total)|| 0
     function clientHandler(e){
@@ -37,53 +42,24 @@ function Menu({menus , categories}) {
 function closeHandler(){
       setOpenModal(!openModal)
     }
-    // const handleSubmit = (e) => {
-    //   e.preventDefault();
-  
-    //   // Membuat objek FormData untuk mengirim data formulir
-    //   const formData = new FormData();
-    //   formData.append('customer_name', modalData.name);
-    //   formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
-    //   setOpenModal(!openModal)
-    //   setModalData({
-    //     name: modalData.name,
-    //     subTotal : `${modalData.subTotal}K`,
-    //     tax: `${tax.toFixed(2)}K`,
-    //     total: `${subHarga + modalData.tax}K`,
-    //     menu: selectedFood.map(food => {
-    //       return {
-    //         name : food.name,
-    //         total: food.totalHarga,
-    //         items: food.items
-    //       }
-    //     })
-        
-    //   })
-      
-    //   const order = {
-    //     customerName: modalData.name,
-    //     tax:modalData.tax,
-    //     totalHarga:subHarga + tax,
-    //     data: [...selectedFood]
-    //   }
-      
-    //   formData.append('order', JSON.stringify(order));
-    //   localStorage.setItem('ORDER_HISTORY',JSON.stringify([]))
-    // setCustomerName('')
-    // console.log(order)
-    // setSelectedFood([])
-    //   // Mengirim permintaan POST menggunakan Inertia.postFormData
-    //   Inertia.post('/kasirstorespontan', formData).then(() => {
-    //     // Mereset nilai formulir setelah submit
-    //     // setCustomerName('');
-    //     // setSelectedFood([]);// Mereset gambar menjadi null
-  
-    //     // Me-refresh halaman untuk mendapatkan daftar produk terbaru
-    //     Inertia.reload();
-    //   });
-    // };
-    useEffect(()=>{
-    },[modalData])
+    const handleSubmit = (e) => {
+      e.preventDefault();
+      const tax = modalData.tax;
+      const orderData = {
+        customerName: modalData.name, // Menggunakan modalData.customerName
+        tax: tax,
+        totalHarga: subHarga + tax,
+        data: [...selectedFood]
+      };
+    
+      const formData = new FormData();
+      formData.append('order', JSON.stringify(orderData));
+    
+      Inertia.post('/kasirstorespontan', formData).then(() => {
+        Inertia.reload();
+      });
+    };
+    
   return (
     <>
     <Head title='Menu'/>
@@ -147,7 +123,7 @@ function closeHandler(){
             <p className='opacity-30 font-bold'>Kembalian</p>
             <p className='font-bold'>{total.toFixed(2) || 0}K</p>
           </div>
-          <button  className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
+          <button onClick={handleSubmit}  className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
         </div>
         </div>
       </div>

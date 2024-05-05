@@ -6,7 +6,7 @@ import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
 import { Head } from '@inertiajs/react';
 
-function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood }) {
+function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood, onSubmitOrder }) {
   const [customerName, setCustomerName] = useState('');
   const subHarga = selectedFood.reduce((total, item) => {
     return total + item.totalHarga;
@@ -27,9 +27,9 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
     setOpenModal(!openModal)
     setModalData({
       name: customerName,
-      subTotal : `${subHarga}K`,
-      tax: `${tax.toFixed(2)}K`,
-      total: `${subHarga + tax}K`,
+      subTotal : `${subHarga}`,
+      tax: `${tax.toFixed(2)}`,
+      total: `${subHarga + tax}`,
       menu: selectedFood.map(food => {
         return {
           name : food.name,
@@ -58,6 +58,7 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
       totalHarga:subHarga + tax,
       data: [...selectedFood]
     }
+
     console.log(order)
     const formData = new FormData();
     // formData.append('customer_name', customerName);
