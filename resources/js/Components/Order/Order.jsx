@@ -168,7 +168,7 @@ function Order({orders, orderitems}) {
           <div onClick={incrementHandler} className="h-[50px] w-[50px] bg-white border-2 rounded-xl flex justify-center items-center cursor-pointer">{'>'}</div>
         </div>
       </div>
-      <table className='w-full mt-[24px] overflow-hidden rounded-xl'>
+      <table className='w-full mt-[24px] mb-[24px] overflow-hidden rounded-xl'>
         <tr className='rounded-2xl bg-[#F3F3F3] h-[60px]'>
           <th className='flex-1 opacity-60'>Nama Pembeli</th>
           <th className='flex-1 opacity-60'>Waktu</th>
@@ -177,7 +177,7 @@ function Order({orders, orderitems}) {
         </tr>
         {dataOrder.map(orders => {
         return (
-          <tr className='h-fit border-bottom-1'>
+          <tr className='h-fit border-bottom border'>
           <TableData text={orders.customer_name}/>
           <TableData text={orders.order_time}/>
           <TableData text={orders.status}/>
