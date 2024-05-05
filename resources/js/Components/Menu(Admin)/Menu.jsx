@@ -1,12 +1,24 @@
 import React from 'react'
 import BodyLayout from '@/Layouts/BodyLayout'
+import LogoDate from '../Logo_date'
 
-function Menu() {
+function Menu({menus, categories}) {
+  console.log(categories)
   return (
     <BodyLayout>
-      <div className="w-full h-[100vh] bg-red-100">
+      {/* Headers */}
+      <LogoDate/>
+      <div className="">
         <div className=""></div>
         <div className=""></div>
+      </div>
+      {/* categories */}
+      <div className="">
+
+      </div>
+      {/* Body */}
+      <div className="">
+
       </div>
     </BodyLayout>
   )

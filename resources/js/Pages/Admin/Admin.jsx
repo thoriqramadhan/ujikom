@@ -60,11 +60,11 @@ const Admin = ({users, loginuser, onlykasir, menus, categories}) => {
       </div> */}
       {UI}
       <SideNav screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}>
-            {screenWidth <= 1024 ? '' : <div className="w-[40px] h-[40px] bg-black rounded-full"></div>}
+            {screenWidth <= 750 ? '' : <div className="w-[40px] h-[40px] bg-black rounded-full"></div>}
             <HomeSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>
             <KasirSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>
             <MenuSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>
-            {screenWidth <= 1024 ? <SettingsSvg clickedAt={clickedAt} setClickedAt={setClickedAt}/> : ''}
+            {screenWidth <= 750 ? <SettingsSvg clickedAt={clickedAt} setClickedAt={setClickedAt}/> : ''}
       </SideNav>
     </div>
     </>
