@@ -9,7 +9,7 @@ import MobileNav from './MobileNav'
 function SideNav({ screenWidth, clickedAt , setClickedAt , children}) {
   const [UI,setUI] = useState(<DekstopNav children={children} clickedAt={clickedAt} setClickedAt={setClickedAt}/>)
   useEffect(()=>{
-    if(screenWidth <= 1024){
+    if(screenWidth <= 750){
       setUI(<MobileNav children={children}/>)
     }else{
       setUI(<DekstopNav children={children} clickedAt={clickedAt} setClickedAt={setClickedAt}/>)
