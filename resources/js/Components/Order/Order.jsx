@@ -6,7 +6,7 @@ import TextInput from '../TextInput'
 import TableData from '../TableData'
 import DashedLine from '../DashedLine'
 import ModalHistoryCard from './ModalHistoryCard'
-import { Inertia } from '@inertiajs/inertia';
+import { Head } from '@inertiajs/react'
 
 const itemPost = [
   {
@@ -197,7 +197,7 @@ console.log(orders.id)
   
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
-   
+      <Head title='Order'/>
       <LogoDate/>
       <div className="flex justify-between mt-[25px]">
         <div className="h-[50px] w-fit relative ">
@@ -210,7 +210,7 @@ console.log(orders.id)
           <div onClick={incrementHandler} className="h-[50px] w-[50px] bg-white border-2 rounded-xl flex justify-center items-center cursor-pointer">{'>'}</div>
         </div>
       </div>
-      <table className='w-full mt-[24px] overflow-hidden rounded-xl'>
+      <table className='w-full mt-[24px] mb-[24px] overflow-hidden rounded-xl'>
         <tr className='rounded-2xl bg-[#F3F3F3] h-[60px]'>
           <th className='flex-1 opacity-60'>Nama Pembeli</th>
           <th className='flex-1 opacity-60'>Waktu</th>
@@ -219,7 +219,7 @@ console.log(orders.id)
         </tr>
         {dataOrder.map(orders => {
         return (
-          <tr className='h-fit border-bottom-1'>
+          <tr className='h-fit border-bottom border'>
           <TableData text={orders.customer_name}/>
           <TableData text={orders.order_time}/>
           <TableData text={orders.status}/>

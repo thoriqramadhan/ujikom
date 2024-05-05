@@ -5,6 +5,7 @@ import SettingInput from '../SettingInput'
 import Bluetooth from '../svgComp/Bluetooth'
 import TextInput from '../TextInput'
 import { Inertia } from '@inertiajs/inertia'
+import { Head } from '@inertiajs/react'
 
 function Settings({ loginuser }) {
     const [dataLoginUser, setLoginUser] = useState(loginuser);
@@ -20,6 +21,7 @@ function Settings({ loginuser }) {
 
     return (
         <BodyLayout className={'pt-[40px] px-[40px]'}>
+            <Head title='Settings'/>
             <LogoDate />
             <div className="flex flex-col w-full mt-[45px]">
                 <div className="flex items-center">
