@@ -16,7 +16,7 @@ function MenuTab({categories , menus , selectedFood , setSelectedFood}) {
     }
   return (
     <>
-    <div className="flex w-full h-fit gap-x-4 px-[37px] mb-[30px]">
+    <div className="flex w-full h-fit gap-x-4 mb-[30px]">
         <MenuItemTab name={'Semua'} active={activeTab} setActiveTab={setActiveTab}/>
         {
           categories.map(kategoris => <MenuItemTab name={kategoris.kategori} active={activeTab} setActiveTab={setActiveTab}/>)
