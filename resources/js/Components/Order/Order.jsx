@@ -7,6 +7,7 @@ import TableData from '../TableData'
 import DashedLine from '../DashedLine'
 import ModalHistoryCard from './ModalHistoryCard'
 import { Head } from '@inertiajs/react'
+import { Inertia } from '@inertiajs/inertia'
 
 const itemPost = [
   {
