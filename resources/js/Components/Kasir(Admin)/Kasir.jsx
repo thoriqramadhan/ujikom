@@ -131,7 +131,7 @@ function Kasir({ users, onlykasir }) {
                         </th>
                         <th></th>
                     </tr>
-                    {dataOrder.map((onlykasir) => {
+                    {onlykasir.map((onlykasir) => {
                         return (
                             <tr className="h-fit border-bottom-1 border-x-[1px] border-gray-300 border-b-[1px]">
                                 <TableData text={onlykasir.first_name} />
