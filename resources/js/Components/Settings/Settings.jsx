@@ -42,7 +42,7 @@ function Settings({ loginuser }) {
                 <p>Password</p>
                 <TextInput value={'password'} placeholder='password' type='password' className='w-full mt-[10px]' />
             </div>
-            <div className="bg-[#FFF4F4] w-full h-[130px] my-[20px] px-[40px] py-[35px] flex justify-between rounded-xl">
+            <div className="bg-[#FFF4F4] w-full h-[130px] my-[20px] px-[40px] py-[35px] flex justify-between rounded-xl overflow-scroll">
                 <div className="">
                     <p className='font-bold text-xl'>Sandingkan dengan printer</p>
                     <p className='opacity-50'>Sandingkan dengan printer agar bisa memprint struk pembelian</p>
