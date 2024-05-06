@@ -3,6 +3,7 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\MenuController;
 use App\Http\Controllers\ProfileController;
+use App\Models\Admin;
 use App\Models\Menu;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -52,6 +53,7 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController
         // page untuk admin
         Route::get('/admin', [AdminController::class, 'index']);
         Route::post('/admin', [AdminController::class, 'store']);
+        Route::post('/adminstore', [AdminController::class, 'create']);
 
     });
     

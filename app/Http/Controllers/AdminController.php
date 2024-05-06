@@ -37,9 +37,21 @@ class AdminController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        $validatedData = $request->validate([
+            'categories_id' => 'required|exists:categories,id',
+            'nama' => 'required|string',
+            'harga' => 'required|integer',
+        ]);
+
+        $menu = Menu::create([
+            'categories_id' => $validatedData['categories_id'],
+            'nama' => $validatedData['nama'],
+            'harga' => $validatedData['harga'],
+        ]);
+
+        return redirect()->back();
     }
 
     /**
