@@ -23,7 +23,7 @@ function Menu({menus, categories}) {
   
     // Mengirim permintaan POST menggunakan Inertia.postFormData
     Inertia.post('/adminstore', formData).then(() => {
-      setName('');
+      setNama('');
       setPrice('');
       setImage(null); 
 
