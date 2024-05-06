@@ -5,9 +5,32 @@ import TextInput from '../TextInput'
 import SearchSvg from '../svgComp/SearchSvg'
 import MenuTab from './MenuTab'
 import Checklist from '../svgComp/Checklist'
+import { Inertia } from '@inertiajs/inertia';
 
 function Menu({menus, categories}) {
   const [openModal , setOpenModal] = useState(true)
+  const [nama, setNama] = useState('');
+  const [price, setPrice] = useState('');
+  const [categories_id, setCategoriesId] = useState('');
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+  
+    const formData = new FormData();
+    formData.append('categories_id', categories_id);
+    formData.append('nama', nama); 
+    formData.append('harga', price); 
+  
+    // Mengirim permintaan POST menggunakan Inertia.postFormData
+    Inertia.post('/adminstore', formData).then(() => {
+      setName('');
+      setPrice('');
+      setImage(null); 
+
+      Inertia.reload();
+    });
+  };
+  
 
   return (
     <BodyLayout className={'md:ml-20 md:mr-5'}>
@@ -15,6 +38,7 @@ function Menu({menus, categories}) {
       <div className="mt-[40px] lg:w-full">
       <LogoDate/>
       {/* modal */}
+      <form onSubmit={handleSubmit}>
       <div className={`w-full relative transition-all duration-1000 ${openModal ? 'translate-x-0 z-10' : '-translate-x-[2000px]'}`}>
         <div className="w-full h-[80vh] bg-white absolute">
           {/* modal header */}
@@ -31,15 +55,15 @@ function Menu({menus, categories}) {
             {/* body */}
             <div className="flex-1 w-full mb-[100px] md:mb-0">
               <div className="flex flex-col w-full md:flex-row md:gap-x-[20px]">
-                <TextInput className='w-full md:w-[383px] md:h-[50px] my-[15px] md:my-0' placeholder='Nama Menu'/>
-                <TextInput className='w-full flex-1' placeholder='Kategori'/>
+                <TextInput className='w-full md:w-[383px] md:h-[50px] my-[15px] md:my-0' placeholder='Nama Menu' value={nama} onChange={(e) => setNama(e.target.value)} />
+                <TextInput className='w-full flex-1' placeholder='Kategori' value={categories_id} onChange={(e) => setCategoriesId(e.target.value)}/>
               </div>
               <div className="flex-col flex w-full gap-x-[20px] md:mt-[40px] md:flex-row">
-                <TextInput className='w-full my-[15px] md:w-[383px] md:h-[50px] md:my-0' placeholder='Harga'/>
+                <TextInput className='w-full my-[15px] md:w-[383px] md:h-[50px] md:my-0' placeholder='Harga' value={price} onChange={(e) => setPrice(e.target.value)}/>
                 <div className='flex-1 flex md:justify-end'>
                   <div className="w-full flex relative items-center md:w-[249px]">
                     <Checklist className='absolute left-[36%] sm:left-[40%] md:left-[60px]'/>
-                    <button className='w-full text-lg md:w-[249px] py-[10px] rounded-xl text-white bg-[#7D5E42]'>Simpan</button>
+                    <button className='w-full text-lg md:w-[249px] py-[10px] rounded-xl text-white bg-[#7D5E42]' type='submit'>Simpan</button>
                   </div>
                 </div>
               </div>
@@ -47,6 +71,7 @@ function Menu({menus, categories}) {
           </div>
         </div>
       </div>
+      </form>
       {/* end of modal */}
 
       <div className={`mt-[20px] w-full flex gap-x-[10px] lg:justify-between ${openModal ? 'hidden' : 'block'}`}>
