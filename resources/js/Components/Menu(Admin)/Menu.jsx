@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import BodyLayout from '@/Layouts/BodyLayout'
 import LogoDate from '../Logo_date'
 import TextInput from '../TextInput'
@@ -8,14 +8,19 @@ import Checklist from '../svgComp/Checklist'
 import { Inertia } from '@inertiajs/inertia';
 
 function Menu({menus, categories}) {
-  const [openModal , setOpenModal] = useState(true)
+  console.log(categories)
+  const [openModal , setOpenModal] = useState(false)
   const [nama, setNama] = useState('');
   const [price, setPrice] = useState('');
   const [categories_id, setCategoriesId] = useState('');
   
   const handleSubmit = (e) => {
     e.preventDefault();
-  
+
+    if(name == '' || categories_id == '' || price == ''){
+      alert('Data belum komplit!')
+      return
+    }
     const formData = new FormData();
     formData.append('categories_id', categories_id);
     formData.append('nama', nama); 
@@ -31,6 +36,9 @@ function Menu({menus, categories}) {
     });
   };
   
+  useEffect(()=>{
+    console.log(categories_id)
+  },[categories_id])
 
   return (
     <BodyLayout className={'md:ml-20 md:mr-5'}>
@@ -47,7 +55,7 @@ function Menu({menus, categories}) {
               <p className='text-xl font-bold'>Tambah Menu</p>
               <p>Tambah variasi menu yang anda punya 😀</p>
             </div>
-            <button className='w-[105px] py-[10px] rounded-xl border bg-white' onClick={()=>{setOpenModal(!openModal)} }> {'<'} Kembali</button>
+            <button className='w-[105px] py-[10px] rounded-xl border bg-white' type='button' onClick={()=>{setOpenModal(!openModal)} }> {'<'} Kembali</button>
           </div>
           {/* modal body */}
           <div className="mt-[40px]  w-full flex flex-col items-center  md:flex-row md:gap-x-[20px]">
@@ -55,11 +63,15 @@ function Menu({menus, categories}) {
             {/* body */}
             <div className="flex-1 w-full mb-[100px] md:mb-0">
               <div className="flex flex-col w-full md:flex-row md:gap-x-[20px]">
-                <TextInput className='w-full md:w-[383px] md:h-[50px] my-[15px] md:my-0' placeholder='Nama Menu' value={nama} onChange={(e) => setNama(e.target.value)} />
-                <TextInput className='w-full flex-1' placeholder='Kategori' value={categories_id} onChange={(e) => setCategoriesId(e.target.value)}/>
+                <TextInput className='w-full md:w-[383px] md:h-[50px] my-[15px] md:my-0' placeholder='Nama Menu' value={nama} onChange={(e) => setNama(e.target.value)} required/>
+                <select name="" id="" className='w-full flex-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' onChange={(e)=> setCategoriesId(e.target.value)} required>
+                  {categories.map(item => (
+                    <option value={item.kategori}>{item.kategori}</option>
+                  ))}
+                </select>
               </div>
               <div className="flex-col flex w-full gap-x-[20px] md:mt-[40px] md:flex-row">
-                <TextInput className='w-full my-[15px] md:w-[383px] md:h-[50px] md:my-0' placeholder='Harga' value={price} onChange={(e) => setPrice(e.target.value)}/>
+                <TextInput className='w-full my-[15px] md:w-[383px] md:h-[50px] md:my-0' type='number' placeholder='Harga' value={price} onChange={(e) => setPrice(e.target.value)} required/>
                 <div className='flex-1 flex md:justify-end'>
                   <div className="w-full flex relative items-center md:w-[249px]">
                     <Checklist className='absolute left-[36%] sm:left-[40%] md:left-[60px]'/>
