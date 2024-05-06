@@ -11,26 +11,25 @@ function Menu({menus, categories}) {
   console.log(categories)
   const [openModal , setOpenModal] = useState(false)
   const [nama, setNama] = useState('');
-  const [price, setPrice] = useState('');
+  const [harga, setHarga] = useState('');
   const [categories_id, setCategoriesId] = useState('');
   
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(name == '' || categories_id == '' || price == ''){
+    if(nama == '' || categories_id == '' || harga == ''){
       alert('Data belum komplit!')
       return
     }
     const formData = new FormData();
     formData.append('categories_id', categories_id);
     formData.append('nama', nama); 
-    formData.append('harga', price); 
+    formData.append('harga', harga); 
   
     // Mengirim permintaan POST menggunakan Inertia.postFormData
     Inertia.post('/adminstore', formData).then(() => {
       setNama('');
-      setPrice('');
-      setImage(null); 
+      setHarga('');
 
       Inertia.reload();
     });
@@ -71,7 +70,7 @@ function Menu({menus, categories}) {
                 </select>
               </div>
               <div className="flex-col flex w-full gap-x-[20px] md:mt-[40px] md:flex-row">
-                <TextInput className='w-full my-[15px] md:w-[383px] md:h-[50px] md:my-0' type='number' placeholder='Harga' value={price} onChange={(e) => setPrice(e.target.value)} required/>
+                <TextInput className='w-full my-[15px] md:w-[383px] md:h-[50px] md:my-0' type='number' placeholder='Harga' value={harga} onChange={(e) => setHarga(e.target.value)} required/>
                 <div className='flex-1 flex md:justify-end'>
                   <div className="w-full flex relative items-center md:w-[249px]">
                     <Checklist className='absolute left-[36%] sm:left-[40%] md:left-[60px]'/>
