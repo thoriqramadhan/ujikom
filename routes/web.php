@@ -38,15 +38,15 @@ Route::get('/', function () {
 Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController::class, 'destroy'])
     ->name('logout');
     
-    // //page untuk kasir
-    // Route::middleware('auth')->group(function () {
+    //page untuk kasir
+    Route::middleware('auth')->group(function () {
         // Halaman untuk kasir
         Route::get('/kasir', [MenuController::class, 'index']);
         Route::post('/kasirstore', [MenuController::class, 'store']);
         Route::patch('/kasir', [MenuController::class, 'updateUser']);
         Route::post('/kasir/{id}', [MenuController::class, 'edit']);
         Route::post('/kasirstorespontan', [MenuController::class, 'storeSpontan']);
-    // });
+    });
   
     //Routes yang bisa diakses hanya oleh admin di masukkan ke sini
     Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {

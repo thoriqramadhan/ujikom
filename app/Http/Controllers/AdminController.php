@@ -38,21 +38,28 @@ class AdminController extends Controller
      * Show the form for creating a new resource.
      */
     public function create(Request $request)
-    {
-        $validatedData = $request->validate([
-            'categories_id' => 'required|exists:categories,id',
-            'nama' => 'required|string',
-            'harga' => 'required|integer',
-        ]);
+{
+    $validatedData = $request->validate([
+        'categories_id' => 'required|string',
+        'nama' => 'required|string',
+        'harga' => 'required|integer',
+    ]);
 
-        $menu = Menu::create([
-            'categories_id' => $validatedData['categories_id'],
-            'nama' => $validatedData['nama'],
-            'harga' => $validatedData['harga'],
-        ]);
 
-        return redirect()->back();
+    $category = Category::where('kategori', $validatedData['categories_id'])->first();
+
+    if (!$category) {
+        return redirect()->back()->with('error', 'Kategori tidak valid.');
     }
+
+    $menu = Menu::create([
+        'categories_id' => $category->id,
+        'nama' => $validatedData['nama'],
+        'harga' => $validatedData['harga'],
+    ]);
+
+    return redirect()->back()->with('success', 'Menu berhasil ditambahkan.');
+}
 
     /**
      * Store a newly created resource in storage.

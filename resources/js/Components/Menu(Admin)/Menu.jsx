@@ -10,27 +10,26 @@ import { Inertia } from '@inertiajs/inertia';
 function Menu({menus, categories}) {
   const [openModal , setOpenModal] = useState(false)
   const [nama, setNama] = useState('');
-  const [price, setPrice] = useState('');
+  const [harga, setHarga] = useState('');
   const [categories_id, setCategoriesId] = useState('');
   const [mode , setMode] = useState('Kategori')
   
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if(name == '' || categories_id == '' || price == ''){
+    if(nama == '' || categories_id == '' || harga == ''){
       alert('Data belum komplit!')
       return
     }
     const formData = new FormData();
     formData.append('categories_id', categories_id);
     formData.append('nama', nama); 
-    formData.append('harga', price); 
+    formData.append('harga', harga); 
   
     // Mengirim permintaan POST menggunakan Inertia.postFormData
     Inertia.post('/adminstore', formData).then(() => {
-      setName('');
-      setPrice('');
-      setImage(null); 
+      setNama('');
+      setHarga('');
 
       Inertia.reload();
     });
@@ -68,7 +67,6 @@ function Menu({menus, categories}) {
               <option value="Kategori">Kategori</option>
             </select>
             {/* body */}
-
             {
               mode == 'Menu' ?
               (
@@ -91,6 +89,7 @@ function Menu({menus, categories}) {
                         <button className='w-full text-lg md:w-[249px] py-[10px] rounded-xl text-white bg-[#7D5E42]' type='submit'>Simpan</button>
                       </div>
                     </div>
+
                   </div>
                 </div>
                 </>

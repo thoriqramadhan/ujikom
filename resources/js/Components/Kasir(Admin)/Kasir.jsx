@@ -9,69 +9,105 @@ import TrashSvg from "../svgComp/TrashSvg";
 import ViewHideSvg from "../svgComp/ViewHideSvg";
 import Dropdown from "../Dropdown";
 import DropdownSvg from "../svgComp/DropdownSvg";
-import { Inertia } from '@inertiajs/inertia';
+import { Inertia } from "@inertiajs/inertia";
 
 const dataOrder = [
     {
-        customer_name: "customer_name",
-        order_time: "order_time",
+        first_name: "customer_name",
+        last_name: "order_time",
+        email: "A@gmail.com",
         status: "status",
     },
     {
-        customer_name: "customer_name",
-        order_time: "order_time",
+        first_name: "customer_name",
+        last_name: "order_time",
+        email: "A@gmail.com",
         status: "status",
     },
     {
-        customer_name: "customer_name",
-        order_time: "order_time",
+        first_name: "customer_name",
+        last_name: "order_time",
+        email: "A@gmail.com",
         status: "status",
     },
     {
-        customer_name: "customer_name",
-        order_time: "order_time",
+        first_name: "customer_name",
+        last_name: "order_time",
+        email: "A@gmail.com",
+        status: "status",
+    },
+    {
+        first_name: "customer_name",
+        last_name: "order_time",
+        email: "A@gmail.com",
         status: "status",
     },
 ];
 
 function Kasir({ users, onlykasir }) {
-    const [DataUser , setDataUser] = useState(users || '')
-    const [DataOnlyKasir , setOnlyKasir] = useState(onlykasir || '')
+    const [openModal, setOpenModal] = useState(false);
+    const [DataUser, setDataUser] = useState(users || "");
+    const [DataOnlyKasir, setOnlyKasir] = useState(onlykasir || "");
     console.log(DataOnlyKasir);
     const [open, setOpen] = useState(false);
-    const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [role, setRole] = useState('');
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+    const [role, setRole] = useState("");
 
     const handleSubmit = (e) => {
         e.preventDefault();
-    
+
         // Membuat objek FormData untuk mengirim data formulir
         const formData = new FormData();
-        formData.append('first_name', firstName);
-        formData.append('last_name', lastName);
-        formData.append('email', email);
-        formData.append('password', password);
-        formData.append('role', role); // Mengirim gambar sebagai bagian dari FormData
-    
+        formData.append("first_name", firstName);
+        formData.append("last_name", lastName);
+        formData.append("email", email);
+        formData.append("password", password);
+        formData.append("role", role); // Mengirim gambar sebagai bagian dari FormData
+
         // Mengirim permintaan POST menggunakan Inertia.postFormData
-        Inertia.post('/admin', formData).then(() => {
-          // Mereset nilai formulir setelah submit
-          setFirstName('');
-          setLastName('');
-          setEmail('');
-          setPassword('');
-          setRole('');
-           // Mereset gambar menjadi null
-    
-          // Me-refresh halaman untuk mendapatkan daftar produk terbaru
-          Inertia.reload();
+        Inertia.post("/admin", formData).then(() => {
+            // Mereset nilai formulir setelah submit
+            setFirstName("");
+            setLastName("");
+            setEmail("");
+            setPassword("");
+            setRole("");
+            // Mereset gambar menjadi null
+
+            // Me-refresh halaman untuk mendapatkan daftar produk terbaru
+            Inertia.reload();
         });
-      };
+    };
     return (
         <BodyLayout>
+            <div className={`flex justify-center relative transition-all duration-1000 ${openModal ? 'translate-x-0 z-10' : '-translate-x-[2000px]'}`}>
+                <div className="  h-[400px] w-[300px] absolute z-10 mt-[200px] rounded-2xl bg-white border-[3px] border-gray-400">
+                    <div className=" font-bold pt-3 flex-row text-center">
+                    <button className='w-[105px] py-[10px] rounded-xl border bg-white' onClick={()=>{setOpenModal(!openModal)} }> {'<'} Kembali</button>
+                        <h3 className="text-2xl">Detail Kasir</h3>
+                        <p>Lihat Detail 😀</p>
+                    </div>
+                    <div className="grid grid-cols-2 text-center mt-10">
+                        <p className="font-bold text-gray-700">Nama:</p>
+                        <p className="font-bold">Justin</p>
+                        <p className="font-bold text-gray-700">Jam:</p>
+                        <p className="font-bold">08:35</p>
+                        <p className="font-bold text-gray-700">Status:</p>
+                        <p className="font-bold"> Aktif</p>
+                    </div>
+                    <div className="mt-10 grid grid-cols-1 px-5 gap-2 font-bold text-[#747474]">
+                        <button className="bg-[#e8e8e8] py-3  rounded-xl">
+                            Edit
+                        </button>
+                        <button className="bg-[#e8e8e8] py-3  rounded-xl">
+                            Hapus
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div className="w-full  sm:px-[20px] lg:px-[35px] lg:flex-row lg:gap-x-[30px]">
                 <div className="w-full h-fit pt-[50px] lg:grow lg:basis-1/2">
                     <LogoDate />
@@ -95,7 +131,7 @@ function Kasir({ users, onlykasir }) {
                         </th>
                         <th></th>
                     </tr>
-                    {DataOnlyKasir.map((onlykasir) => {
+                    {onlykasir.map((onlykasir) => {
                         return (
                             <tr className="h-fit border-bottom-1 border-x-[1px] border-gray-300 border-b-[1px]">
                                 <TableData text={onlykasir.first_name} />
@@ -125,7 +161,7 @@ function Kasir({ users, onlykasir }) {
                                             | Hapus
                                         </span>
                                     </button>
-                                    <button className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border flex xl:hidden ">
+                                    <button className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border flex xl:hidden " onClick={()=>{setOpenModal(!openModal)}}>
                                         <span className="opacity-60 mx-auto">
                                             Detail
                                         </span>
@@ -141,116 +177,129 @@ function Kasir({ users, onlykasir }) {
                     <h1 className="text-xl font-[1000]">Tambah Kasir</h1>
                     <p>Tambah Kasir Anda 😀</p>
                     <form onSubmit={handleSubmit} encType="multipart/form-data">
-                    <div className="my-5 space-y-4 sm:flex-col">
-                        <div className="flex flex-col gap-4 md:flex-row">
-                            <div className="w-full border-[1.4px] border-gray-400 rounded-xl xl:basis-1/4">
-                                <TextInput
-                                    className="w-full rounded-xl"
-                                    type="text"
-                                    id="firstName"
-                                    value={firstName}
-                                    onChange={(e) => setFirstName(e.target.value)}
-                                    required
-                                    placeholder="Nama Depan"
-                                />
-                            </div>
-                            <div className="w-full border-[1.4px] border-gray-400 rounded-xl xl:basis-1/4">
-                                <TextInput
-                                    className="w-full rounded-xl"
-                                    type="text"
-                                    id="lastName"
-                                    value={lastName}
-                                    onChange={(e) => setLastName(e.target.value)}
-                                    required
-                                    placeholder="Nama Belakang"
-                                />
-                            </div>
-                            <div className="w-full border-[1.4px] border-gray-400 rounded-xl xl:basis-2/4">
-                                <TextInput
-                                    className="w-full rounded-xl"
-                                    type="text"
-                                    id="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    required
-                                    placeholder="Email"
-                                />
-                            </div>
-                        </div>
-
-                        <div className="flex flex-col gap-4 md:flex-row">
-                            {/* ROLE */}
-                            <div class="relative basis-1/4">
-                                <input
-                                    type="text"
-                                    id="role"
-                                    value={role}
-                                    onChange={(e) => setRole(e.target.value)}
-                                    required
-                                    class="w-full border-[1.4px] border-gray-400 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500"
-                                    placeholder="Role"
-                                />
-                                <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                    <svg
-                                        class="h-5 w-5 text-gray-500"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                            clip-rule="evenodd"
-                                        />
-                                    </svg>
+                        <div className="my-5 space-y-4 sm:flex-col">
+                            <div className="flex flex-col gap-4 md:flex-row">
+                                <div className="w-full border-[1.4px] border-gray-400 rounded-xl xl:basis-1/4">
+                                    <TextInput
+                                        className="w-full rounded-xl"
+                                        type="text"
+                                        id="firstName"
+                                        value={firstName}
+                                        onChange={(e) =>
+                                            setFirstName(e.target.value)
+                                        }
+                                        required
+                                        placeholder="Nama Depan"
+                                    />
                                 </div>
-                                <div class="absolute mt-2 w-full bg-white rounded-xl shadow-lg z-10 hidden">
-                                    <ul class="py-1">
-                                        <li>
-                                            <a
-                                                href="#"
-                                                class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                                            >
-                                                Option 1
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="#"
-                                                class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                                            >
-                                                Option 2
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a
-                                                href="#"
-                                                class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                                            >
-                                                Option 3
-                                            </a>
-                                        </li>
-                                    </ul>
+                                <div className="w-full border-[1.4px] border-gray-400 rounded-xl xl:basis-1/4">
+                                    <TextInput
+                                        className="w-full rounded-xl"
+                                        type="text"
+                                        id="lastName"
+                                        value={lastName}
+                                        onChange={(e) =>
+                                            setLastName(e.target.value)
+                                        }
+                                        required
+                                        placeholder="Nama Belakang"
+                                    />
+                                </div>
+                                <div className="w-full border-[1.4px] border-gray-400 rounded-xl xl:basis-2/4">
+                                    <TextInput
+                                        className="w-full rounded-xl"
+                                        type="text"
+                                        id="email"
+                                        value={email}
+                                        onChange={(e) =>
+                                            setEmail(e.target.value)
+                                        }
+                                        required
+                                        placeholder="Email"
+                                    />
                                 </div>
                             </div>
 
-                            {/* PASSWORD */}
-                            <div className="w-ful border-[1.4px] relative border-gray-400 rounded-xl xl:basis-2/4">
-                                <TextInput
-                                    className="w-full rounded-xl"
-                                    type="password"
-                                    id="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    required
-                                    placeholder="Password"
-                                />
-                                <ViewHideSvg />
+                            <div className="flex flex-col gap-4 md:flex-row">
+                                {/* ROLE */}
+                                <div class="relative basis-1/4">
+                                    <input
+                                        type="text"
+                                        id="role"
+                                        value={role}
+                                        onChange={(e) =>
+                                            setRole(e.target.value)
+                                        }
+                                        required
+                                        class="w-full border-[1.4px] border-gray-400 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500"
+                                        placeholder="Role"
+                                    />
+                                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
+                                        <svg
+                                            class="h-5 w-5 text-gray-500"
+                                            viewBox="0 0 20 20"
+                                            fill="currentColor"
+                                        >
+                                            <path
+                                                fill-rule="evenodd"
+                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                                                clip-rule="evenodd"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div class="absolute mt-2 w-full bg-white rounded-xl shadow-lg z-10 hidden">
+                                        <ul class="py-1">
+                                            <li>
+                                                <a
+                                                    href="#"
+                                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                                                >
+                                                    Option 1
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="#"
+                                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                                                >
+                                                    Option 2
+                                                </a>
+                                            </li>
+                                            <li>
+                                                <a
+                                                    href="#"
+                                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
+                                                >
+                                                    Option 3
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                {/* PASSWORD */}
+                                <div className="w-ful border-[1.4px] relative border-gray-400 rounded-xl xl:basis-2/4">
+                                    <TextInput
+                                        className="w-full rounded-xl"
+                                        type="password"
+                                        id="password"
+                                        value={password}
+                                        onChange={(e) =>
+                                            setPassword(e.target.value)
+                                        }
+                                        required
+                                        placeholder="Password"
+                                    />
+                                    <ViewHideSvg />
+                                </div>
+                                <button
+                                    className="w-full h-fit bg-[#7d5e42] text-white py-2 rounded-lg xl:basis-1/4"
+                                    type="submit"
+                                >
+                                    Simpan
+                                </button>
                             </div>
-                            <button className="w-full h-fit bg-[#7d5e42] text-white py-2 rounded-lg xl:basis-1/4" type="submit">
-                                Simpan
-                            </button>
                         </div>
-                    </div>
                     </form>
                 </div>
                 <div className="hidden">
