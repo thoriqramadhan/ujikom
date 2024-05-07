@@ -112,15 +112,13 @@ function Menu({ menus, categories }) {
                   </div>
                 </>
               ) : (
-                <div className="w-full h-fit flex flex-col items-end">
-                  <form onSubmit={handleSubmitKategori}>
+                  <form onSubmit={handleSubmitKategori} className='w-full h-fit flex flex-col items-end'>
                     <TextInput className='w-full' placeholder='Nama Kategori' value={kategori} onChange={(e) => setKategori(e.target.value)} required />
                     <div className="w-full flex relative items-center mt-5 md:w-[249px]">
                       <Checklist className='absolute left-[36%] sm:left-[40%] md:left-[60px]' />
                       <button className='w-full text-lg md:w-[249px] py-[10px] rounded-xl text-white bg-[#7D5E42]' type='submit'>Simpan</button>
                     </div>
                   </form>
-                </div>
               )}
             </div>
           </div>
