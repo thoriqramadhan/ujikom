@@ -12,7 +12,7 @@ function BodyLayout({children , className}) {
     <div className={`px-[30px] pb-[80px] w-full h-[100vh] overflow-scroll ${className || ''}`}>
     {children}
     </div> :
-    <div className={`flex flex-col flex-1 h-fit ${className || 'ml-16'}`}>
+    <div className={`flex flex-col flex-1 h-fit ${'ml-20'} mr-5`}>
     {children}
     </div>
     }
