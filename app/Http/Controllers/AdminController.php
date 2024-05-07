@@ -40,25 +40,38 @@ class AdminController extends Controller
     public function create(Request $request)
 {
     $validatedData = $request->validate([
-        'categories_id' => 'required|string',
+        'categories_id' => 'required|integer',
         'nama' => 'required|string',
         'harga' => 'required|integer',
     ]);
 
 
-    $category = Category::where('kategori', $validatedData['categories_id'])->first();
+    $category = Category::where('id', $validatedData['categories_id'])->first();
 
     if (!$category) {
         return redirect()->back()->with('error', 'Kategori tidak valid.');
     }
 
-    $menu = Menu::create([
+    Menu::create([
         'categories_id' => $category->id,
         'nama' => $validatedData['nama'],
         'harga' => $validatedData['harga'],
     ]);
 
     return redirect()->back()->with('success', 'Menu berhasil ditambahkan.');
+}
+
+public function createkategori(Request $request)
+{
+    $validatedData = $request->validate([
+        'kategori' => 'required|string',
+    ]);
+
+    Category::create([
+        'kategori' => $validatedData['kategori'],
+    ]);
+
+    return redirect()->back()->with('success', 'Kategori berhasil ditambahkan.');
 }
 
     /**

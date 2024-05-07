@@ -54,6 +54,7 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController
         Route::get('/admin', [AdminController::class, 'index']);
         Route::post('/admin', [AdminController::class, 'store']);
         Route::post('/adminstore', [AdminController::class, 'create']);
+        Route::post('/adminkategori', [AdminController::class, 'createkategori']);
 
     });
     
