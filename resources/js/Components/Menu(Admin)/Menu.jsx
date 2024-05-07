@@ -8,11 +8,11 @@ import Checklist from '../svgComp/Checklist'
 import { Inertia } from '@inertiajs/inertia';
 
 function Menu({menus, categories}) {
-  console.log(categories)
   const [openModal , setOpenModal] = useState(false)
   const [nama, setNama] = useState('');
   const [price, setPrice] = useState('');
   const [categories_id, setCategoriesId] = useState('');
+  const [mode , setMode] = useState('Kategori')
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -41,7 +41,7 @@ function Menu({menus, categories}) {
   },[categories_id])
 
   return (
-    <BodyLayout className={'md:ml-20 md:mr-5'}>
+    <BodyLayout className={'md:mr-5'}>
       {/* Headers */}
       <div className="mt-[40px] lg:w-full">
       <LogoDate/>
@@ -50,36 +50,63 @@ function Menu({menus, categories}) {
       <div className={`w-full relative transition-all duration-1000 ${openModal ? 'translate-x-0 z-10' : '-translate-x-[2000px]'}`}>
         <div className="w-full h-[80vh] bg-white absolute">
           {/* modal header */}
-          <div className="flex mt-[40px]">
+          <div className="flex items-center mt-[40px]">
             <div className="flex-1 ">
-              <p className='text-xl font-bold'>Tambah Menu</p>
-              <p>Tambah variasi menu yang anda punya 😀</p>
+              <p className='text-xl font-bold'>Tambah Item</p>
+              <p>Tambah variasi menu dan kategori yang anda punya 😀 </p>
             </div>
-            <button className='w-[105px] py-[10px] rounded-xl border bg-white' type='button' onClick={()=>{setOpenModal(!openModal)} }> {'<'} Kembali</button>
+            <select name="" id="" value={mode} onChange={(e)=>{setMode(e.target.value)}} className='hidden h-fit py-[12px] border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg shadow-sm mr-5 md:block'>
+              <option value="Menu">Tambah Menu</option>
+              <option value="Kategori">Tambah Kategori</option>
+            </select>
+            <button className='w-[105px] h-fit py-[12px] rounded-xl border bg-white' type='button' onClick={()=>{setOpenModal(!openModal)} }> {'<'} Kembali</button>
           </div>
           {/* modal body */}
           <div className="mt-[40px]  w-full flex flex-col items-center  md:flex-row md:gap-x-[20px]">
-            <div className="w-[175px] h-[175px] bg-gray-400 rounded-xl"></div>
+            <select name="" id="" value={mode} onChange={(e)=>{setMode(e.target.value)}} className='w-full mb-5 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm md:hidden'>
+              <option value="Menu">Menu</option>
+              <option value="Kategori">Kategori</option>
+            </select>
             {/* body */}
-            <div className="flex-1 w-full mb-[100px] md:mb-0">
-              <div className="flex flex-col w-full md:flex-row md:gap-x-[20px]">
-                <TextInput className='w-full md:w-[383px] md:h-[50px] my-[15px] md:my-0' placeholder='Nama Menu' value={nama} onChange={(e) => setNama(e.target.value)} required/>
-                <select name="" id="" className='w-full flex-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' onChange={(e)=> setCategoriesId(e.target.value)} required>
-                  {categories.map(item => (
-                    <option value={item.kategori}>{item.kategori}</option>
-                  ))}
-                </select>
-              </div>
-              <div className="flex-col flex w-full gap-x-[20px] md:mt-[40px] md:flex-row">
-                <TextInput className='w-full my-[15px] md:w-[383px] md:h-[50px] md:my-0' type='number' placeholder='Harga' value={price} onChange={(e) => setPrice(e.target.value)} required/>
-                <div className='flex-1 flex md:justify-end'>
-                  <div className="w-full flex relative items-center md:w-[249px]">
-                    <Checklist className='absolute left-[36%] sm:left-[40%] md:left-[60px]'/>
-                    <button className='w-full text-lg md:w-[249px] py-[10px] rounded-xl text-white bg-[#7D5E42]' type='submit'>Simpan</button>
+
+            {
+              mode == 'Menu' ?
+              (
+                <>
+                <div className="w-[175px] h-[175px] bg-gray-400 rounded-xl"></div>
+                <div className="flex-1 w-full mb-[100px] md:mb-0">
+                  <div className="flex flex-col w-full md:flex-row md:gap-x-[20px]">
+                    <TextInput className='w-full md:w-[383px] md:h-[50px] my-[15px] md:my-0' placeholder='Nama Menu' value={nama} onChange={(e) => setNama(e.target.value)} required/>
+                    <select name="" id=""  className='w-full flex-1 border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' onChange={(e)=> setCategoriesId(e.target.value)} required>
+                      {categories.map(item => (
+                        <option value={item.kategori}>{item.kategori}</option>
+                      ))}
+                    </select>
+                  </div>
+                  <div className="flex-col flex w-full gap-x-[20px] md:mt-[40px] md:flex-row">
+                    <TextInput className='w-full my-[15px] md:w-[383px] md:h-[50px] md:my-0' type='number' placeholder='Harga' value={price} onChange={(e) => setPrice(e.target.value)} required/>
+                    <div className='flex-1 flex md:justify-end'>
+                      <div className="w-full flex relative items-center md:w-[249px]">
+                        <Checklist className='absolute left-[36%] sm:left-[40%] md:left-[60px]'/>
+                        <button className='w-full text-lg md:w-[249px] py-[10px] rounded-xl text-white bg-[#7D5E42]' type='submit'>Simpan</button>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              </div>
-            </div>
+                </>
+              ) :
+              (
+                <>
+                <div className="w-full h-fit flex flex-col items-end">
+                  <TextInput className='w-full' placeholder='Nama Kategori'/>
+                  <div className="w-full flex relative items-center mt-5 md:w-[249px]">
+                      <Checklist className='absolute left-[36%] sm:left-[40%] md:left-[60px]'/>
+                      <button className='w-full text-lg md:w-[249px] py-[10px] rounded-xl text-white bg-[#7D5E42]' type='submit'>Simpan</button>
+                  </div>
+                </div>
+                </>
+              )
+            }
           </div>
         </div>
       </div>
