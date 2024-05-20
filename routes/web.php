@@ -6,6 +6,7 @@ use App\Http\Controllers\ProfileController;
 use App\Models\Admin;
 use App\Models\Menu;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -57,6 +58,7 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController
         Route::post('/adminkategori', [AdminController::class, 'createkategori']);
 
     });
+
     
     
 

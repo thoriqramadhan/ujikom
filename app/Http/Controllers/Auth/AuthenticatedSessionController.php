@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Middleware\OnlineUser;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Http\RedirectResponse;
@@ -36,7 +37,10 @@ class AuthenticatedSessionController extends Controller
     
         // Mendapatkan informasi pengguna yang baru saja berhasil login
         $user = $request->user();
-    
+
+        // Menjalankan middleware OnlineUser untuk memperbarui status online pengguna
+        $request->route()->middleware('web', OnlineUser::class);
+
         // Memeriksa peran pengguna dan mengarahkannya ke rute yang sesuai
         if ($user->isAdmin()) {
             return redirect('/admin');
