@@ -10,6 +10,7 @@ import DashedLine from '../DashedLine';
 import TableData from '../TableData'
 import { Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
+import PopUp from '../PopUp';
 
 function Menu({menus , categories, order}) {
     const [openSide, setOpenSide] = useState(false);
@@ -32,8 +33,6 @@ function Menu({menus , categories, order}) {
       ]
     }
     )
-    useEffect(()=>{
-    },[modalData])
     const [buyersMoney , setBuyersMoney] = useState(0)
     let total = buyersMoney - parseFloat(modalData.total)|| 0
     function clientHandler(e){
@@ -59,10 +58,17 @@ function closeHandler(){
         Inertia.reload();
       });
     };
-    
+    const [condition , setCondition] = useState(false)
+    const [popUpMsg , setPopUpMsg] = useState('')
+    const handlePopUp = (msg)=> {
+      setCondition(!condition)
+      setPopUpMsg(msg)
+      console.log(condition , msg)
+    }
   return (
     <>
     <Head title='Menu'/>
+      <PopUp condition={condition} msg={popUpMsg} setCondition={setCondition}/>
     <BodyLayout>
       <div className="pt-[40px] px-[40px] flex justify-between" id='header'>
             <LogoDate/>
@@ -76,7 +82,7 @@ function closeHandler(){
             <MenuTab categories={categories} menus={menus} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
           </div>
     </BodyLayout>
-        <MenuHistory openModal={openModal} setOpenModal={setOpenModal} setModalData={setModalData} openSide={openSide} setOpenSide={setOpenSide} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
+        <MenuHistory handlePopUp={handlePopUp}  openModal={openModal} setOpenModal={setOpenModal} setModalData={setModalData} openSide={openSide} setOpenSide={setOpenSide} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
       <div onClick={()=> setOpenSide(true)} className={`w-[50px] h-[50px] bg-[#7D5E42] rounded-full fixed flex justify-center items-center text-2xl text-white right-4 top-1/2 cursor-pointer ${openSide ? 'hidden' : 'block'}`}>{'<'}</div>
       
 {/* Modal */}
