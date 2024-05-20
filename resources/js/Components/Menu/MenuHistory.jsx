@@ -6,17 +6,18 @@ import { Inertia } from '@inertiajs/inertia';
 import axios from 'axios';
 import { Head } from '@inertiajs/react';
 
-function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood, onSubmitOrder }) {
+function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood, onSubmitOrder , handlePopUp}) {
   const [customerName, setCustomerName] = useState('');
   const subHarga = selectedFood.reduce((total, item) => {
     return total + item.totalHarga;
   }, 0);
   const tax = subHarga * 0.1;
+  
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if(customerName == ''){
-      alert('Nama Pembeli Harus Diisi!')
+      handlePopUp('Nama harus di isi!')
       return
     }
 
@@ -45,10 +46,10 @@ function MenuHistory({ openModal , setOpenModal, setModalData, openSide, setOpen
     e.preventDefault();
     
     if(customerName == ''){
-      alert('Nama Pembeli Harus Diisi!')
+      handlePopUp('Nama harus di isi!')
       return
     }else if(selectedFood.length == 0){
-      alert('Pesanan harus di isi!')
+      handlePopUp('Pesanan harus di isi!')
       return
     }
     // Membuat objek FormData untuk mengirim data formulir
