@@ -36,7 +36,7 @@ const Admin = ({users, loginuser, onlykasir, menus, categories}) => {
   const [screenWidth,setScreenWidth] = useState(window.innerWidth || JSON.parse(localStorage.getItem('SCREEN_WiDTH')))
   useEffect(()=>{
     if(clickedAt == 'Home'){
-      setUI(<Home/>)
+      setUI(<Home onlykasir={onlykasir}/>)
     }else if(clickedAt == 'Kasir'){
       setUI(<Kasir users={users} onlykasir={onlykasir} />)
     }else if(clickedAt == 'Menu'){

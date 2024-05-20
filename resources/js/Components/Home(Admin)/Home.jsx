@@ -52,7 +52,8 @@ const barData =[
     value: 50
   }
 ]
-function Home() {
+function Home({onlykasir}) {
+  console.log('ini kasir:', onlykasir)
   return (
     <BodyLayout>
       <div className="w-full h-[100vh] sm:px-[20px] lg:px-[35px] lg:flex lg:gap-x-[30px]">
@@ -93,14 +94,28 @@ function Home() {
             <p className='opacity-50'>Apa karyawanmu aktif?</p>
             <div className="mt-[15px] h-[135px] overflow-scroll">
 
-              {dailySell.map((items,index) => (
-                <div className={`${index % 2 === 0 ? 'bg-gray-200' : 'bg-white'} flex gap-x-[8px] justify-between items-center font-bold h-[45px] bg-gray-200 w-full px-[20px] rounded-[5px]`}>
-                <p>Fachry Fauzan</p>
-                <ul className='list-disc sm:list-none md:list-none lg:list-disc'>
-                  <li>Sedang Aktif</li>
-                </ul>
-              </div>
-              ))}
+      
+
+            {onlykasir && onlykasir.length > 0 ? (
+  onlykasir
+    // Urutkan daftar kasir berdasarkan status online
+    .sort((a, b) => (a['user-is-online'] === b['user-is-online'] ? 0 : a['user-is-online'] ? -1 : 1))
+    .map((kasir, index) => (
+      <div key={index} className={`${index % 2 === 0 ? 'bg-gray-200' : 'bg-white'} flex gap-x-[8px] justify-between items-center font-bold h-[45px] bg-gray-200 w-full px-[20px] rounded-[5px]`}>
+        <p>{kasir.first_name} {kasir.last_name}</p>
+        <ul className='list-disc sm:list-none md:list-none lg:list-disc'>
+          <li className={kasir['user-is-online'] ? 'text-green-500' : 'text-red-500'}>{kasir['user-is-online'] ? 'Online' : 'Tidak Aktif'}</li>
+        </ul>
+      </div>
+    ))
+) : (
+  <div>
+    <p>Tidak ada data kasir.</p>
+    {/* Sisipkan logika lain di sini sesuai kebutuhan */}
+  </div>
+)}
+
+
 
             </div>
           </div>

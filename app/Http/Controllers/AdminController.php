@@ -9,8 +9,10 @@ use App\Models\User;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
+
 
 class AdminController extends Controller
 {
@@ -25,12 +27,20 @@ class AdminController extends Controller
         $menus = Menu::all();
         $categories = Category::all();
 
+        foreach ($onlykasir as $kasir) {
+            if (Cache::has('user-is-online-' . $kasir->id)) {
+                $kasir['user-is-online'] = true;
+            } else {
+                $kasir['user-is-online'] = false;
+            }
+        }
+
         return Inertia::render('Admin/Admin', [
             'users' => $users,
             'loginuser' => $loginuser,
             'onlykasir' => $onlykasir,
             'menus' => $menus,
-            'categories' => $categories
+            'categories' => $categories,
         ]);
     }
 
@@ -105,7 +115,7 @@ public function createkategori(Request $request)
      */
     public function show(Admin $admin)
     {
-        //
+        
     }
 
     /**
