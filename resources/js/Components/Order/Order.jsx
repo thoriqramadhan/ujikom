@@ -8,6 +8,7 @@ import DashedLine from '../DashedLine'
 import ModalHistoryCard from './ModalHistoryCard'
 import { Head } from '@inertiajs/react'
 import {Inertia} from '@inertiajs/inertia'
+import { formatRupiah } from '@/module/rupiah-formater'
 
 function Order({orders, orderitems, orderbelumdibayar}) {
   const [currentPage , setcurrentPage] = useState(1)
@@ -194,7 +195,7 @@ console.log(orders.id)
                   <tr key={index} className='h-fit border-bottom-1'>
                     <TableData text={orderitems.name}/>
                     <TableData text={orderitems.items}/>
-                    <TableData text={orderitems.totalHarga} prop='K'/>
+                    <TableData text={formatRupiah(orderitems.totalHarga)}/>
                   </tr>
                   )
                 }
@@ -209,21 +210,21 @@ console.log(orders.id)
               <>
               <div className="w-full flex justify-between">
               <p className='opacity-30 font-bold'>Sub Total</p>
-              <p className='font-bold'>{bill.subTotal}K</p>
+              <p className='font-bold'>{formatRupiah(bill.subTotal)}</p>
             </div>
             <div className="w-full flex justify-between">
               <p className='opacity-30 font-bold'>{'Pajak (10%)'}</p>
-              <p className='font-bold'>{bill.tax}K</p>
+              <p className='font-bold'>{formatRupiah(bill.tax)}</p>
             </div>
             <DashedLine />
             <div className="w-full flex justify-between mt-[20px]">
               <p className='opacity-30 font-bold'>Total</p>
-              <p className='font-bold'>{bill.total}K</p>
+              <p className='font-bold'>{formatRupiah(bill.total)}</p>
             </div>
             <input type="number" name="" id="" className='mt-[20px]'  onChange={clientHandler} value={buyersMoney} placeholder='Uang Pembeli' />
             <div className="w-full flex justify-between mt-[20px] mb-[120px]">
               <p className='opacity-30 font-bold'>Kembalian</p>
-              <p className='font-bold'>{change.toFixed(2) || 0}K</p>
+              <p className='font-bold'>{formatRupiah(change) || 0}</p>
             </div>
               </>
             )
@@ -255,9 +256,9 @@ console.log(orders.id)
                 editModalData.map(menu => (
                   <div className="bg-white w-[230px] border shadow-lg  h-fit rounded-lg px-[15px] py-[15px]">
                       <div className="w-full h-[150px] rounded-lg bg-gray-400"></div>
-                      <div className="h-fit w-full flex justify-between mt-2">
+                      <div className="h-fit w-full flex flex-col justify-between mt-2">
                         <p className='font-bold text-[22px]'>{menu.name}</p>
-                        <p className='font-bold opacity-60 text-[20px]'>{menu.totalHarga}K</p>
+                        <p className='font-bold opacity-60 text-[20px]'>{formatRupiah(menu.totalHarga)}</p>
                       </div>
                       <button className='mt-[20px] w-full rounded-[18px] py-[15px] font-bold border-2 bg-[#F3F3F3]'>Hapus</button>
                   </div>

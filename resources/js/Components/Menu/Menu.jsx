@@ -11,6 +11,7 @@ import TableData from '../TableData'
 import { Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import PopUp from '../PopUp';
+import { formatRupiah } from '@/module/rupiah-formater';
 
 function Menu({menus , categories, order}) {
     const [openSide, setOpenSide] = useState(false);
@@ -82,7 +83,7 @@ function closeHandler(){
             <MenuTab categories={categories} menus={menus} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
           </div>
     </BodyLayout>
-        <MenuHistory handlePopUp={handlePopUp}  openModal={openModal} setOpenModal={setOpenModal} setModalData={setModalData} openSide={openSide} setOpenSide={setOpenSide} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
+        <MenuHistory formatRupiah={formatRupiah}  handlePopUp={handlePopUp}  openModal={openModal} setOpenModal={setOpenModal} setModalData={setModalData} openSide={openSide} setOpenSide={setOpenSide} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
       <div onClick={()=> setOpenSide(true)} className={`w-[50px] h-[50px] bg-[#7D5E42] rounded-full fixed flex justify-center items-center text-2xl text-white right-4 top-1/2 cursor-pointer ${openSide ? 'hidden' : 'block'}`}>{'<'}</div>
       
 {/* Modal */}

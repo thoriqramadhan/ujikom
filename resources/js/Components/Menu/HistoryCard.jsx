@@ -1,5 +1,6 @@
 import React, { useState , useEffect} from 'react'
 import TrashSvg from '../svgComp/TrashSvg';
+import { formatRupiah } from '@/module/rupiah-formater';
 
 function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
   let dataStrg = JSON.parse(localStorage.getItem('ORDER_HISTORY')) || []
@@ -54,7 +55,7 @@ function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
                 </div>
                 <div className="flex flex-col ml-[10px]">
                     <p className='text-[20px] font-bold mb-[8px]'>{name}</p>
-                    <p className='font-bold opacity-40'>{lastData.totalHarga || subTotal}K</p>
+                    <p className='font-bold opacity-40'>{formatRupiah(lastData.totalHarga) || formatRupiah(subTotal)}</p>
                 </div>
                 <div className="flex h-[100%] justify-end items-end pb-[10px] pr-[10px] flex-1">
                     <div onClick={decreaseHandler} className="w-[25px] h-[25px] bg-[#D9D9D9] rounded-full flex justify-center items-center text-white cursor-pointer">-</div>
