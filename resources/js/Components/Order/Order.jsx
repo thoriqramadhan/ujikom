@@ -149,29 +149,37 @@ console.log(orders.id)
           <th className='flex-2 opacity-60'>Status</th>
           <th className='w-[230px]'></th>
         </tr>
-        {currentPosts.map(orders => {
-        return (
-          <tr className='h-fit border-bottom border'>
-          <TableData text={orders.customer_name}/>
-          <TableData text={orders.order_time}/>
-          <TableData text={orders.status}/>
-          <div className="flex ">
-            <div className="h-[60px] w-[100%] flex items-center justify-center" onClick={()=>{editHandler(orders.id)}}>
-              <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
-              <span className='mr-[2px]'>I</span>
-              <span className="opacity-60">Edit</span>
-              </button>
-            </div>  
-            <div className="h-[60px] w-[100%] flex items-center justify-center">
-              <button className='w-[100px] py-[7px] bg-[#7D5E42] rounded-lg border-gray-400 border text-white'> 
-              <span className='mr-[2px]'>I</span>
-              <span className="" onClick={()=>{paymentHandler(orders.id)}}>Bayar</span>
-              </button>
-            </div>
-          </div>
+        {currentPosts.length == 0 ?
+        <tr className=''>
+          <td className=''>
+            tidak ada data
+          </td>
         </tr>
-        )
-      })}
+        :
+        currentPosts.map(orders => {
+          return (
+            <tr className='h-fit border-bottom border'>
+            <TableData text={orders.customer_name}/>
+            <TableData text={orders.order_time}/>
+            <TableData text={orders.status}/>
+            <div className="flex ">
+              <div className="h-[60px] w-[100%] flex items-center justify-center" onClick={()=>{editHandler(orders.id)}}>
+                <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
+                <span className='mr-[2px]'>I</span>
+                <span className="opacity-60">Edit</span>
+                </button>
+              </div>  
+              <div className="h-[60px] w-[100%] flex items-center justify-center">
+                <button className='w-[100px] py-[7px] bg-[#7D5E42] rounded-lg border-gray-400 border text-white'> 
+                <span className='mr-[2px]'>I</span>
+                <span className="" onClick={()=>{paymentHandler(orders.id)}}>Bayar</span>
+                </button>
+              </div>
+            </div>
+          </tr>
+          )
+        })
+        }
         
       </table>
 

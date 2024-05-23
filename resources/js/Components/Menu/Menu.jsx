@@ -39,9 +39,6 @@ function Menu({menus , categories, order}) {
     function clientHandler(e){
       setBuyersMoney(parseFloat(e.target.value))
     }
-function closeHandler(){
-      setOpenModal(!openModal)
-    }
     const handleSubmit = (e) => {
       e.preventDefault();
       const tax = modalData.tax;
