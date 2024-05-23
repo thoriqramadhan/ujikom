@@ -104,7 +104,7 @@ function closeHandler(){
                   <tr key={index} className='h-fit border-bottom-1'>
                     <TableData text={orders.name}/>
                     <TableData text={orders.items}/>
-                    <TableData text={orders.total} prop='K'/>
+                    <TableData text={formatRupiah(orders.total)}/>
                   </tr>
                 ))
               }
@@ -114,21 +114,21 @@ function closeHandler(){
           <div className="w-[330px] h-fit border rounded-xl bg-white flex flex-col justify-center py-[20px] px-[25px]">
           <div className="w-full flex justify-between">
             <p className='opacity-30 font-bold'>Sub Total</p>
-            <p className='font-bold'>{modalData.subTotal}K</p>
+            <p className='font-bold'>{formatRupiah(modalData.subTotal)}</p>
           </div>
           <div className="w-full flex justify-between">
             <p className='opacity-30 font-bold'>{'Pajak (10%)'}</p>
-            <p className='font-bold'>{modalData.tax}K</p>
+            <p className='font-bold'>{formatRupiah(modalData.tax)}</p>
           </div>
           <DashedLine />
           <div className="w-full flex justify-between mt-[20px]">
             <p className='opacity-30 font-bold'>Total</p>
-            <p className='font-bold'>{modalData.total}K</p>
+            <p className='font-bold'>{formatRupiah(modalData.total)}</p>
           </div>
           <input type="number" name="" id="" className='mt-[20px]'  onChange={clientHandler} value={buyersMoney} placeholder='Uang Pembeli' />
           <div className="w-full flex justify-between mt-[20px] mb-[120px]">
             <p className='opacity-30 font-bold'>Kembalian</p>
-            <p className='font-bold'>{total.toFixed(2) || 0}K</p>
+            <p className='font-bold'>{formatRupiah(total) || 0}</p>
           </div>
           <button onClick={handleSubmit}  className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
         </div>
