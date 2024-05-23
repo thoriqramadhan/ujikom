@@ -3,7 +3,7 @@ import MenuItemTab from './MenuItemTab'
 import MenuCard from './MenuCard'
 
 
-function MenuTab({categories , menus , selectedFood , setSelectedFood}) {
+function MenuTab({searchOutput, categories , menus , selectedFood , setSelectedFood}) {
     const [activeTab, setActiveTab] = useState('Semua')
 
     let activeCategories;
@@ -28,13 +28,19 @@ function MenuTab({categories , menus , selectedFood , setSelectedFood}) {
       <p className='text-3xl font-bold text-center'>Tidak ada data menu</p>
     </div> :
     <div className="w-full h-fit flex gap-6 px-[35px] justify-start flex-wrap">
-    {activeTab === 'Semua' ?
-        menus.map(menu => (
-          <MenuCard key={menu.id} id={menu.id} nama={menu.nama} harga={menu.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
-        )) :
-        menuOnCategories.map(menu => (
-          <MenuCard key={menu.id} id={menu.id} nama={menu.nama} harga={menu.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
-        ))
+    {searchOutput.length == 0 ? 
+      activeTab === 'Semua' ?
+      menus.map(menu => (
+        <MenuCard key={menu.id} id={menu.id} nama={menu.nama} harga={menu.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
+      )) :
+      menuOnCategories.map(menu => (
+        <MenuCard key={menu.id} id={menu.id} nama={menu.nama} harga={menu.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
+      )) 
+      : 
+      searchOutput.map(menu => (
+        <MenuCard key={menu.id} id={menu.id} nama={menu.nama} harga={menu.harga} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
+      ))
+
     }
   </div>
     }
