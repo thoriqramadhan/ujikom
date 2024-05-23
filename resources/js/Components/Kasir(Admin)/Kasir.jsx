@@ -55,6 +55,12 @@ function Kasir({ users, onlykasir }) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("");
+    console.log("ini role:", role);
+    const [mode, setMode] = useState("role");
+    const roles = [
+        { label: "kasir", value: 1 },
+        { label: "admin", value: 2 },
+    ];
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -83,10 +89,22 @@ function Kasir({ users, onlykasir }) {
     };
     return (
         <BodyLayout>
-            <div className={`flex justify-center relative transition-all duration-1000 ${openModal ? 'translate-x-0 z-10' : '-translate-x-[2000px]'}`}>
+            <div
+                className={`flex justify-center relative transition-all duration-1000 ${
+                    openModal ? "translate-x-0 z-10" : "-translate-x-[2000px]"
+                }`}
+            >
                 <div className="  h-[400px] w-[300px] absolute z-10 mt-[200px] rounded-2xl bg-white border-[3px] border-gray-400">
                     <div className=" font-bold pt-3 flex-row text-center">
-                    <button className='w-[105px] py-[10px] rounded-xl border bg-white' onClick={()=>{setOpenModal(!openModal)} }> {'<'} Kembali</button>
+                        <button
+                            className="w-[105px] py-[10px] rounded-xl border bg-white"
+                            onClick={() => {
+                                setOpenModal(!openModal);
+                            }}
+                        >
+                            {" "}
+                            {"<"} Kembali
+                        </button>
                         <h3 className="text-2xl">Detail Kasir</h3>
                         <p>Lihat Detail 😀</p>
                     </div>
@@ -161,7 +179,12 @@ function Kasir({ users, onlykasir }) {
                                             | Hapus
                                         </span>
                                     </button>
-                                    <button className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border flex xl:hidden " onClick={()=>{setOpenModal(!openModal)}}>
+                                    <button
+                                        className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border flex xl:hidden "
+                                        onClick={() => {
+                                            setOpenModal(!openModal);
+                                        }}
+                                    >
                                         <span className="opacity-60 mx-auto">
                                             Detail
                                         </span>
@@ -223,58 +246,19 @@ function Kasir({ users, onlykasir }) {
                             <div className="flex flex-col gap-4 md:flex-row">
                                 {/* ROLE */}
                                 <div class="relative basis-1/4">
-                                    <input
-                                        type="text"
-                                        id="role"
-                                        value={role}
+                                    <select
+                                        name=""
+                                        id=""
+                                        class="w-full border-[1.4px] border-gray-400 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500"
                                         onChange={(e) =>
                                             setRole(e.target.value)
                                         }
                                         required
-                                        class="w-full border-[1.4px] border-gray-400 rounded-xl px-4 py-2 focus:outline-none focus:border-blue-500"
-                                        placeholder="Role"
-                                    />
-                                    <div class="absolute inset-y-0 right-0 flex items-center px-2 pointer-events-none">
-                                        <svg
-                                            class="h-5 w-5 text-gray-500"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
-                                                clip-rule="evenodd"
-                                            />
-                                        </svg>
-                                    </div>
-                                    <div class="absolute mt-2 w-full bg-white rounded-xl shadow-lg z-10 hidden">
-                                        <ul class="py-1">
-                                            <li>
-                                                <a
-                                                    href="#"
-                                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                                                >
-                                                    Option 1
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    href="#"
-                                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                                                >
-                                                    Option 2
-                                                </a>
-                                            </li>
-                                            <li>
-                                                <a
-                                                    href="#"
-                                                    class="block px-4 py-2 text-gray-800 hover:bg-gray-200"
-                                                >
-                                                    Option 3
-                                                </a>
-                                            </li>
-                                        </ul>
-                                    </div>
+                                    >
+                                        <option>--Pilih Role--</option>
+                                        <option value="kasir">kasir</option>
+                                        <option value="admin">admin</option>
+                                    </select>
                                 </div>
 
                                 {/* PASSWORD */}
