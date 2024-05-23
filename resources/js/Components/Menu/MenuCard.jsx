@@ -1,5 +1,6 @@
 // MenuCard.jsx
 import React, { useEffect } from 'react';
+import { formatRupiah } from '@/module/rupiah-formater'
 
 function MenuCard({id, nama, harga , selectedFood, setSelectedFood }) {
   function selectedFoodHandler(){
@@ -15,7 +16,7 @@ function MenuCard({id, nama, harga , selectedFood, setSelectedFood }) {
       <div className="h-[156px] w-[230px] bg-[#F4F4F4] rounded-[25px]"></div>
       <div className="h-fit w-full flex justify-between mt-2">
         <p className='font-bold text-[22px]'>{nama}</p>
-        <p className='font-bold opacity-60 text-[20px]'>{harga}K</p>
+        <p className='font-bold opacity-60 text-[20px]'>{formatRupiah(harga)}</p>
       </div>
       <button onClick={selectedFoodHandler} className='w-[227px] h-[55px] bg-[#7D5E42] rounded-[18px] text-white text-[18px] absolute bottom-3 left-5'>
         <p className='font-[500]'>Tambah</p>

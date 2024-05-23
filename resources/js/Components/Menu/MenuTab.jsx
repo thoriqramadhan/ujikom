@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import MenuItemTab from './MenuItemTab'
 import MenuCard from './MenuCard'
 
+
 function MenuTab({categories , menus , selectedFood , setSelectedFood}) {
     const [activeTab, setActiveTab] = useState('Semua')
 

@@ -7,6 +7,7 @@ import TableData from '../TableData'
 import { useState } from 'react';
 import DashedLine from '../DashedLine'
 import { Head } from '@inertiajs/react'
+import { formatRupiah } from '@/module/rupiah-formater'
 
 const itemPost = [
   {
@@ -176,7 +177,7 @@ function History({orderselesai , orderitems}) {
                       <tr key={index} className='h-fit border-bottom-1'>
                         <TableData text={orderitems.name}/>
                         <TableData text={orderitems.items}/>
-                        <TableData text={`${orderitems.totalHarga}K`}/>
+                        <TableData text={formatRupiah(orderitems.totalHarga)}/>
                       </tr>
                       )
                     }
@@ -191,16 +192,16 @@ function History({orderselesai , orderitems}) {
                   <div className='flex-1'>
                   <div className="w-full flex justify-between">
                   <p className='opacity-30 font-bold'>Sub Total</p>
-                  <p className='font-bold'>{bill.total}K</p>
+                  <p className='font-bold'>{formatRupiah(bill.total)}</p>
                 </div>
                 <div className="w-full flex justify-between">
                   <p className='opacity-30 font-bold'>{'Pajak (10%)'}</p>
-                  <p className='font-bold'>{bill.tax.toFixed(2)}K</p>
+                  <p className='font-bold'>{formatRupiah(bill.tax)}</p>
                 </div>
                 <DashedLine />
                 <div className="w-full flex justify-between mt-[20px]">
                   <p className='opacity-30 font-bold'>Total</p>
-                  <p className='font-bold'>{bill.total + bill.tax}K</p>
+                  <p className='font-bold'>{formatRupiah(bill.total + bill.tax)}</p>
                 </div>
                   </div>
                 )
