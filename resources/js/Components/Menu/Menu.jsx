@@ -3,7 +3,6 @@ import TextInput from '@/Components/TextInput';
 import MenuTab from '@/Components/Menu/MenuTab';
 import MenuHistory from '@/Components/Menu/MenuHistory';
 import SearchSvg from '@/Components/svgComp/SearchSvg';
-import { stringify } from 'postcss';
 import BodyLayout from '@/Layouts/BodyLayout';
 import LogoDate from '../Logo_date';
 import DashedLine from '../DashedLine';
@@ -71,13 +70,19 @@ function Menu({menus , categories, order}) {
       setCondition(!condition)
       setPopUpMsg(msg)
     }
-    menus.forEach(element => {
-    });
     const searchHandler = (value) => {
       setSearchInput(value)
-      const searchResult = menus.filter((menus)=>{
-        return menus.nama.toLowerCase().includes(value.toLowerCase())
+      if(value.trim() === ''){
+        console.log('in kosong')
+        setSearchOutput([])
+        return
+      }
+      const trimmedValue = value.replace(/\s+/g, '').toLowerCase();
+      const searchResult = menus.filter((menu)=>{
+        const trimmedMenuName = menu.nama.replace(/\s+/g, '').toLowerCase(); // Menghapus semua spasi dari nama menu dan ubah ke huruf kecil
+        return trimmedMenuName.includes(trimmedValue);
       })
+      console.log(searchResult)
       setSearchOutput(searchResult)
     }
   return (

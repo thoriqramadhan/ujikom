@@ -5,7 +5,7 @@ import MenuCard from './MenuCard'
 
 function MenuTab({searchOutput, categories , menus , selectedFood , setSelectedFood}) {
     const [activeTab, setActiveTab] = useState('Semua')
-
+    console.log(searchOutput)
     let activeCategories;
     let menuOnCategories = menus
     if(activeTab !== 'Semua'){
