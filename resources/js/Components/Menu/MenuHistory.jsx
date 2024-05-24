@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import DashedLine from '../DashedLine';
 import HistoryCard from './HistoryCard';
@@ -38,48 +39,65 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
           name : food.name,
           total: food.totalHarga,
           items: food.items
+
         }
-      })
 
-    })
-  };
+        // Membuat objek FormData untuk mengirim data formulir
+        const formData = new FormData();
+        // formData.append('customer_name', customerName);
+        formData.append("selectedFood", JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
+        setOpenModal(!openModal);
+        setModalData({
+            name: customerName,
+            subTotal: `${subHarga}`,
+            tax: `${tax.toFixed(2)}`,
+            total: `${subHarga + tax}`,
+            menu: selectedFood.map((food) => {
+                return {
+                    name: food.name,
+                    total: food.totalHarga,
+                    items: food.items,
+                };
+            }),
+        });
+    };
 
-  const handleSubmitOrder = (e) => {
-    e.preventDefault();
-    
-    if(customerName == ''){
-      handlePopUp('Nama harus di isi!')
-      return
-    }else if(selectedFood.length == 0){
-      handlePopUp('Pesanan harus di isi!')
-      return
-    }
-    // Membuat objek FormData untuk mengirim data formulir
-    const order = {
-      customerName: customerName,
-      tax:tax,
-      totalHarga:subHarga + tax,
-      data: [...selectedFood]
-    }
+    const handleSubmitOrder = (e) => {
+        e.preventDefault();
 
-    console.log(order)
-    const formData = new FormData();
-    // formData.append('customer_name', customerName);
-    formData.append('order', JSON.stringify(order));
-    // formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
+        if (customerName == "") {
+            handlePopUp("Nama harus di isi!");
+            return;
+        } else if (selectedFood.length == 0) {
+            handlePopUp("Pesanan harus di isi!");
+            return;
+        }
+        // Membuat objek FormData untuk mengirim data formulir
+        const order = {
+            customerName: customerName,
+            tax: tax,
+            totalHarga: subHarga + tax,
+            data: [...selectedFood],
+        };
 
-    // Mengirim permintaan POST menggunakan Inertia.postFormData
-    localStorage.setItem('ORDER_HISTORY',JSON.stringify([]))
-    setCustomerName('')
-    setSelectedFood([])
-    Inertia.post('/kasirstore', formData).then(() => {
-      // Mereset nilai formulir setelah submit
-      // setCustomerName('');
+        console.log(order);
+        const formData = new FormData();
+        // formData.append('customer_name', customerName);
+        formData.append("order", JSON.stringify(order));
+        // formData.append('selectedFood', JSON.stringify(selectedFood)); // Mengirim gambar sebagai bagian dari FormData
 
-      // Me-refresh halaman untuk mendapatkan daftar produk terbaru
-      Inertia.reload();
-    })
-  };
+        // Mengirim permintaan POST menggunakan Inertia.postFormData
+        localStorage.setItem("ORDER_HISTORY", JSON.stringify([]));
+        setCustomerName("");
+        setSelectedFood([]);
+        Inertia.post("/kasirstore", formData).then(() => {
+            // Mereset nilai formulir setelah submit
+            // setCustomerName('');
+
+            // Me-refresh halaman untuk mendapatkan daftar produk terbaru
+            Inertia.reload();
+        });
+    };
 
 
   return (
@@ -118,9 +136,7 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
           <button onClick={handleSubmitOrder} className='flex-1 border-2 rounded-[18px]  font-bold'>Nanti</button>
           <button onClick={handleSubmit} className='flex-1 rounded-[18px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default MenuHistory;

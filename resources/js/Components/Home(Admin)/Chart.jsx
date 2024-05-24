@@ -10,7 +10,7 @@ function Chart() {
             <p className='font-bold text-lg'>Pendapatan Hari Ini</p>
             <p className='opacity-50'>Pantau pendapatan anda lewat sini.</p>
           </div>
-          <div className="w-full h-[250px] pt-[20px] flex justify-evenly items-end  relative">
+          <div className="w-full h-[286px] pt-[20px] flex justify-evenly items-end  relative">
             <ChartIndicator/>
             <TabData day={'Senin'} value={50}/>
             <TabData day={'Selasa'} value={70}/>

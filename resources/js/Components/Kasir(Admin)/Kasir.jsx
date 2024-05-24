@@ -57,11 +57,14 @@ function Kasir({ users, onlykasir, setModalData }) {
     const [role, setRole] = useState("");
     console.log("ini role:", role);
     const [mode, setMode] = useState("role");
+    // modalData
+    const [modalNama, setDataNama] = useState("");
+    const [modalEmail, setDataEmail] = useState("");
     const roles = [
         { label: "kasir", value: 1 },
         { label: "admin", value: 2 },
     ];
-
+    console.log("DataModalnya :");
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -88,6 +91,15 @@ function Kasir({ users, onlykasir, setModalData }) {
         });
 
     };
+
+
+    function detailHandler(id, first_name, email) {
+        console.log('in')
+        setOpenModal(!openModal);
+        setDataNama(first_name)
+        setDataEmail(email)
+    }
+
     const handleDelete = (id) => {
         if (window.confirm("Apakah Anda yakin ingin menghapus akun ini?")) {
           Inertia.delete(`/admin/${id}`).then(() => {
@@ -103,7 +115,7 @@ function Kasir({ users, onlykasir, setModalData }) {
                     openModal ? "translate-x-0 z-10" : "-translate-x-[2000px]"
                 }`}
             >
-                <div className="  h-[400px] w-[300px] absolute z-10 mt-[200px] rounded-2xl bg-white border-[3px] border-gray-400">
+                <div className="  h-[400px] w-[500px] absolute z-10 mt-[200px] rounded-2xl bg-white border-[3px] border-gray-400">
                     <div className=" font-bold pt-3 flex-row text-center">
                         <button
                             className="w-[105px] py-[10px] rounded-xl border bg-white"
@@ -117,13 +129,12 @@ function Kasir({ users, onlykasir, setModalData }) {
                         <h3 className="text-2xl">Detail Kasir</h3>
                         <p>Lihat Detail 😀</p>
                     </div>
+
                     <div className="grid grid-cols-2 text-center mt-10">
                         <p className="font-bold text-gray-700">Nama:</p>
-                        <p className="font-bold">Justin</p>
-                        <p className="font-bold text-gray-700">Jam:</p>
-                        <p className="font-bold">08:35</p>
-                        <p className="font-bold text-gray-700">Status:</p>
-                        <p className="font-bold"> Aktif</p>
+                        <p className="font-bold">{modalNama}</p>
+                        <p className="font-bold text-gray-700">Email:</p>
+                        <p className="font-bold">{modalEmail}</p>
                     </div>
                     <div className="mt-10 grid grid-cols-1 px-5 gap-2 font-bold text-[#747474]">
                         <button className="bg-[#e8e8e8] py-3  rounded-xl">
@@ -135,6 +146,10 @@ function Kasir({ users, onlykasir, setModalData }) {
                     </div>
                 </div>
             </div>
+
+
+
+
             <div className="w-full  sm:px-[20px] lg:px-[35px] lg:flex-row lg:gap-x-[30px]">
                 <div className="w-full h-fit pt-[50px] lg:grow lg:basis-1/2">
                     <LogoDate />
@@ -191,7 +206,11 @@ function Kasir({ users, onlykasir, setModalData }) {
                                     <button
                                         className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border flex xl:hidden "
                                         onClick={() => {
-                                            setOpenModal(!openModal);
+                                            detailHandler(
+                                                onlykasir.id,
+                                                onlykasir.first_name,
+                                                onlykasir.email
+                                            );
                                         }}
                                     >
                                         <span className="opacity-60 mx-auto">
@@ -294,36 +313,6 @@ function Kasir({ users, onlykasir, setModalData }) {
                             </div>
                         </div>
                     </form>
-                </div>
-                <div className="hidden">
-                    <div className="w-[350px] h-40px] border-[3px] mx-auto z-10 rounded-xl flex ">
-                        <div className="flex-row mx-auto mt-[30px]">
-                            <h1 className="text-2xl font-bold text-center mt-3">
-                                Detail Kasir
-                            </h1>
-                            <p className="font-bold text-center text-md">
-                                Lihat Kasir😀
-                            </p>
-                            <div className="grid grid-cols-2 gap-2 mt-4 text-center">
-                                <p className="text-gray-600 font-bold">Nama:</p>
-                                <p className="">Justin</p>
-                                <p className="text-gray-600 font-bold">Jam:</p>
-                                <p className="">08.35</p>
-                                <p className="text-gray-600 font-bold">
-                                    Status:
-                                </p>
-                                <p className="">Aktif</p>
-                            </div>
-                            <div className="flex mb-[30px] mt-[20px]">
-                                <button className="hover:bg-[#7d5e42] hover:text-white hover:border-none font-bold py-2 px-4 rounded w-[100px] border border-slate-800 transition-colors">
-                                    Edit
-                                </button>
-                                <button className="hover:bg-[#7d5e42] hover:text-white hover:border-none font-bold py-2 px-4 rounded ml-2 w-[100px] border border-slate-800 transition-colors">
-                                    Delete
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </BodyLayout>
