@@ -130,7 +130,7 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
       return
     }
     const trimmedValue = value.replace(/\s+/g, '').toLowerCase();
-    const searchResult = orders.filter((orders)=>{
+    const searchResult = orderbelumdibayar.filter((orders)=>{
       const trimmedordersName = orders.customer_name.replace(/\s+/g, '').toLowerCase(); // Menghapus semua spasi dari nama orders dan ubah ke huruf kecil
       return trimmedordersName.includes(trimmedValue);
     })
