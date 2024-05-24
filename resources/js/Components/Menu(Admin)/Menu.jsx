@@ -15,6 +15,25 @@ function Menu({ menus, categories }) {
   const [kategori, setKategori] = useState('');
   const [mode, setMode] = useState('Kategori');
 
+  // search data
+  const [searchInput , setSearchInput] = useState('')
+  const [searchOutput , setSearchOutput] = useState([])
+
+  const searchHandler = (value)=>{
+    setSearchInput(value)
+    if(value.trim() === ''){
+      console.log('in kosong')
+      setSearchOutput([])
+      return
+    }
+    const trimmedValue = value.replace(/\s+/g, '').toLowerCase();
+    const searchResult = menus.filter((menu)=>{
+      const trimmedMenuName = menu.nama.replace(/\s+/g, '').toLowerCase(); // Menghapus semua spasi dari nama menu dan ubah ke huruf kecil
+      return trimmedMenuName.includes(trimmedValue);
+    })
+    setSearchOutput(searchResult)
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const isDuplicate = menus.find(menu => menu.nama == nama)
@@ -135,7 +154,7 @@ function Menu({ menus, categories }) {
 
         <div className={`mt-[20px] w-full flex gap-x-[10px] lg:justify-between ${openModal ? 'hidden' : 'block'}`}>
           <div className="relative flex-1 lg:w-[365px] lg:flex-none">
-            <TextInput className='pl-[40px] h-[50px] w-[100%]' placeholder='Cari Menu' />
+            <TextInput className='pl-[40px] h-[50px] w-[100%]' placeholder='Cari Menu' value={searchInput} onChange={(e)=>{searchHandler(e.target.value)}}/>
             <SearchSvg />
           </div>
           <button className='h-[50px] w-[50px] bg-[#7D5E42] rounded-xl text-white flex justify-center items-center lg:px-[20px] lg:w-fit' onClick={() => { setOpenModal(!openModal) }} >
@@ -146,7 +165,7 @@ function Menu({ menus, categories }) {
       </div>
       {/* categories */}
       <div className={`w-full ${openModal ? 'hidden' : 'block'}`}>
-        <MenuTab categories={categories} menus={menus} />
+        <MenuTab searchOutput={searchOutput} categories={categories} menus={menus} />
       </div>
     </BodyLayout>
   );
