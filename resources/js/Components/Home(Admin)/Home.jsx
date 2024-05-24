@@ -2,6 +2,7 @@ import React from 'react'
 import BodyLayout from '@/Layouts/BodyLayout'
 import LogoDate from '../Logo_date'
 import Chart from './Chart'
+import { formatRupiah } from '@/module/rupiah-formater'
 
 const dailySell = [
   {
@@ -52,8 +53,7 @@ const barData =[
     value: 50
   }
 ]
-function Home({onlykasir}) {
-  console.log('ini kasir:', onlykasir)
+function Home({onlykasir, uangHarian, uangBulanan, uangTahunan}) {
   return (
     <BodyLayout>
       <div className="w-full h-[100vh] sm:px-[20px] lg:px-[35px] lg:flex lg:gap-x-[30px]">
@@ -64,21 +64,21 @@ function Home({onlykasir}) {
             <div className="h-[85px] w-full bg-[#F1F1F1] border-2 rounded-3xl cursor-pointer flex items-center px-[17px] lg:px-[10px] lg:justify-center">
               <div className="h-[58px] w-[58px] bg-gray-200 rounded-full font-bold flex items-center justify-center text-2xl"><p>Rp.</p></div>
               <div className="ml-2">
-                <p className='font-bold text-[18px]'>1.592 Juta</p>
+                <p className='font-bold text-[18px]'>{formatRupiah(uangHarian)}</p>
                 <p className='opacity-50'>Pendapatan Harian</p>
               </div>
             </div>
             <div className="h-[85px] w-full bg-[#F1F1F1] border-2 rounded-3xl cursor-pointer flex items-center px-[17px] lg:px-[10px] lg:justify-center">
               <div className="h-[58px] w-[58px] bg-gray-200 rounded-full font-bold flex items-center justify-center text-2xl"><p>Rp.</p></div>
               <div className="ml-2">
-                <p className='font-bold text-[18px]'>1.592 Juta</p>
+                <p className='font-bold text-[18px]'>{formatRupiah(uangBulanan)}</p>
                 <p className='opacity-50'>Pendapatan Bulanan</p>
               </div>
             </div>
             <div className="h-[85px] w-full bg-[#F1F1F1] border-2 rounded-3xl cursor-pointer flex items-center px-[17px] lg:px-[10px] lg:justify-center">
               <div className="h-[58px] w-[58px] bg-gray-200 rounded-full font-bold flex items-center justify-center text-2xl"><p>Rp.</p></div>
               <div className="ml-2">
-                <p className='font-bold text-[18px]'>1.592 Juta</p>
+                <p className='font-bold text-[18px]'>{formatRupiah(uangTahunan)}</p>
                 <p className='opacity-50'>Pendapatan Tahunan</p>
               </div>
             </div>
@@ -125,12 +125,16 @@ function Home({onlykasir}) {
             <p className='opacity-50'>Lihat apa saja yang terjual</p>
             <div className="mt-[15px] h-[135px] overflow-scroll">
 
-              {dailySell.map((items, index) => (
+
+
+              {totalMenuTerjual.map((menu, index) => {
+                return (
                 <div key={index} className={`${index % 2 === 0 ? 'bg-gray-200' : 'bg-white'} flex gap-x-[8px] justify-between items-center font-bold h-[45px] w-full px-[20px] rounded-[5px]`}>
-                  <p>Fachry Fauzan</p>
-                  <p>11</p>
+                  <p>{menu.menuNam}</p>
+                  <p>{menu.quantity}</p>
                 </div>
-              ))}
+                )
+})}
             </div>
           </div>
         </div>
