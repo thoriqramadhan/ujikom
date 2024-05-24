@@ -60,7 +60,8 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
                 };
             }),
         });
-    };
+    },
+  )})}
 
     const handleSubmitOrder = (e) => {
         e.preventDefault();
@@ -136,7 +137,9 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
           <button onClick={handleSubmitOrder} className='flex-1 border-2 rounded-[18px]  font-bold'>Nanti</button>
           <button onClick={handleSubmit} className='flex-1 rounded-[18px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
         </div>
+        </div>
+        </div>
     );
-}
+  }
 
 export default MenuHistory;

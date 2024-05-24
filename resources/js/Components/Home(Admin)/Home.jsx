@@ -127,7 +127,7 @@ function Home({onlykasir, uangHarian, uangBulanan, uangTahunan}) {
 
 
 
-              {totalMenuTerjual.map((menu, index) => {
+              {dailySell.map((menu, index) => {
                 return (
                 <div key={index} className={`${index % 2 === 0 ? 'bg-gray-200' : 'bg-white'} flex gap-x-[8px] justify-between items-center font-bold h-[45px] w-full px-[20px] rounded-[5px]`}>
                   <p>{menu.menuNam}</p>
