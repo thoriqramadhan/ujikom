@@ -3,7 +3,7 @@ import { useState } from 'react';
 import TrashSvg from '../svgComp/TrashSvg';
 import { formatRupiah } from '@/module/rupiah-formater';
 
-function ModalHistoryCard({setEditModalData, editModalData, name,item,initialPrice , menu , id}) {
+function ModalHistoryCard({ordersData, setEditModalData, editModalData, name,item,initialPrice , menu , id}) {
   console.log(editModalData)
     const [number , setNumber] = useState(item || 1)
     const [subTotal , setSubTotal] = useState(initialPrice * item)
@@ -27,6 +27,7 @@ function ModalHistoryCard({setEditModalData, editModalData, name,item,initialPri
       console.log(editModalData)
       setEditModalData(newMainData)
     },[number,subTotal])
+
     function deleteHandler(nama){
       const newSelectedFood = selectedFood.filter(item => item.name !== nama)
       const newSubTotal = newSelectedFood.reduce((total,item)=> total + item.harga , 0)

@@ -34,15 +34,17 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   function editHandler(id){
     const orderNow = orders.find(order => order.id === id)
     const parsedData = JSON.parse(orderNow.data)
-    console.log(parsedData)
+    let newOrdersData = ordersData.find(order => order.id === id)
+    const typeOfOrder = newOrdersData.data
     setIdNow(id)
 
     setModalName(orderNow.customer_name)
-    if(editModalData.length == 0){
+    if(typeof typeOfOrder == 'string'){
       setEditModalData(parsedData)
     }else{
-      setEditModalData(editModalData)
+      setEditModalData(typeOfOrder)
     }
+
     setOpenModalEdit(!openModalEdit)
   }
   const [tes, setTes] = useState('');
@@ -334,7 +336,7 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
             <div className="w-full h-[350px] overflow-scroll flex flex-col gap-y-[10px]">
               {
                 editModalData.map(menu => (
-                  <ModalHistoryCard setEditModalData={setEditModalData} editModalData={editModalData} name={menu.name} item={menu.items} initialPrice={menu.harga} menu={menu} id={menu.id}/>
+                  <ModalHistoryCard ordersData={ordersData} setEditModalData={setEditModalData} editModalData={editModalData} name={menu.name} item={menu.items} initialPrice={menu.harga} menu={menu} id={menu.id}/>
                 ))
               }
             </div>
