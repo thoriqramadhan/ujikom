@@ -89,25 +89,23 @@ function Kasir({ users, onlykasir, setModalData }) {
             // Me-refresh halaman untuk mendapatkan daftar produk terbaru
             Inertia.reload();
         });
-
     };
 
-
     function detailHandler(id, first_name, email) {
-        console.log('in')
+        console.log("in");
         setOpenModal(!openModal);
-        setDataNama(first_name)
-        setDataEmail(email)
+        setDataNama(first_name);
+        setDataEmail(email);
     }
 
     const handleDelete = (id) => {
         if (window.confirm("Apakah Anda yakin ingin menghapus akun ini?")) {
-          Inertia.delete(`/admin/${id}`).then(() => {
-            // Me-refresh halaman untuk mendapatkan daftar produk terbaru
-            Inertia.reload();
-          });
+            Inertia.delete(`/admin/${id}`).then(() => {
+                // Me-refresh halaman untuk mendapatkan daftar produk terbaru
+                Inertia.reload();
+            });
         }
-      };
+    };
     return (
         <BodyLayout>
             <div
@@ -115,17 +113,19 @@ function Kasir({ users, onlykasir, setModalData }) {
                     openModal ? "translate-x-0 z-10" : "-translate-x-[2000px]"
                 }`}
             >
-                <div className="  h-[400px] w-[500px] absolute z-10 mt-[200px] rounded-2xl bg-white border-[3px] border-gray-400">
-                    <div className=" font-bold pt-3 flex-row text-center">
+                <div className="  h-[400px] w-[400px] absolute z-10 mt-[200px] rounded-2xl bg-white border-[3px] border-gray-400">
+                    <div className="font-bold pt-3 flex-row items-center">
                         <button
-                            className="w-[105px] py-[10px] rounded-xl border bg-white"
+                            className="w-[105px] py-[7px] rounded-xl border-2 border-[#9ca3af] bg-white text-[#9ca3af] my-[5px] mx-3"
                             onClick={() => {
                                 setOpenModal(!openModal);
                             }}
                         >
-                            {" "}
-                            {"<"} Kembali
+                            {"<"} Back
                         </button>
+                    </div>
+
+                    <div className="flex-row text-center">
                         <h3 className="text-2xl">Detail Kasir</h3>
                         <p>Lihat Detail 😀</p>
                     </div>
@@ -146,9 +146,6 @@ function Kasir({ users, onlykasir, setModalData }) {
                     </div>
                 </div>
             </div>
-
-
-
 
             <div className="w-full  sm:px-[20px] lg:px-[35px] lg:flex-row lg:gap-x-[30px]">
                 <div className="w-full h-fit pt-[50px] lg:grow lg:basis-1/2">
@@ -197,7 +194,12 @@ function Kasir({ users, onlykasir, setModalData }) {
                                         </span>
                                     </button>
 
-                                    <button className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border mr-2 flex max-xl:hidden justify-center" onClick={() => handleDelete(onlykasir.id)}>
+                                    <button
+                                        className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border mr-2 flex max-xl:hidden justify-center"
+                                        onClick={() =>
+                                            handleDelete(onlykasir.id)
+                                        }
+                                    >
                                         <TrashSvg />
                                         <span className="opacity-60">
                                             | Hapus
