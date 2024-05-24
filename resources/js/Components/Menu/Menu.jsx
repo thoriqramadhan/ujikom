@@ -3,7 +3,6 @@ import TextInput from '@/Components/TextInput';
 import MenuTab from '@/Components/Menu/MenuTab';
 import MenuHistory from '@/Components/Menu/MenuHistory';
 import SearchSvg from '@/Components/svgComp/SearchSvg';
-import { stringify } from 'postcss';
 import BodyLayout from '@/Layouts/BodyLayout';
 import LogoDate from '../Logo_date';
 import DashedLine from '../DashedLine';
@@ -39,11 +38,13 @@ function Menu({menus , categories, order}) {
     function clientHandler(e){
       setBuyersMoney(parseFloat(e.target.value))
     }
-function closeHandler(){
-      setOpenModal(!openModal)
-    }
     const handleSubmit = (e) => {
       e.preventDefault();
+      console.log(buyersMoney , total)
+      if(buyersMoney < modalData.total){
+        alert('Not enough money!')
+        return
+      }
       const tax = modalData.tax;
       const orderData = {
         customerName: modalData.name, // Menggunakan modalData.customerName
@@ -54,17 +55,35 @@ function closeHandler(){
     
       const formData = new FormData();
       formData.append('order', JSON.stringify(orderData));
+      setSelectedFood([])
+      localStorage.setItem('ORDER_HISTORY',JSON.stringify([]))
     
       Inertia.post('/kasirstorespontan', formData).then(() => {
         Inertia.reload();
       });
     };
     const [condition , setCondition] = useState(false)
+    const [searchInput , setSearchInput] = useState('')
+    const [searchOutput , setSearchOutput] = useState([])
     const [popUpMsg , setPopUpMsg] = useState('')
     const handlePopUp = (msg)=> {
       setCondition(!condition)
       setPopUpMsg(msg)
-      console.log(condition , msg)
+    }
+    const searchHandler = (value) => {
+      setSearchInput(value)
+      if(value.trim() === ''){
+        console.log('in kosong')
+        setSearchOutput([])
+        return
+      }
+      const trimmedValue = value.replace(/\s+/g, '').toLowerCase();
+      const searchResult = menus.filter((menu)=>{
+        const trimmedMenuName = menu.nama.replace(/\s+/g, '').toLowerCase(); // Menghapus semua spasi dari nama menu dan ubah ke huruf kecil
+        return trimmedMenuName.includes(trimmedValue);
+      })
+      console.log(searchResult)
+      setSearchOutput(searchResult)
     }
   return (
     <>
@@ -75,18 +94,18 @@ function closeHandler(){
             <LogoDate/>
             <div className="w-[60%] h-fit relative">
               <SearchSvg/>
-              <TextInput className="pl-[40px] h-[50px] w-[100%]" placeholder='Cari menu' />
+              <TextInput className="pl-[40px] h-[50px] w-[100%]" placeholder='Cari menu' value={searchInput} onChange={(e)=> searchHandler(e.target.value)}/>
             </div>
           </div>
 
           <div className="bg-[#F9F9F9] h-fit pb-[10%] pt-[40px] mt-[46px]" id='body'>
-            <MenuTab categories={categories} menus={menus} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
+            <MenuTab searchOutput={searchOutput} categories={categories} menus={menus} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
           </div>
     </BodyLayout>
         <MenuHistory formatRupiah={formatRupiah}  handlePopUp={handlePopUp}  openModal={openModal} setOpenModal={setOpenModal} setModalData={setModalData} openSide={openSide} setOpenSide={setOpenSide} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
       <div onClick={()=> setOpenSide(true)} className={`w-[50px] h-[50px] bg-[#7D5E42] rounded-full fixed flex justify-center items-center text-2xl text-white right-4 top-1/2 cursor-pointer ${openSide ? 'hidden' : 'block'}`}>{'<'}</div>
       
-{/* Modal */}
+      {/* Modal */}
       <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModal ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Bayar Pesanan</p>
         <p>Langsung bayar pesanan punya {modalData.name}</p>
@@ -130,7 +149,8 @@ function closeHandler(){
             <p className='opacity-30 font-bold'>Kembalian</p>
             <p className='font-bold'>{formatRupiah(total) || 0}</p>
           </div>
-          <button onClick={handleSubmit}  className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
+          <button className='w-full rounded-[18px] py-[15px] mb-[10px] font-bold text-[#7D5E42] border-[#7D5E42] border'>Bayar Cashless</button>
+          <button onClick={handleSubmit}  className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar Tunai</button>
         </div>
         </div>
       </div>
