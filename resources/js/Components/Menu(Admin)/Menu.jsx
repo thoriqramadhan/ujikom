@@ -17,10 +17,12 @@ function Menu({ menus, categories }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
+    const isDuplicate = menus.find(menu => menu.nama == nama)
     if (nama === '' || categories_id === '' || harga === '') {
       alert('Data belum komplit!');
       return;
+    }else if(isDuplicate){
+      alert(`${isDuplicate.nama} sudah ada!`)
     }
 
     const formData = new FormData();
@@ -35,13 +37,19 @@ function Menu({ menus, categories }) {
       Inertia.reload();
     });
   };
+  console.log(categories)
 
   const handleSubmitKategori = (e) => {
     e.preventDefault();
+    const isDuplicate = categories.find(categorie => categorie.kategori == kategori)
+    console.log(isDuplicate)
 
     if (kategori === '') {
       alert('Data belum komplit!');
       return;
+    }else if(isDuplicate){
+      alert(isDuplicate.kategori + ' sudah ada!')
+      return
     }
 
     const formData = new FormData();

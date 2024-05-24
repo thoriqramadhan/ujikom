@@ -33,14 +33,13 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   console.log(orderbelumdibayar)
   function editHandler(id){
     const orderNow = orders.find(order => order.id === id)
-    const parsedData = JSON.parse(orderNow.data)
     let newOrdersData = ordersData.find(order => order.id === id)
     const typeOfOrder = newOrdersData.data
     setIdNow(id)
 
     setModalName(orderNow.customer_name)
     if(typeof typeOfOrder == 'string'){
-      setEditModalData(parsedData)
+      setEditModalData(JSON.parse(typeOfOrder))
     }else{
       setEditModalData(typeOfOrder)
     }
@@ -69,7 +68,6 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
     setModalData(parsedData);
     setOpenModalPayment(!openModalPayment);
   }
-  console.log(orders);
   
   // modal datas
   const [openModalEdit , setOpenModalEdit] = useState(true)
@@ -169,17 +167,13 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
       }
     })
     setOrdersData(newOrders)
+    setOpenModalEdit(!openModalEdit)
+    setEditModalData([])
   }
 
-  function updateHarga(mainData, id, newHarga , items) {
-    return mainData.map(item => {
-      if (item.id === id) {
-        return { ...item, totalHarga: newHarga , items:items};
-      } else {
-        // Jika ID tidak cocok, kembalikan item tanpa perubahan
-        return item;
-      }
-    });
+  const closeHandler = () => {
+    setOpenModalEdit(!openModalEdit)
+    setEditModalData([])
   }
 
   
@@ -306,7 +300,7 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
       <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000 overflow-y-hidden  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModalEdit ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Edit Pesanan</p>
         <p>Edit pesanan punya {modalName}</p>
-        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModalEdit(!openModalEdit)}>X</p>
+        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={closeHandler}>X</p>
 
         <div className="flex w-full h-fit gap-x-[30px] mt-[25px]">
           <div className="flex-1">
