@@ -30,7 +30,6 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   for (let i = 1; i <= Math.ceil(orderbelumdibayar.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
-  console.log(orderbelumdibayar)
   function editHandler(id){
     const orderNow = orders.find(order => order.id === id)
     let newOrdersData = ordersData.find(order => order.id === id)
@@ -74,6 +73,10 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   const [modalData, setModalData] = useState(ordersData)
   const [modalName,setModalName] = useState('')
   const [editModalData , setEditModalData] = useState([])
+
+  // search data
+  const [searchInput , setSearchInput] = useState('')
+  const [searchOutput , setSearchOutput] = useState([])
   
   function incrementHandler(){
     console.log('in' , currentPage , pageNumbers)
@@ -116,6 +119,24 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
       [orderId]: newStatus,
     }));
   };
+
+  const searchHandler = (value)=>{
+    setSearchInput(value)
+    console.log(searchInput)
+    console.log(orders)
+    if(value.trim() === ''){
+      console.log('in kosong')
+      setSearchOutput([])
+      return
+    }
+    const trimmedValue = value.replace(/\s+/g, '').toLowerCase();
+    const searchResult = orders.filter((orders)=>{
+      const trimmedordersName = orders.customer_name.replace(/\s+/g, '').toLowerCase(); // Menghapus semua spasi dari nama orders dan ubah ke huruf kecil
+      return trimmedordersName.includes(trimmedValue);
+    })
+    setSearchOutput(searchResult)
+  }
+  
 
   // modal function
   const handlePayment = () => {
@@ -183,7 +204,7 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
       <LogoDate/>
       <div className="flex justify-between mt-[25px]">
         <div className="h-[50px] w-fit relative ">
-          <TextInput placeholder={'Cari Pelanggan!'} className='w-[366px] h-[50px] pl-[40px]'/>
+          <TextInput placeholder={'Cari Pelanggan!'} className='w-[366px] h-[50px] pl-[40px]' value={searchInput} onChange={(e)=>{searchHandler(e.target.value)}}/>
           <SearchSvg/>
         </div>
         <div className="h-[50px] w-fit flex gap-x-4">
@@ -199,7 +220,8 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
           <th className='flex-2 opacity-60'>Status</th>
           <th className='w-[230px]'></th>
         </tr>
-        {currentPosts.length == 0 ?
+        {searchOutput.length == 0 ? 
+        currentPosts.length == 0 ?
         <tr className=''>
           <td className=''>
             tidak ada data
@@ -207,6 +229,30 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
         </tr>
         :
         currentPosts.map(orders => {
+          return (
+            <tr className='h-fit border-bottom border'>
+            <TableData text={orders.customer_name}/>
+            <TableData text={orders.order_time}/>
+            <TableData text={orders.status}/>
+            <div className="flex ">
+              <div className="h-[60px] w-[100%] flex items-center justify-center" onClick={()=>{editHandler(orders.id)}}>
+                <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
+                <span className='mr-[2px]'>I</span>
+                <span className="opacity-60">Edit</span>
+                </button>
+              </div>  
+              <div className="h-[60px] w-[100%] flex items-center justify-center">
+                <button className='w-[100px] py-[7px] bg-[#7D5E42] rounded-lg border-gray-400 border text-white'> 
+                <span className='mr-[2px]'>I</span>
+                <span className="" onClick={()=>{paymentHandler(orders.id)}}>Bayar</span>
+                </button>
+              </div>
+            </div>
+          </tr>
+          )
+        })
+        :
+        searchOutput.map(orders => {
           return (
             <tr className='h-fit border-bottom border'>
             <TableData text={orders.customer_name}/>
