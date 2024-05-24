@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import MenuItemTab from '../Menu/MenuItemTab'
+import { formatRupiah } from '@/module/rupiah-formater'
 
 function MenuTab({categories , menus}) {
     const [activeTab , setActiveTab] = useState('Semua')
@@ -33,9 +34,9 @@ function MenuTab({categories , menus}) {
               <div className="w-[250px] rounded-[30px] bg-white border shadow-lg px-[20px] pt-[27px] pb-[18px] shrink-0 flex flex-col">
                 <div className="h-[150px] w-full bg-[#F4F4F4] rounded-[25px]"></div>
 
-                <div className="flex-1 h-fit w-full flex justify-between mt-2 mb-3">
+                <div className="flex-1 h-fit w-full flex flex-col mt-2 mb-3">
                   <p className='font-bold text-[22px]'>{item.nama}</p>
-                  <p className='font-bold opacity-60 text-[20px]'>{item.harga}K</p>
+                  <p className='font-bold opacity-60 text-[20px]'>{formatRupiah(item.harga)}</p>
                 </div>
                 <button className='w-full h-[41px] bg-[#7D5E42] rounded-xl text-white text-[18px] py-[5px]'>
                   <p className='font-[500]'>Edit</p>

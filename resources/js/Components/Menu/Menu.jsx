@@ -3,7 +3,6 @@ import TextInput from '@/Components/TextInput';
 import MenuTab from '@/Components/Menu/MenuTab';
 import MenuHistory from '@/Components/Menu/MenuHistory';
 import SearchSvg from '@/Components/svgComp/SearchSvg';
-import { stringify } from 'postcss';
 import BodyLayout from '@/Layouts/BodyLayout';
 import LogoDate from '../Logo_date';
 import DashedLine from '../DashedLine';
@@ -11,6 +10,7 @@ import TableData from '../TableData'
 import { Head } from '@inertiajs/react';
 import { Inertia } from '@inertiajs/inertia';
 import PopUp from '../PopUp';
+import { formatRupiah } from '@/module/rupiah-formater';
 
 function Menu({menus , categories, order}) {
     const [openSide, setOpenSide] = useState(false);
@@ -38,32 +38,54 @@ function Menu({menus , categories, order}) {
     function clientHandler(e){
       setBuyersMoney(parseFloat(e.target.value))
     }
-function closeHandler(){
-      setOpenModal(!openModal)
-    }
     const handleSubmit = (e) => {
       e.preventDefault();
-      const tax = modalData.tax;
-      const orderData = {
+      console.log(buyersMoney , total)
+      if(buyersMoney < modalData.total){
+        alert('Not enough money!')
+        return
+      }
+      const tax = Number(modalData.tax);
+      const order = {
         customerName: modalData.name, // Menggunakan modalData.customerName
         tax: tax,
         totalHarga: subHarga + tax,
         data: [...selectedFood]
       };
+
+      console.log("ini order:", order)
     
       const formData = new FormData();
-      formData.append('order', JSON.stringify(orderData));
+      formData.append('order', JSON.stringify(order));
+      setSelectedFood([])
+      localStorage.setItem('ORDER_HISTORY',JSON.stringify([]))
     
       Inertia.post('/kasirstorespontan', formData).then(() => {
         Inertia.reload();
       });
     };
     const [condition , setCondition] = useState(false)
+    const [searchInput , setSearchInput] = useState('')
+    const [searchOutput , setSearchOutput] = useState([])
     const [popUpMsg , setPopUpMsg] = useState('')
     const handlePopUp = (msg)=> {
       setCondition(!condition)
       setPopUpMsg(msg)
-      console.log(condition , msg)
+    }
+    const searchHandler = (value) => {
+      setSearchInput(value)
+      if(value.trim() === ''){
+        console.log('in kosong')
+        setSearchOutput([])
+        return
+      }
+      const trimmedValue = value.replace(/\s+/g, '').toLowerCase();
+      const searchResult = menus.filter((menu)=>{
+        const trimmedMenuName = menu.nama.replace(/\s+/g, '').toLowerCase(); // Menghapus semua spasi dari nama menu dan ubah ke huruf kecil
+        return trimmedMenuName.includes(trimmedValue);
+      })
+      console.log(searchResult)
+      setSearchOutput(searchResult)
     }
   return (
     <>
@@ -74,18 +96,18 @@ function closeHandler(){
             <LogoDate/>
             <div className="w-[60%] h-fit relative">
               <SearchSvg/>
-              <TextInput className="pl-[40px] h-[50px] w-[100%]" placeholder='Cari menu' />
+              <TextInput className="pl-[40px] h-[50px] w-[100%]" placeholder='Cari menu' value={searchInput} onChange={(e)=> searchHandler(e.target.value)}/>
             </div>
           </div>
 
           <div className="bg-[#F9F9F9] h-fit pb-[10%] pt-[40px] mt-[46px]" id='body'>
-            <MenuTab categories={categories} menus={menus} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
+            <MenuTab searchOutput={searchOutput} categories={categories} menus={menus} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
           </div>
     </BodyLayout>
-        <MenuHistory handlePopUp={handlePopUp}  openModal={openModal} setOpenModal={setOpenModal} setModalData={setModalData} openSide={openSide} setOpenSide={setOpenSide} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
+        <MenuHistory formatRupiah={formatRupiah}  handlePopUp={handlePopUp}  openModal={openModal} setOpenModal={setOpenModal} setModalData={setModalData} openSide={openSide} setOpenSide={setOpenSide} selectedFood={selectedFood} setSelectedFood={setSelectedFood}/>
       <div onClick={()=> setOpenSide(true)} className={`w-[50px] h-[50px] bg-[#7D5E42] rounded-full fixed flex justify-center items-center text-2xl text-white right-4 top-1/2 cursor-pointer ${openSide ? 'hidden' : 'block'}`}>{'<'}</div>
       
-{/* Modal */}
+      {/* Modal */}
       <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModal ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Bayar Pesanan</p>
         <p>Langsung bayar pesanan punya {modalData.name}</p>
@@ -103,7 +125,7 @@ function closeHandler(){
                   <tr key={index} className='h-fit border-bottom-1'>
                     <TableData text={orders.name}/>
                     <TableData text={orders.items}/>
-                    <TableData text={orders.total} prop='K'/>
+                    <TableData text={formatRupiah(orders.total)}/>
                   </tr>
                 ))
               }
@@ -113,23 +135,24 @@ function closeHandler(){
           <div className="w-[330px] h-fit border rounded-xl bg-white flex flex-col justify-center py-[20px] px-[25px]">
           <div className="w-full flex justify-between">
             <p className='opacity-30 font-bold'>Sub Total</p>
-            <p className='font-bold'>{modalData.subTotal}K</p>
+            <p className='font-bold'>{formatRupiah(modalData.subTotal)}</p>
           </div>
           <div className="w-full flex justify-between">
             <p className='opacity-30 font-bold'>{'Pajak (10%)'}</p>
-            <p className='font-bold'>{modalData.tax}K</p>
+            <p className='font-bold'>{formatRupiah(modalData.tax)}</p>
           </div>
           <DashedLine />
           <div className="w-full flex justify-between mt-[20px]">
             <p className='opacity-30 font-bold'>Total</p>
-            <p className='font-bold'>{modalData.total}K</p>
+            <p className='font-bold'>{formatRupiah(modalData.total)}</p>
           </div>
           <input type="number" name="" id="" className='mt-[20px]'  onChange={clientHandler} value={buyersMoney} placeholder='Uang Pembeli' />
           <div className="w-full flex justify-between mt-[20px] mb-[120px]">
             <p className='opacity-30 font-bold'>Kembalian</p>
-            <p className='font-bold'>{total.toFixed(2) || 0}K</p>
+            <p className='font-bold'>{formatRupiah(total) || 0}</p>
           </div>
-          <button onClick={handleSubmit}  className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar</button>
+          <button className='w-full rounded-[18px] py-[15px] mb-[10px] font-bold text-[#7D5E42] border-[#7D5E42] border'>Bayar Cashless</button>
+          <button onClick={handleSubmit}  className='w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Bayar Tunai</button>
         </div>
         </div>
       </div>

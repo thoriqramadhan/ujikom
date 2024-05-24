@@ -44,7 +44,7 @@ const dataOrder = [
     },
 ];
 
-function Kasir({ users, onlykasir }) {
+function Kasir({ users, onlykasir, setModalData }) {
     const [openModal, setOpenModal] = useState(false);
     const [DataUser, setDataUser] = useState(users || "");
     const [DataOnlyKasir, setOnlyKasir] = useState(onlykasir || "");
@@ -89,7 +89,9 @@ function Kasir({ users, onlykasir }) {
             // Me-refresh halaman untuk mendapatkan daftar produk terbaru
             Inertia.reload();
         });
+
     };
+
 
     function detailHandler(id, first_name, email) {
         console.log('in')
@@ -97,6 +99,15 @@ function Kasir({ users, onlykasir }) {
         setDataNama(first_name)
         setDataEmail(email)
     }
+
+    const handleDelete = (id) => {
+        if (window.confirm("Apakah Anda yakin ingin menghapus akun ini?")) {
+          Inertia.delete(`/admin/${id}`).then(() => {
+            // Me-refresh halaman untuk mendapatkan daftar produk terbaru
+            Inertia.reload();
+          });
+        }
+      };
     return (
         <BodyLayout>
             <div
@@ -186,7 +197,7 @@ function Kasir({ users, onlykasir }) {
                                         </span>
                                     </button>
 
-                                    <button className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border mr-2 flex max-xl:hidden justify-center">
+                                    <button className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border mr-2 flex max-xl:hidden justify-center" onClick={() => handleDelete(onlykasir.id)}>
                                         <TrashSvg />
                                         <span className="opacity-60">
                                             | Hapus
@@ -215,7 +226,7 @@ function Kasir({ users, onlykasir }) {
                 {/* add kasir */}
                 <div className="mt-10">
                     <h1 className="text-xl font-[1000]">Tambah Kasir</h1>
-                    <p>Tambah Kasir Anda 😀</p>
+                    <p>Tambah Akun Kasir Atau Admin Anda 😀</p>
                     <form onSubmit={handleSubmit} encType="multipart/form-data">
                         <div className="my-5 space-y-4 sm:flex-col">
                             <div className="flex flex-col gap-4 md:flex-row">
@@ -272,9 +283,9 @@ function Kasir({ users, onlykasir }) {
                                         }
                                         required
                                     >
-                                        <option>--Pilih Role--</option>
-                                        <option value="kasir">kasir</option>
-                                        <option value="admin">admin</option>
+                                        <option>Pilih Role</option>
+                                        <option value="kasir">Kasir</option>
+                                        <option value="admin">Admin</option>
                                     </select>
                                 </div>
 

@@ -8,11 +8,14 @@ import DashedLine from '../DashedLine'
 import ModalHistoryCard from './ModalHistoryCard'
 import { Head } from '@inertiajs/react'
 import {Inertia} from '@inertiajs/inertia'
+import { formatRupiah } from '@/module/rupiah-formater'
 
-function Order({orders, orderitems, orderbelumdibayar}) {
+function Order({menus, orders, orderitems, orderbelumdibayar}) {
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
   const [openModalPayment , setOpenModalPayment] = useState(true)
+  const [ordersData , setOrdersData] = useState(orderbelumdibayar)
+  const [idNow, setIdNow] = useState(0)
   // paymnet history data
   const [buyersMoney , setBuyersMoney] = useState(0)
   const [bill , setBill] = useState({
@@ -27,13 +30,21 @@ function Order({orders, orderitems, orderbelumdibayar}) {
   for (let i = 1; i <= Math.ceil(orderbelumdibayar.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
-console.log(orders.id)
+  console.log(orderbelumdibayar)
   function editHandler(id){
     const orderNow = orders.find(order => order.id === id)
     const parsedData = JSON.parse(orderNow.data)
+    let newOrdersData = ordersData.find(order => order.id === id)
+    const typeOfOrder = newOrdersData.data
+    setIdNow(id)
 
     setModalName(orderNow.customer_name)
-    setEditModalData(parsedData)
+    if(typeof typeOfOrder == 'string'){
+      setEditModalData(parsedData)
+    }else{
+      setEditModalData(typeOfOrder)
+    }
+
     setOpenModalEdit(!openModalEdit)
   }
   const [tes, setTes] = useState('');
@@ -62,10 +73,9 @@ console.log(orders.id)
   
   // modal datas
   const [openModalEdit , setOpenModalEdit] = useState(true)
-  const [modalData, setModalData] = useState(orderbelumdibayar)
+  const [modalData, setModalData] = useState(ordersData)
   const [modalName,setModalName] = useState('')
   const [editModalData , setEditModalData] = useState([])
-  const [idNow,setIdNow] = useState('');
   
   function incrementHandler(){
     console.log('in' , currentPage , pageNumbers)
@@ -86,11 +96,9 @@ console.log(orders.id)
   
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
-  const currentPosts = orderbelumdibayar.slice(indexOfFirstPost, indexOfLastPost);
+  const currentPosts = ordersData.slice(indexOfFirstPost, indexOfLastPost);
   useEffect(()=>{
-    console.log(orders)
-    console.log(buyersMoney  -  bill.total)
-    console.log(change)
+    console.log(editModalData)
   },[editModalData,modalData])
 
   const [orderStatus, setOrderStatus] = useState({});
@@ -111,6 +119,7 @@ console.log(orders.id)
     }));
   };
 
+  // modal function
   const handlePayment = () => {
     Inertia.post(`/kasir/${tes}`).then(() => {
       console.log('Order marked as paid successfully.');
@@ -125,6 +134,54 @@ console.log(orders.id)
       // Tangani kesalahan jika gagal memperbarui pesanan
     });
   };
+
+  const addMenuHandler = (idMenu) => {
+    const selectedMenu = menus.find(menu => menu.id == idMenu)
+    const isAlreadySelected = editModalData.find(item => item.id === idMenu)
+    if(isAlreadySelected){
+      console.log('udah da berok')
+      return
+    }
+    const reformatSelectedMenu = {
+      harga: selectedMenu.harga,
+      id: selectedMenu.id,
+      items: 1,
+      name: selectedMenu.nama,
+      totalHarga : selectedMenu.harga
+    }
+    setEditModalData(
+      [
+        ...editModalData ,
+        reformatSelectedMenu
+      ]
+    )
+    console.log(editModalData)
+    console.log(selectedMenu)
+  }
+
+  const saveNewMenuHandler = () => {
+    const orderNow = ordersData.find(order => order.id === idNow)
+    const newOrders = ordersData.map(orders => {
+      if(orders.id == orderNow.id){
+        return {...orders, data:editModalData}
+      }else{
+        return orders
+      }
+    })
+    setOrdersData(newOrders)
+  }
+
+  function updateHarga(mainData, id, newHarga , items) {
+    return mainData.map(item => {
+      if (item.id === id) {
+        return { ...item, totalHarga: newHarga , items:items};
+      } else {
+        // Jika ID tidak cocok, kembalikan item tanpa perubahan
+        return item;
+      }
+    });
+  }
+
   
   return (
     <BodyLayout className={'pt-[40px] px-[40px]'}>
@@ -148,29 +205,37 @@ console.log(orders.id)
           <th className='flex-2 opacity-60'>Status</th>
           <th className='w-[230px]'></th>
         </tr>
-        {currentPosts.map(orders => {
-        return (
-          <tr className='h-fit border-bottom border'>
-          <TableData text={orders.customer_name}/>
-          <TableData text={orders.order_time}/>
-          <TableData text={orders.status}/>
-          <div className="flex ">
-            <div className="h-[60px] w-[100%] flex items-center justify-center" onClick={()=>{editHandler(orders.id)}}>
-              <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
-              <span className='mr-[2px]'>I</span>
-              <span className="opacity-60">Edit</span>
-              </button>
-            </div>  
-            <div className="h-[60px] w-[100%] flex items-center justify-center">
-              <button className='w-[100px] py-[7px] bg-[#7D5E42] rounded-lg border-gray-400 border text-white'> 
-              <span className='mr-[2px]'>I</span>
-              <span className="" onClick={()=>{paymentHandler(orders.id)}}>Bayar</span>
-              </button>
-            </div>
-          </div>
+        {currentPosts.length == 0 ?
+        <tr className=''>
+          <td className=''>
+            tidak ada data
+          </td>
         </tr>
-        )
-      })}
+        :
+        currentPosts.map(orders => {
+          return (
+            <tr className='h-fit border-bottom border'>
+            <TableData text={orders.customer_name}/>
+            <TableData text={orders.order_time}/>
+            <TableData text={orders.status}/>
+            <div className="flex ">
+              <div className="h-[60px] w-[100%] flex items-center justify-center" onClick={()=>{editHandler(orders.id)}}>
+                <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
+                <span className='mr-[2px]'>I</span>
+                <span className="opacity-60">Edit</span>
+                </button>
+              </div>  
+              <div className="h-[60px] w-[100%] flex items-center justify-center">
+                <button className='w-[100px] py-[7px] bg-[#7D5E42] rounded-lg border-gray-400 border text-white'> 
+                <span className='mr-[2px]'>I</span>
+                <span className="" onClick={()=>{paymentHandler(orders.id)}}>Bayar</span>
+                </button>
+              </div>
+            </div>
+          </tr>
+          )
+        })
+        }
         
       </table>
 
@@ -194,7 +259,7 @@ console.log(orders.id)
                   <tr key={index} className='h-fit border-bottom-1'>
                     <TableData text={orderitems.name}/>
                     <TableData text={orderitems.items}/>
-                    <TableData text={orderitems.totalHarga} prop='K'/>
+                    <TableData text={formatRupiah(orderitems.totalHarga)}/>
                   </tr>
                   )
                 }
@@ -209,21 +274,21 @@ console.log(orders.id)
               <>
               <div className="w-full flex justify-between">
               <p className='opacity-30 font-bold'>Sub Total</p>
-              <p className='font-bold'>{bill.subTotal}K</p>
+              <p className='font-bold'>{formatRupiah(bill.subTotal)}</p>
             </div>
             <div className="w-full flex justify-between">
               <p className='opacity-30 font-bold'>{'Pajak (10%)'}</p>
-              <p className='font-bold'>{bill.tax}K</p>
+              <p className='font-bold'>{formatRupiah(bill.tax)}</p>
             </div>
             <DashedLine />
             <div className="w-full flex justify-between mt-[20px]">
               <p className='opacity-30 font-bold'>Total</p>
-              <p className='font-bold'>{bill.total}K</p>
+              <p className='font-bold'>{formatRupiah(bill.total)}</p>
             </div>
             <input type="number" name="" id="" className='mt-[20px]'  onChange={clientHandler} value={buyersMoney} placeholder='Uang Pembeli' />
             <div className="w-full flex justify-between mt-[20px] mb-[120px]">
               <p className='opacity-30 font-bold'>Kembalian</p>
-              <p className='font-bold'>{change.toFixed(2) || 0}K</p>
+              <p className='font-bold'>{formatRupiah(change) || 0}</p>
             </div>
               </>
             )
@@ -252,14 +317,14 @@ console.log(orders.id)
             {/* modal edit content */}
             <div className="w-full h-[400px] justify-evenly flex gap-x-[10px] gap-y-[10px] flex-wrap overflow-scroll pt-[10px]">
               {
-                editModalData.map(menu => (
+                menus.map(menu => (
                   <div className="bg-white w-[230px] border shadow-lg  h-fit rounded-lg px-[15px] py-[15px]">
                       <div className="w-full h-[150px] rounded-lg bg-gray-400"></div>
-                      <div className="h-fit w-full flex justify-between mt-2">
-                        <p className='font-bold text-[22px]'>{menu.name}</p>
-                        <p className='font-bold opacity-60 text-[20px]'>{menu.totalHarga}K</p>
+                      <div className="h-fit w-full flex flex-col justify-between mt-2">
+                        <p className='font-bold text-[22px]'>{menu.nama}</p>
+                        <p className='font-bold opacity-60 text-[20px]'>{formatRupiah(menu.harga)}</p>
                       </div>
-                      <button className='mt-[20px] w-full rounded-[18px] py-[15px] font-bold border-2 bg-[#F3F3F3]'>Hapus</button>
+                      <button className='mt-[20px] w-full rounded-[18px] py-[15px] font-bold border-2 bg-[#F3F3F3]' onClick={() => {addMenuHandler(menu.id)}}>Tambah</button>
                   </div>
                 ))
               }
@@ -271,11 +336,11 @@ console.log(orders.id)
             <div className="w-full h-[350px] overflow-scroll flex flex-col gap-y-[10px]">
               {
                 editModalData.map(menu => (
-                  <ModalHistoryCard name={menu.name} item={menu.items} initialPrice={menu.totalHarga} menu={menu} id={idNow}/>
+                  <ModalHistoryCard ordersData={ordersData} setEditModalData={setEditModalData} editModalData={editModalData} name={menu.name} item={menu.items} initialPrice={menu.harga} menu={menu} id={menu.id}/>
                 ))
               }
             </div>
-            <button className='mt-[20px] w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]'>Simpan</button>
+            <button className='mt-[20px] w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]' onClick={saveNewMenuHandler}>Simpan</button>
           </div>
         </div>
       </div>
