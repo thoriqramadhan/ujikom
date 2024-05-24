@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Menu;
+use App\Models\Order;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,10 +25,10 @@ class AdminController extends Controller
     {
         $users = User::all();
         $loginuser = Auth::user();
-        $onlykasir = User::where('role','kasir')->get();
+        $onlykasir = User::where('role', 'kasir')->get();
         $menus = Menu::all();
         $categories = Category::all();
-
+        
         foreach ($onlykasir as $kasir) {
             if (Cache::has('user-is-online-' . $kasir->id)) {
                 $kasir['user-is-online'] = true;
@@ -34,6 +36,19 @@ class AdminController extends Controller
                 $kasir['user-is-online'] = false;
             }
         }
+        
+        $today = Carbon::today();
+        $currentMonth = Carbon::now()->month;
+        $currentYear = Carbon::now()->year;
+        
+        $orderselesai = Order::where('status','selesai')->whereDate('order_time', $today)->get();
+
+        $uangHarian = Order::where('status','selesai')->whereDate('order_time', $today)->sum('totalHarga');
+        $uangBulanan = Order::where('status','selesai')->whereMonth('order_time', $currentMonth)->whereYear('order_time', $currentYear)->sum('totalHarga');
+        $uangTahunan = Order::where('status','selesai')->whereYear('order_time', $currentYear)->sum('totalHarga');
+
+
+
 
         return Inertia::render('Admin/Admin', [
             'users' => $users,
@@ -41,6 +56,10 @@ class AdminController extends Controller
             'onlykasir' => $onlykasir,
             'menus' => $menus,
             'categories' => $categories,
+            'uangHarian' => $uangHarian,
+            'uangBulanan' => $uangBulanan,
+            'uangTahunan' => $uangTahunan,
+            'orderselesai' => $orderselesai,
         ]);
     }
 
@@ -68,7 +87,7 @@ class AdminController extends Controller
         'harga' => $validatedData['harga'],
     ]);
 
-    return redirect()->back()->with('success', 'Menu berhasil ditambahkan.');
+    return redirect()->with('success', 'Menu berhasil ditambahkan.');
 }
 
 public function createkategori(Request $request)
@@ -107,7 +126,7 @@ public function createkategori(Request $request)
 
         event(new Registered($user));
 
-        return redirect('/admin');
+        return redirect()->back();
     }
 
     /**
@@ -137,8 +156,12 @@ public function createkategori(Request $request)
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Admin $admin)
+    public function destroy($id)
     {
-        //
+        $hapuskasir = User::findOrFail($id);
+
+        $hapuskasir->delete();
+
+        return redirect()->back();
     }
 }

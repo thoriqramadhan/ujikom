@@ -8,6 +8,7 @@ use App\Models\Menu;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -20,12 +21,14 @@ class MenuController extends Controller
      */
     public function index()
     {
+        $today = Carbon::today();
+
+
         $menus = Menu::all();
         $categories = Category::all();
         $orders = Order::all();
         $orderbelumdibayar = Order::where('status','belum dibayar')->get();
-        $orderselesai = Order::where('status','selesai')->get();
-        $orderitems = OrderItem::all();
+        $orderselesai = Order::where('status','selesai')->whereDate('order_time', $today)->get();
         $users = Auth::user();
         $loginuser = Auth::user();
 
@@ -35,7 +38,6 @@ class MenuController extends Controller
             'orders' => $orders,
             'orderbelumdibayar' => $orderbelumdibayar,
             'orderselesai' => $orderselesai,
-            'orderitems' => $orderitems,
             'users' => $users,
             'loginuser' => $loginuser
         ]);
@@ -58,12 +60,13 @@ class MenuController extends Controller
         $orderData = json_decode($request->input('order'), true);
         
         // Buat order baru dan simpan data pelanggan
-        Order::create([
+        $order = Order::create([
             'customer_name' => $orderData['customerName'],
             'tax' => $orderData['tax'],
             'totalHarga' => $orderData['totalHarga'],
             'data' => json_encode($orderData['data']), // Ubah array menjadi string JSON sebelum menyimpannya
         ]);
+
         
         // Redirect atau response lainnya
         return redirect('/kasir');
@@ -83,6 +86,7 @@ class MenuController extends Controller
             // Ubah array menjadi string JSON sebelum menyimpannya
         ]);
         
+
         // Ubah status order menjadi 'selesai'
         $order->status = 'selesai';
         $order->save();

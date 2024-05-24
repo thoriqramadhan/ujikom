@@ -45,16 +45,18 @@ function Menu({menus , categories, order}) {
         alert('Not enough money!')
         return
       }
-      const tax = modalData.tax;
-      const orderData = {
+      const tax = Number(modalData.tax);
+      const order = {
         customerName: modalData.name, // Menggunakan modalData.customerName
         tax: tax,
         totalHarga: subHarga + tax,
         data: [...selectedFood]
       };
+
+      console.log("ini order:", order)
     
       const formData = new FormData();
-      formData.append('order', JSON.stringify(orderData));
+      formData.append('order', JSON.stringify(order));
       setSelectedFood([])
       localStorage.setItem('ORDER_HISTORY',JSON.stringify([]))
     
