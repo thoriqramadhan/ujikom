@@ -1,23 +1,30 @@
-import React from 'react'
+import React from "react";
 
 function ChartIndicator() {
-  return (
-    
-     const chartOptions = {
-      chart: {
-        id: 'basic-line',
-      },
-      xaxis: {
-        categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct'],
-      },
-    };
-    
-     const chartSeries = [
-      {
-        name: 'Series 1',
-        data: [30, 40, 35, 50, 49, 60, 70, 91, 125, 132],
-      },
-    )
+    return (
+        <div className="w-full h-full opacity-50 absolute bottom-0">
+            <div className="w-full h-[20%] gap-x-[10px] flex items-end">
+                <p>100</p>
+                <div className="w-full h-[1px] bg-black"></div>
+            </div>
+            <div className="w-full h-[20%] gap-x-[10px] flex items-end">
+                <p>80</p>
+                <div className="w-full h-[1px] bg-black"></div>
+            </div>
+            <div className="w-full h-[20%] gap-x-[10px] flex items-end">
+                <p>60</p>
+                <div className="w-full h-[1px] bg-black"></div>
+            </div>
+            <div className="w-full h-[20%] gap-x-[10px] flex items-end">
+                <p>40</p>
+                <div className="w-full h-[1px] bg-black"></div>
+            </div>
+            <div className="w-full h-[20%] gap-x-[10px] flex items-end">
+                <p>20</p>
+                <div className="w-full h-[1px] bg-black"></div>
+            </div>
+        </div>
+    );
 }
 
-export default ChartIndicator
+export default ChartIndicator;
