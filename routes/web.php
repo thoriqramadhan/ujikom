@@ -40,24 +40,24 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController
     ->name('logout');
     
     //page untuk kasir
-    // Route::middleware('auth')->group(function () {
+    Route::middleware('auth')->group(function () {
         // Halaman untuk kasir
         Route::get('/kasir', [MenuController::class, 'index']);
         Route::post('/kasirstore', [MenuController::class, 'store']);
         Route::patch('/kasir', [MenuController::class, 'updateUser']);
         Route::post('/kasir/{id}', [MenuController::class, 'edit']);
         Route::post('/kasirstorespontan', [MenuController::class, 'storeSpontan']);
-    // });
+    });
   
     //Routes yang bisa diakses hanya oleh admin di masukkan ke sini
-    // Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
+    Route::group(['middleware' => ['auth', 'verified', 'admin']], function () {
         // page untuk admin
         Route::get('/admin', [AdminController::class, 'index']);
         Route::post('/admin', [AdminController::class, 'store']);
         Route::post('/adminstore', [AdminController::class, 'create']);
         Route::post('/adminkategori', [AdminController::class, 'createkategori']);
         Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
-    // });
+    });
 
     
     
