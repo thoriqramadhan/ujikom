@@ -58,8 +58,10 @@ function Kasir({ users, onlykasir, setModalData }) {
     console.log("ini role:", role);
     const [mode, setMode] = useState("role");
     // modalData
-    const [modalNama, setDataNama] = useState("");
+    const [modalFirstName, setDataFirstName] = useState("");
+    const [modalLastName, setDataLastName] = useState("");
     const [modalEmail, setDataEmail] = useState("");
+    console.log("modal Data:", modalFirstName, modalLastName, modalEmail);
     const roles = [
         { label: "kasir", value: 1 },
         { label: "admin", value: 2 },
@@ -85,16 +87,16 @@ function Kasir({ users, onlykasir, setModalData }) {
             setPassword("");
             setRole("");
             // Mereset gambar menjadi null
-
             // Me-refresh halaman untuk mendapatkan daftar produk terbaru
             Inertia.reload();
         });
     };
 
-    function detailHandler(id, first_name, email) {
+    function detailHandler(first_name, last_name, email) {
         console.log("in");
         setOpenModal(!openModal);
-        setDataNama(first_name);
+        setDataFirstName(first_name);
+        setDataLastName(last_name); //
         setDataEmail(email);
     }
 
@@ -130,17 +132,29 @@ function Kasir({ users, onlykasir, setModalData }) {
                         <p>Lihat Detail 😀</p>
                     </div>
 
-                    <div className="grid grid-cols-2 text-center mt-10">
-                        <p className="font-bold text-gray-700">Nama:</p>
-                        <p className="font-bold">{modalNama}</p>
+                    <div className="grid grid-cols-2 mt-10 px-5">
+                        <p className="font-bold text-gray-700">Nama Depan:</p>
+                        <p className="font-bold text-right">{modalFirstName}</p>
+                        <p className="font-bold text-gray-700">
+                            Nama Belakang:
+                        </p>
+                        <p className="font-bold text-right">{modalLastName}</p>
                         <p className="font-bold text-gray-700">Email:</p>
-                        <p className="font-bold">{modalEmail}</p>
+                        <p className="font-bold text-right">{modalEmail}</p>
                     </div>
                     <div className="mt-10 grid grid-cols-1 px-5 gap-2 font-bold text-[#747474]">
-                        <button className="bg-[#e8e8e8] py-3  rounded-xl">
+                        <button
+                            className="bg-[#e8e8e8] py-3  rounded-xl flex justify-center"
+                            onClick={() => setOpen(true)}
+                        >
+                            <PencilSvg />
                             Edit
                         </button>
-                        <button className="bg-[#e8e8e8] py-3  rounded-xl">
+                        <button
+                            className="bg-[#e8e8e8] py-3  rounded-xl flex justify-center"
+                            onClick={() => handleDelete(onlykasir.id)}
+                        >
+                            <TrashSvg />
                             Hapus
                         </button>
                     </div>
@@ -209,8 +223,8 @@ function Kasir({ users, onlykasir, setModalData }) {
                                         className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border flex xl:hidden "
                                         onClick={() => {
                                             detailHandler(
-                                                onlykasir.id,
                                                 onlykasir.first_name,
+                                                onlykasir.last_name,
                                                 onlykasir.email
                                             );
                                         }}
@@ -234,7 +248,7 @@ function Kasir({ users, onlykasir, setModalData }) {
                             <div className="flex flex-col gap-4 md:flex-row">
                                 <div className="w-full border-[1.4px] border-gray-400 rounded-xl xl:basis-1/4">
                                     <TextInput
-                                        className="w-full rounded-xl"
+                                        className="w-full rounded-xl text-black"
                                         type="text"
                                         id="firstName"
                                         value={firstName}
@@ -247,7 +261,7 @@ function Kasir({ users, onlykasir, setModalData }) {
                                 </div>
                                 <div className="w-full border-[1.4px] border-gray-400 rounded-xl xl:basis-1/4">
                                     <TextInput
-                                        className="w-full rounded-xl"
+                                        className="w-full rounded-xl text-black"
                                         type="text"
                                         id="lastName"
                                         value={lastName}
@@ -260,7 +274,7 @@ function Kasir({ users, onlykasir, setModalData }) {
                                 </div>
                                 <div className="w-full border-[1.4px] border-gray-400 rounded-xl xl:basis-2/4">
                                     <TextInput
-                                        className="w-full rounded-xl"
+                                        className="w-full rounded-xl text-black"
                                         type="text"
                                         id="email"
                                         value={email}
@@ -294,7 +308,7 @@ function Kasir({ users, onlykasir, setModalData }) {
                                 {/* PASSWORD */}
                                 <div className="w-ful border-[1.4px] relative border-gray-400 rounded-xl xl:basis-2/4">
                                     <TextInput
-                                        className="w-full rounded-xl"
+                                        className="w-full rounded-xl text-black"
                                         type="password"
                                         id="password"
                                         value={password}
