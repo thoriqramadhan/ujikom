@@ -87,7 +87,7 @@ class AdminController extends Controller
         'harga' => $validatedData['harga'],
     ]);
 
-    return redirect()->with('success', 'Menu berhasil ditambahkan.');
+    return redirect()->back()->with('success', 'Menu berhasil ditambahkan.');
 }
 
 public function createkategori(Request $request)
