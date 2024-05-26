@@ -78,6 +78,9 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   // search data
   const [searchInput , setSearchInput] = useState('')
   const [searchOutput , setSearchOutput] = useState([])
+
+  const [searchModal , setSearchModal] = useState('')
+  const [searchOutputModal , setSearchOutputModal] = useState([])
   
   function incrementHandler(){
     console.log('in' , currentPage , pageNumbers)
@@ -146,7 +149,25 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
     setSearchOutput(searchResult)
   }
   
+  const modalSearchHandler = (value) => {
+    setSearchModal(value)
 
+    if(value.trim() === ''){
+      console.log('in kosong')
+      setSearchOutputModal([])
+      return
+    }
+    const trimmedValue = value.replace(/\s+/g, '').toLowerCase();
+    const searchResult = menus.filter((menu)=>{
+      const trimmedordersName = menu.nama.replace(/\s+/g, '').toLowerCase(); // Menghapus semua spasi dari nama orders dan ubah ke huruf kecil
+      return trimmedordersName.includes(trimmedValue);
+    })
+    setSearchOutputModal(searchResult)
+  }
+
+  useEffect(()=>{
+    console.log(searchOutputModal)
+  },[searchOutputModal])
   // modal function
   const handlePayment = () => {
     Inertia.post(`/kasir/${tes}`).then(() => {
@@ -361,13 +382,24 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
         <div className="flex w-full h-fit gap-x-[30px] mt-[25px]">
           <div className="flex-1">
             <div className= " w-full h-[50px] relative">
-              <input type="text" className='w-full h-[50px] pl-[40px] rounded-xl' placeholder='Cari Menu'/>
+              <input type="text" className='w-full h-[50px] pl-[40px] rounded-xl' placeholder='Cari Menu' value={searchModal} onChange={(e)=>{modalSearchHandler(e.target.value)}}/>
               <SearchSvg/>
             </div>
             {/* modal edit content */}
             <div className="w-full h-[400px] justify-evenly flex gap-x-[10px] gap-y-[10px] flex-wrap overflow-scroll pt-[10px]">
               {
+                searchOutputModal.length == 0 ? 
                 menus.map(menu => (
+                  <div className="bg-white w-[230px] border shadow-lg  h-fit rounded-lg px-[15px] py-[15px]">
+                      <div className="w-full h-[150px] rounded-lg bg-gray-400"></div>
+                      <div className="h-fit w-full flex flex-col justify-between mt-2">
+                        <p className='font-bold text-[22px]'>{menu.nama}</p>
+                        <p className='font-bold opacity-60 text-[20px]'>{formatRupiah(menu.harga)}</p>
+                      </div>
+                      <button className='mt-[20px] w-full rounded-[18px] py-[15px] font-bold border-2 bg-[#F3F3F3]' onClick={() => {addMenuHandler(menu.id)}}>Tambah</button>
+                  </div>
+                )) :
+                searchOutputModal.map(menu => (
                   <div className="bg-white w-[230px] border shadow-lg  h-fit rounded-lg px-[15px] py-[15px]">
                       <div className="w-full h-[150px] rounded-lg bg-gray-400"></div>
                       <div className="h-fit w-full flex flex-col justify-between mt-2">
