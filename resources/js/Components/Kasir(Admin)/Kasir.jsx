@@ -7,9 +7,7 @@ import TableData from "../TableData";
 import PencilSvg from "../svgComp/PencilSvg";
 import TrashSvg from "../svgComp/TrashSvg";
 import ViewHideSvg from "../svgComp/ViewHideSvg";
-import Dropdown from "../Dropdown";
-import DropdownSvg from "../svgComp/DropdownSvg";
-import { Inertia } from "@inertiajs/inertia";
+import { Inertia } from "@inertiajs/inertia"; // Tambahan Inertia untuk menghapus
 
 const dataOrder = [
     {
@@ -48,66 +46,59 @@ function Kasir({ users, onlykasir, setModalData }) {
     const [openModal, setOpenModal] = useState(false);
     const [DataUser, setDataUser] = useState(users || "");
     const [DataOnlyKasir, setOnlyKasir] = useState(onlykasir || "");
-    console.log(DataOnlyKasir);
     const [open, setOpen] = useState(false);
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("");
-    console.log("ini role:", role);
     const [mode, setMode] = useState("role");
-    // modalData
+    const [modalId, setDataId] = useState("");
     const [modalFirstName, setDataFirstName] = useState("");
     const [modalLastName, setDataLastName] = useState("");
     const [modalEmail, setDataEmail] = useState("");
-    console.log("modal Data:", modalFirstName, modalLastName, modalEmail);
+
     const roles = [
         { label: "kasir", value: 1 },
         { label: "admin", value: 2 },
     ];
-    console.log("DataModalnya :");
+
     const handleSubmit = (e) => {
         e.preventDefault();
-
-        // Membuat objek FormData untuk mengirim data formulir
         const formData = new FormData();
         formData.append("first_name", firstName);
         formData.append("last_name", lastName);
         formData.append("email", email);
         formData.append("password", password);
-        formData.append("role", role); // Mengirim gambar sebagai bagian dari FormData
+        formData.append("role", role);
 
-        // Mengirim permintaan POST menggunakan Inertia.postFormData
         Inertia.post("/admin", formData).then(() => {
-            // Mereset nilai formulir setelah submit
             setFirstName("");
             setLastName("");
             setEmail("");
             setPassword("");
             setRole("");
-            // Mereset gambar menjadi null
-            // Me-refresh halaman untuk mendapatkan daftar produk terbaru
             Inertia.reload();
         });
     };
 
-    function detailHandler(first_name, last_name, email) {
-        console.log("in");
+    function detailHandler(id, first_name, last_name, email) {
         setOpenModal(!openModal);
+        setDataId(id);
         setDataFirstName(first_name);
-        setDataLastName(last_name); //
+        setDataLastName(last_name);
         setDataEmail(email);
     }
 
+    // Fungsi handleDelete yang baru
     const handleDelete = (id) => {
         if (window.confirm("Apakah Anda yakin ingin menghapus akun ini?")) {
             Inertia.delete(`/admin/${id}`).then(() => {
-                // Me-refresh halaman untuk mendapatkan daftar produk terbaru
                 Inertia.reload();
             });
         }
     };
+
     return (
         <BodyLayout>
             <div
@@ -152,7 +143,7 @@ function Kasir({ users, onlykasir, setModalData }) {
                         </button>
                         <button
                             className="bg-[#e8e8e8] py-3  rounded-xl flex justify-center"
-                            onClick={() => handleDelete(onlykasir.id)}
+                            onClick={() => handleDelete(modalId)} // Panggilan handleDelete dengan modalId
                         >
                             <TrashSvg />
                             Hapus
@@ -198,49 +189,25 @@ function Kasir({ users, onlykasir, setModalData }) {
                                 />
                                 <div className="h-[60px] w-[100%] flex items-center justify-center">
                                     <button
-                                        className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border mr-2 flex pr-2 max-xl:hidden justify-center"
-                                        onClick={() => setOpen(true)}
-                                    >
-                                        <PencilSvg />
-
-                                        <span className="opacity-60">
-                                            | Edit
-                                        </span>
-                                    </button>
-
-                                    <button
-                                        className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border mr-2 flex max-xl:hidden justify-center"
+                                        className="w-[100px] py-[7px] bg-[#ECEDFE] text-[#747474] rounded-xl"
                                         onClick={() =>
-                                            handleDelete(onlykasir.id)
-                                        }
-                                    >
-                                        <TrashSvg />
-                                        <span className="opacity-60">
-                                            | Hapus
-                                        </span>
-                                    </button>
-                                    <button
-                                        className="w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border flex xl:hidden "
-                                        onClick={() => {
                                             detailHandler(
+                                                onlykasir.id,
                                                 onlykasir.first_name,
                                                 onlykasir.last_name,
                                                 onlykasir.email
-                                            );
-                                        }}
+                                            )
+                                        }
                                     >
-                                        <span className="opacity-60 mx-auto">
-                                            Detail
-                                        </span>
+                                        Detail
                                     </button>
                                 </div>
                             </tr>
                         );
                     })}
                 </table>
-
-                {/* add kasir */}
-                <div className="mt-10">
+            </div>
+            <div className="mt-10">
                     <h1 className="text-xl font-[1000]">Tambah Kasir</h1>
                     <p>Tambah Akun Kasir Atau Admin Anda 😀</p>
                     <form onSubmit={handleSubmit} encType="multipart/form-data">
@@ -330,7 +297,6 @@ function Kasir({ users, onlykasir, setModalData }) {
                         </div>
                     </form>
                 </div>
-            </div>
         </BodyLayout>
     );
 }
