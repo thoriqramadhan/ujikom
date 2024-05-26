@@ -49,6 +49,8 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   function paymentHandler(id) {
     setTes(id);
     const orderNow = orders.find(order => order.id === id);
+    let newOrdersData = ordersData.find(order => order.id === id)
+    const typeOfOrder = newOrdersData.data
     if (!orderNow) {
       console.error(`Order with id ${id} not found`);
       return;
@@ -56,18 +58,17 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
     // tes = orderNow
     const parsedData = JSON.parse(orderNow.data);
     console.log(orderNow, parsedData);
-    const subTotal = parsedData.reduce((init, current) => init + current.totalHarga, 0);
-    setBill({
-      subTotal: subTotal,
-      tax: subTotal * 0.1,
-      total: subTotal + (subTotal * 0.1)
-    });
+
   
     setModalName(orderNow.customer_name);
-    setModalData(parsedData);
+    if(typeof typeOfOrder == 'string'){
+      setModalData(JSON.parse(typeOfOrder))
+    }else{
+      setModalData(typeOfOrder)
+    }
+    
     setOpenModalPayment(!openModalPayment);
   }
-  
   // modal datas
   const [openModalEdit , setOpenModalEdit] = useState(true)
   const [modalData, setModalData] = useState(ordersData)
@@ -98,6 +99,14 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   const indexOfLastPost = currentPage * postPerPage;
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   const currentPosts = ordersData.slice(indexOfFirstPost, indexOfLastPost);
+  useEffect(()=>{
+    const subTotal = modalData.reduce((init, current) => init + current.totalHarga, 0);
+    setBill({
+      subTotal: subTotal,
+      tax: subTotal * 0.1,
+      total: subTotal + (subTotal * 0.1)
+    });   
+  },[modalData])
   useEffect(()=>{
     console.log(editModalData)
   },[editModalData,modalData])
@@ -189,6 +198,7 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
     })
     setOrdersData(newOrders)
     setOpenModalEdit(!openModalEdit)
+    setModalData(newOrders)
     setEditModalData([])
   }
 
@@ -376,7 +386,7 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
             <div className="w-full h-[350px] overflow-scroll flex flex-col gap-y-[10px]">
               {
                 editModalData.map(menu => (
-                  <ModalHistoryCard ordersData={ordersData} setEditModalData={setEditModalData} editModalData={editModalData} name={menu.name} item={menu.items} initialPrice={menu.harga} menu={menu} id={menu.id}/>
+                  <ModalHistoryCard key={menu.id} ordersData={ordersData} setEditModalData={setEditModalData} editModalData={editModalData} name={menu.name} item={menu.items} initialPrice={menu.harga} menu={menu} id={menu.id}/>
                 ))
               }
             </div>

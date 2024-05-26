@@ -22,17 +22,16 @@ function ModalHistoryCard({ordersData, setEditModalData, editModalData, name,ite
       setNumber(newNumber);
       setSubTotal(initialPrice * newNumber);
     }
-
+    function deleteHandler(){
+      const newEditModalData = editModalData.filter(item => item.id !== id)
+      setEditModalData(newEditModalData)
+    }
     useEffect(()=>{
       const newMainData = updateHarga(editModalData,id,subTotal,number)
       console.log(editModalData)
       setEditModalData(newMainData)
     },[number,subTotal])
 
-    function deleteHandler(){
-      const newEditModalData = editModalData.filter(item => item.id !== id)
-      setEditModalData(newEditModalData)
-    }
     function updateHarga(mainData, id, newHarga , items) {
       return mainData.map(item => {
         if (item.id === id) {
