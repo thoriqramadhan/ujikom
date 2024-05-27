@@ -132,9 +132,29 @@ class MenuController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request)
     {
-        //
+        // Dapatkan pengguna yang sedang diautentikasi
+        $user = Auth::user();
+
+        // Validasi data yang diterima dari request
+        $validatedData = $request->validate([
+            'firstName' => 'required|string|max:255',
+            'lastName' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email,' . $user->id,
+            // Anda bisa menambahkan validasi untuk password jika diperlukan
+        ]);
+
+        // Perbarui data pengguna berdasarkan data yang diterima dari request
+        $user->update([
+            'first_name' => $validatedData['firstName'],
+            'last_name' => $validatedData['lastName'],
+            'email' => $validatedData['email'],
+            // Anda bisa menambahkan logika untuk memperbarui password jika diperlukan
+        ]);
+
+        // Redirect atau berikan respons sesuai kebutuhan aplikasi Anda
+        return redirect()->back();
     }
 
     /**
