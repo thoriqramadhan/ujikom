@@ -25,12 +25,10 @@ function Kasir({ users, onlykasir, setModalData }) {
     // body data
     const [kasirData , setKasirData] = useState(onlykasir || [])
 
-
     // modal data
     const [modalFirstName, setModalFirstName] = useState("");
     const [modalLastName, setModalLastName] = useState("");
     const [modalEmail, setModalEmail] = useState("");
-
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -51,6 +49,25 @@ function Kasir({ users, onlykasir, setModalData }) {
         });
     };
 
+    // Fungsi untuk mengirim perubahan detail kasir ke backend
+    const handleEdit = (id) => {
+        const kasir = kasirData.find(k => k.id === id);
+        const data = {
+            first_name: modalFirstName,
+            last_name: modalLastName,
+        };
+    
+        // Menggunakan URLSearchParams untuk mengirim data dalam format URL-encoded
+        const formData = new URLSearchParams();
+        for (const key in data) {
+            formData.append(key, data[key]);
+        }
+    
+        Inertia.put(`/admin/${id}`, formData).then(() => {
+            Inertia.reload();
+        });
+    };
+
     function detailHandler(id, first_name, last_name, email) {
         setOpenModal(!openModal);
         setModalId(id);
@@ -58,15 +75,6 @@ function Kasir({ users, onlykasir, setModalData }) {
         setModalLastName(last_name);
         setModalEmail(email);
     }
-
-    // Fungsi handleDelete yang baru
-    const handleDelete = (id) => {
-        if (window.confirm("Apakah Anda yakin ingin menghapus akun ini?")) {
-            Inertia.delete(`/admin/${id}`).then(() => {
-                Inertia.reload();
-            });
-        }
-    };
 
     // input handler
     const inputHandler = (value , setter) => {
@@ -85,10 +93,6 @@ function Kasir({ users, onlykasir, setModalData }) {
         })
         setKasirData(newKasir)
     }
-
-    useEffect(()=>{
-        console.log(modalFirstName)
-    },[modalFirstName , kasirData])
 
     return (
         <BodyLayout>
@@ -114,21 +118,22 @@ function Kasir({ users, onlykasir, setModalData }) {
                         <h3 className="text-2xl">Detail Kasir</h3>
                         <p>Lihat Detail 😀</p>
                     </div>
-
-                    <div className="w-full flex-1 px-5 mb-2">
-                        <div className="w-full relative">
-                            <label htmlFor="" className="block mb-2">First Name</label>
-                            <input type="text" name="" id="" value={modalFirstName} onChange={(e) => {inputHandler(e.target.value, setModalFirstName)}} className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required/>
-                            <button className="absolute right-5 bottom-2 transition-all duration-500 opacity-50 hover:opacity-100" onClick={() =>{changeNameHandler('first_name' , modalFirstName)}}>Ubah</button>
-                        </div>
+                    <form onSubmit={() => handleEdit(modalId)} encType="multipart/form-data">
+                <div className="w-full flex-1 px-5 mb-2">
+                    <div className="w-full relative">
+                        <label htmlFor="" className="block mb-2">First Name</label>
+                        <input type="text" name="" id="" value={modalFirstName} onChange={(e) => {inputHandler(e.target.value, setModalFirstName)}} className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required/>
+                        <button className="absolute right-5 bottom-2 transition-all duration-500 opacity-50 hover:opacity-100" type="submit">Ubah</button>
                     </div>
-                    <div className="w-full flex-1 px-5 mb-2">
-                        <div className="w-full relative">
-                            <label htmlFor="" className="block mb-2">Last Name</label>
-                            <input type="text" name="" id="" value={modalLastName} onChange={(e) => {inputHandler(e.target.value, setModalLastName)}} className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required/>
-                            <button className="absolute right-5 bottom-2 transition-all duration-500 opacity-50 hover:opacity-100" onClick={() =>{changeNameHandler('last_name' , modalLastName)}}>Ubah</button>
-                        </div>
+                </div>
+                <div className="w-full flex-1 px-5 mb-2">
+                    <div className="w-full relative">
+                        <label htmlFor="" className="block mb-2">Last Name</label>
+                        <input type="text" name="" id="" value={modalLastName} onChange={(e) => {inputHandler(e.target.value, setModalLastName)}} className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required/>
+                        <button className="absolute right-5 bottom-2 transition-all duration-500 opacity-50 hover:opacity-100" type="submit">Ubah</button>
                     </div>
+                </div>
+            </form>
                     <div className="w-full flex-1 px-5">
                         <div className="w-full relative">
                             <label htmlFor="" className="block mb-2">Email</label>
