@@ -171,9 +171,25 @@ public function createkategori(Request $request)
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Admin $admin)
+    public function update(Request $request, $id)
     {
-        //
+        // Validasi request
+        $request->validate([
+            'first_name' => 'required|string|max:255',
+            'last_name' => 'required|string|max:255',
+        ]);
+
+        // Temukan kasir berdasarkan ID
+        $kasir = User::findOrFail($id);
+
+        // Update data kasir dengan data baru dari request
+        $kasir->update([
+            'first_name' => $request->input('first_name'),
+            'last_name' => $request->input('last_name'),
+        ]);
+
+        // Redirect atau response sesuai kebutuhan aplikasi
+        return redirect()->back();
     }
 
     /**
