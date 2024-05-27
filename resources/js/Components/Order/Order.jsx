@@ -30,17 +30,15 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   for (let i = 1; i <= Math.ceil(orderbelumdibayar.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
-  console.log(orderbelumdibayar)
   function editHandler(id){
     const orderNow = orders.find(order => order.id === id)
-    const parsedData = JSON.parse(orderNow.data)
     let newOrdersData = ordersData.find(order => order.id === id)
     const typeOfOrder = newOrdersData.data
     setIdNow(id)
 
     setModalName(orderNow.customer_name)
     if(typeof typeOfOrder == 'string'){
-      setEditModalData(parsedData)
+      setEditModalData(JSON.parse(typeOfOrder))
     }else{
       setEditModalData(typeOfOrder)
     }
@@ -51,6 +49,8 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   function paymentHandler(id) {
     setTes(id);
     const orderNow = orders.find(order => order.id === id);
+    let newOrdersData = ordersData.find(order => order.id === id)
+    const typeOfOrder = newOrdersData.data
     if (!orderNow) {
       console.error(`Order with id ${id} not found`);
       return;
@@ -58,24 +58,29 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
     // tes = orderNow
     const parsedData = JSON.parse(orderNow.data);
     console.log(orderNow, parsedData);
-    const subTotal = parsedData.reduce((init, current) => init + current.totalHarga, 0);
-    setBill({
-      subTotal: subTotal,
-      tax: subTotal * 0.1,
-      total: subTotal + (subTotal * 0.1)
-    });
+
   
     setModalName(orderNow.customer_name);
-    setModalData(parsedData);
+    if(typeof typeOfOrder == 'string'){
+      setModalData(JSON.parse(typeOfOrder))
+    }else{
+      setModalData(typeOfOrder)
+    }
+    
     setOpenModalPayment(!openModalPayment);
   }
-  console.log(orders);
-  
   // modal datas
   const [openModalEdit , setOpenModalEdit] = useState(true)
   const [modalData, setModalData] = useState(ordersData)
   const [modalName,setModalName] = useState('')
   const [editModalData , setEditModalData] = useState([])
+
+  // search data
+  const [searchInput , setSearchInput] = useState('')
+  const [searchOutput , setSearchOutput] = useState([])
+
+  const [searchModal , setSearchModal] = useState('')
+  const [searchOutputModal , setSearchOutputModal] = useState([])
   
   function incrementHandler(){
     console.log('in' , currentPage , pageNumbers)
@@ -98,6 +103,14 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   const indexOfFirstPost = indexOfLastPost - postPerPage;
   const currentPosts = ordersData.slice(indexOfFirstPost, indexOfLastPost);
   useEffect(()=>{
+    const subTotal = modalData.reduce((init, current) => init + current.totalHarga, 0);
+    setBill({
+      subTotal: subTotal,
+      tax: subTotal * 0.1,
+      total: subTotal + (subTotal * 0.1)
+    });   
+  },[modalData])
+  useEffect(()=>{
     console.log(editModalData)
   },[editModalData,modalData])
 
@@ -119,6 +132,42 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
     }));
   };
 
+  const searchHandler = (value)=>{
+    setSearchInput(value)
+    console.log(searchInput)
+    console.log(orders)
+    if(value.trim() === ''){
+      console.log('in kosong')
+      setSearchOutput([])
+      return
+    }
+    const trimmedValue = value.replace(/\s+/g, '').toLowerCase();
+    const searchResult = orderbelumdibayar.filter((orders)=>{
+      const trimmedordersName = orders.customer_name.replace(/\s+/g, '').toLowerCase(); // Menghapus semua spasi dari nama orders dan ubah ke huruf kecil
+      return trimmedordersName.includes(trimmedValue);
+    })
+    setSearchOutput(searchResult)
+  }
+  
+  const modalSearchHandler = (value) => {
+    setSearchModal(value)
+
+    if(value.trim() === ''){
+      console.log('in kosong')
+      setSearchOutputModal([])
+      return
+    }
+    const trimmedValue = value.replace(/\s+/g, '').toLowerCase();
+    const searchResult = menus.filter((menu)=>{
+      const trimmedordersName = menu.nama.replace(/\s+/g, '').toLowerCase(); // Menghapus semua spasi dari nama orders dan ubah ke huruf kecil
+      return trimmedordersName.includes(trimmedValue);
+    })
+    setSearchOutputModal(searchResult)
+  }
+
+  useEffect(()=>{
+    console.log(searchOutputModal)
+  },[searchOutputModal])
   // modal function
   const handlePayment = () => {
     Inertia.post(`/kasir/${tes}`).then(() => {
@@ -169,17 +218,14 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
       }
     })
     setOrdersData(newOrders)
+    setOpenModalEdit(!openModalEdit)
+    setModalData(newOrders)
+    setEditModalData([])
   }
 
-  function updateHarga(mainData, id, newHarga , items) {
-    return mainData.map(item => {
-      if (item.id === id) {
-        return { ...item, totalHarga: newHarga , items:items};
-      } else {
-        // Jika ID tidak cocok, kembalikan item tanpa perubahan
-        return item;
-      }
-    });
+  const closeHandler = () => {
+    setOpenModalEdit(!openModalEdit)
+    setEditModalData([])
   }
 
   
@@ -189,7 +235,7 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
       <LogoDate/>
       <div className="flex justify-between mt-[25px]">
         <div className="h-[50px] w-fit relative ">
-          <TextInput placeholder={'Cari Pelanggan!'} className='w-[366px] h-[50px] pl-[40px]'/>
+          <TextInput placeholder={'Cari Pelanggan!'} className='w-[366px] h-[50px] pl-[40px]' value={searchInput} onChange={(e)=>{searchHandler(e.target.value)}}/>
           <SearchSvg/>
         </div>
         <div className="h-[50px] w-fit flex gap-x-4">
@@ -205,7 +251,8 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
           <th className='flex-2 opacity-60'>Status</th>
           <th className='w-[230px]'></th>
         </tr>
-        {currentPosts.length == 0 ?
+        {searchOutput.length == 0 ? 
+        currentPosts.length == 0 ?
         <tr className=''>
           <td className=''>
             tidak ada data
@@ -213,6 +260,30 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
         </tr>
         :
         currentPosts.map(orders => {
+          return (
+            <tr className='h-fit border-bottom border'>
+            <TableData text={orders.customer_name}/>
+            <TableData text={orders.order_time}/>
+            <TableData text={orders.status}/>
+            <div className="flex ">
+              <div className="h-[60px] w-[100%] flex items-center justify-center" onClick={()=>{editHandler(orders.id)}}>
+                <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
+                <span className='mr-[2px]'>I</span>
+                <span className="opacity-60">Edit</span>
+                </button>
+              </div>  
+              <div className="h-[60px] w-[100%] flex items-center justify-center">
+                <button className='w-[100px] py-[7px] bg-[#7D5E42] rounded-lg border-gray-400 border text-white'> 
+                <span className='mr-[2px]'>I</span>
+                <span className="" onClick={()=>{paymentHandler(orders.id)}}>Bayar</span>
+                </button>
+              </div>
+            </div>
+          </tr>
+          )
+        })
+        :
+        searchOutput.map(orders => {
           return (
             <tr className='h-fit border-bottom border'>
             <TableData text={orders.customer_name}/>
@@ -306,18 +377,29 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
       <div className={`h-fit w-[75%] flex flex-col px-[25px] pb-[20px] items-center transition-all duration-1000 overflow-y-hidden  bg-white rounded-xl border shadow-lg absolute left-1/2 right-1/2 -translate-x-1/2 ${openModalEdit ? '-translate-y-[1000px]' : 'translate-y-10 fixed'}`}>
         <p className='font-bold  mt-[30px] text-2xl'>Edit Pesanan</p>
         <p>Edit pesanan punya {modalName}</p>
-        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={() => setOpenModalEdit(!openModalEdit)}>X</p>
+        <p className='text-xl absolute top-10 right-10 cursor-pointer' onClick={closeHandler}>X</p>
 
         <div className="flex w-full h-fit gap-x-[30px] mt-[25px]">
           <div className="flex-1">
             <div className= " w-full h-[50px] relative">
-              <input type="text" className='w-full h-[50px] pl-[40px] rounded-xl' placeholder='Cari Menu'/>
+              <input type="text" className='w-full h-[50px] pl-[40px] rounded-xl' placeholder='Cari Menu' value={searchModal} onChange={(e)=>{modalSearchHandler(e.target.value)}}/>
               <SearchSvg/>
             </div>
             {/* modal edit content */}
             <div className="w-full h-[400px] justify-evenly flex gap-x-[10px] gap-y-[10px] flex-wrap overflow-scroll pt-[10px]">
               {
+                searchOutputModal.length == 0 ? 
                 menus.map(menu => (
+                  <div className="bg-white w-[230px] border shadow-lg  h-fit rounded-lg px-[15px] py-[15px]">
+                      <div className="w-full h-[150px] rounded-lg bg-gray-400"></div>
+                      <div className="h-fit w-full flex flex-col justify-between mt-2">
+                        <p className='font-bold text-[22px]'>{menu.nama}</p>
+                        <p className='font-bold opacity-60 text-[20px]'>{formatRupiah(menu.harga)}</p>
+                      </div>
+                      <button className='mt-[20px] w-full rounded-[18px] py-[15px] font-bold border-2 bg-[#F3F3F3]' onClick={() => {addMenuHandler(menu.id)}}>Tambah</button>
+                  </div>
+                )) :
+                searchOutputModal.map(menu => (
                   <div className="bg-white w-[230px] border shadow-lg  h-fit rounded-lg px-[15px] py-[15px]">
                       <div className="w-full h-[150px] rounded-lg bg-gray-400"></div>
                       <div className="h-fit w-full flex flex-col justify-between mt-2">
@@ -336,7 +418,7 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
             <div className="w-full h-[350px] overflow-scroll flex flex-col gap-y-[10px]">
               {
                 editModalData.map(menu => (
-                  <ModalHistoryCard ordersData={ordersData} setEditModalData={setEditModalData} editModalData={editModalData} name={menu.name} item={menu.items} initialPrice={menu.harga} menu={menu} id={menu.id}/>
+                  <ModalHistoryCard key={menu.id} ordersData={ordersData} setEditModalData={setEditModalData} editModalData={editModalData} name={menu.name} item={menu.items} initialPrice={menu.harga} menu={menu} id={menu.id}/>
                 ))
               }
             </div>

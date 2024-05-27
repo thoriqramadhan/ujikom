@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import MenuItemTab from '../Menu/MenuItemTab'
 import { formatRupiah } from '@/module/rupiah-formater'
 
-function MenuTab({categories , menus}) {
+function MenuTab({searchOutput, categories , menus}) {
     const [activeTab , setActiveTab] = useState('Semua')
     const [menu , setMenu] = useState(menus)
     console.log(menu)
@@ -27,7 +27,8 @@ function MenuTab({categories , menus}) {
         <div className={`w-full h-fit mt-[40px] flex gap-y-4 flex-wrap ${menu.length == 1 ? 'justify-start' : 'justify-evenly'} md:justify-start md:gap-x-[40px]`}>
 
           {/* card */}
-          {menu.length == 0 ? 
+          {
+            searchOutput.length == 0 ? menu.length == 0 ? 
             <p className='text-xl font-bold text-center'>Tidak ada menu di kategori ini!</p>
             :
             menu.map(item => (
@@ -41,7 +42,20 @@ function MenuTab({categories , menus}) {
                 <button className='w-full h-[41px] bg-[#7D5E42] rounded-xl text-white text-[18px] py-[5px]'>
                   <p className='font-[500]'>Edit</p>
                 </button>
-              </div>))
+              </div>)) :
+              searchOutput.map(item => (
+                <div className="w-[250px] rounded-[30px] bg-white border shadow-lg px-[20px] pt-[27px] pb-[18px] shrink-0 flex flex-col">
+                  <div className="h-[150px] w-full bg-[#F4F4F4] rounded-[25px]"></div>
+  
+                  <div className="flex-1 h-fit w-full flex flex-col mt-2 mb-3">
+                    <p className='font-bold text-[22px]'>{item.nama}</p>
+                    <p className='font-bold opacity-60 text-[20px]'>{formatRupiah(item.harga)}</p>
+                  </div>
+                  <button className='w-full h-[41px] bg-[#7D5E42] rounded-xl text-white text-[18px] py-[5px]'>
+                    <p className='font-[500]'>Edit</p>
+                  </button>
+                </div>)) 
+
           }
           
         </div> 

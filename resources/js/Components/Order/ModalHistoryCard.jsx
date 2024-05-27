@@ -4,10 +4,11 @@ import TrashSvg from '../svgComp/TrashSvg';
 import { formatRupiah } from '@/module/rupiah-formater';
 
 function ModalHistoryCard({ordersData, setEditModalData, editModalData, name,item,initialPrice , menu , id}) {
-  console.log(editModalData)
     const [number , setNumber] = useState(item || 1)
     const [subTotal , setSubTotal] = useState(initialPrice * item)
+
     function incrementHandler(){
+      console.log(editModalData)
       const newNumber = number + 1;
       setNumber(newNumber);
       setSubTotal(initialPrice * newNumber);
@@ -21,21 +22,16 @@ function ModalHistoryCard({ordersData, setEditModalData, editModalData, name,ite
       setNumber(newNumber);
       setSubTotal(initialPrice * newNumber);
     }
-
+    function deleteHandler(){
+      const newEditModalData = editModalData.filter(item => item.id !== id)
+      setEditModalData(newEditModalData)
+    }
     useEffect(()=>{
       const newMainData = updateHarga(editModalData,id,subTotal,number)
       console.log(editModalData)
       setEditModalData(newMainData)
     },[number,subTotal])
 
-    function deleteHandler(nama){
-      const newSelectedFood = selectedFood.filter(item => item.name !== nama)
-      const newSubTotal = newSelectedFood.reduce((total,item)=> total + item.harga , 0)
-      setSubTotal(newSubTotal)
-      setSelectedFood(newSelectedFood)
-      localStorage.setItem('ORDER_HISTORY' ,  JSON.stringify(newSelectedFood))
-  
-    }
     function updateHarga(mainData, id, newHarga , items) {
       return mainData.map(item => {
         if (item.id === id) {
@@ -49,7 +45,7 @@ function ModalHistoryCard({ordersData, setEditModalData, editModalData, name,ite
 
   return (
     <div className="w-full h-[100px] bg-[#F9F9F9] rounded-[20px] shrink-0 flex items-center relative border shadow-sm ">
-      <div onClick={()=>{}} className="w-[25px] h-[25px] absolute right-2 top-2 cursor-pointer">
+      <div onClick={deleteHandler} className="w-[25px] h-[25px] absolute right-2 top-2 cursor-pointer">
         <TrashSvg />
       </div>
                 <div className="w-[80px] h-[75px] bg-[#D9D9D9] ml-[12px] rounded-[15px]">

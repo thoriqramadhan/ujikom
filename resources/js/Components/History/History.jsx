@@ -73,6 +73,10 @@ function History({orderselesai , orderitems}) {
   const [openModal , setOpenModal] = useState(true)
   const pageNumbers = []
 
+  // search data
+  const [searchInput , setSearchInput] = useState('')
+  const [searchOutput , setSearchOutput] = useState([])
+
   for (let i = 1; i <= Math.ceil(dataOrderSelesai.length / postPerPage); i++) {
     pageNumbers.push(i);
   }
@@ -104,6 +108,21 @@ function History({orderselesai , orderitems}) {
     setCustomerName(orderNow.customer_name)
 
   }
+
+  const searchHandler = (value)=>{
+    setSearchInput(value)
+    if(value.trim() === ''){
+      console.log('in kosong')
+      setSearchOutput([])
+      return
+    }
+    const trimmedValue = value.replace(/\s+/g, '').toLowerCase();
+    const searchResult = orderselesai.filter((orders)=>{
+      const trimmedordersName = orders.customer_name.replace(/\s+/g, '').toLowerCase(); // Menghapus semua spasi dari nama orders dan ubah ke huruf kecil
+      return trimmedordersName.includes(trimmedValue);
+    })
+    setSearchOutput(searchResult)
+  }
   
   useEffect(()=>{
     const bill = menu.reduce((accumulator,order) => accumulator + order.totalHarga, 0)
@@ -120,7 +139,7 @@ function History({orderselesai , orderitems}) {
       <LogoDate/>
       <div className="flex justify-between mt-[25px]">
         <div className="h-[50px] w-fit relative ">
-          <TextInput placeholder={'Cari Pelanggan!'} className='w-[366px] h-[50px] pl-[40px]'/>
+          <TextInput placeholder={'Cari Pelanggan!'} className='w-[366px] h-[50px] pl-[40px]' value={searchInput} onChange={(e)=>{searchHandler(e.target.value)}}/>
           <SearchSvg/>
         </div>
         <div className="h-[50px] w-fit flex gap-x-4">
@@ -137,6 +156,7 @@ function History({orderselesai , orderitems}) {
           <th></th>
         </tr>
         {
+        searchOutput.length == 0 ? 
         dataOrderSelesai.length == 0 ? <p>Tidak ada data</p>  :
          currentPosts.map(orderselesai => {
         return (
@@ -154,7 +174,24 @@ function History({orderselesai , orderitems}) {
           </td>
         </tr>
         )
-      })
+        }) : 
+        searchOutput.map(orderselesai => {
+        return (
+          <tr className='h-fit border-bottom-1'>
+          <TableData text={orderselesai.customer_name}/>
+          <TableData text={orderselesai.order_time}/>
+          <TableData text={orderselesai.status}/>
+          <td>
+          <div className="h-[60px] w-[100%] flex items-center justify-center" onClick={()=>{detailHandler(orderselesai.id)}}>
+            <button className='w-[100px] py-[7px] bg-[#E8E8E8] rounded-lg border-gray-400 border'> 
+            <span className='mr-[2px]'>I</span>
+            <span className="opacity-60">Detail</span>
+            </button>
+          </div>
+          </td>
+        </tr>
+        )
+        })
       }
         
       </table>
