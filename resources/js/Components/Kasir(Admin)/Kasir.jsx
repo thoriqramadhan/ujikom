@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BodyLayout from "@/Layouts/BodyLayout";
 import LogoDate from "../Logo_date";
 import SearchSvg from "../svgComp/SearchSvg";
@@ -9,59 +9,28 @@ import TrashSvg from "../svgComp/TrashSvg";
 import ViewHideSvg from "../svgComp/ViewHideSvg";
 import { Inertia } from "@inertiajs/inertia"; // Tambahan Inertia untuk menghapus
 
-const dataOrder = [
-    {
-        first_name: "customer_name",
-        last_name: "order_time",
-        email: "A@gmail.com",
-        status: "status",
-    },
-    {
-        first_name: "customer_name",
-        last_name: "order_time",
-        email: "A@gmail.com",
-        status: "status",
-    },
-    {
-        first_name: "customer_name",
-        last_name: "order_time",
-        email: "A@gmail.com",
-        status: "status",
-    },
-    {
-        first_name: "customer_name",
-        last_name: "order_time",
-        email: "A@gmail.com",
-        status: "status",
-    },
-    {
-        first_name: "customer_name",
-        last_name: "order_time",
-        email: "A@gmail.com",
-        status: "status",
-    },
-];
-
 function Kasir({ users, onlykasir, setModalData }) {
+    console.log(onlykasir)
     const [openModal, setOpenModal] = useState(false);
-    const [DataUser, setDataUser] = useState(users || "");
-    const [DataOnlyKasir, setOnlyKasir] = useState(onlykasir || "");
     const [open, setOpen] = useState(false);
+
     const [firstName, setFirstName] = useState("");
     const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
+
     const [password, setPassword] = useState("");
     const [role, setRole] = useState("");
-    const [mode, setMode] = useState("role");
-    const [modalId, setDataId] = useState("");
-    const [modalFirstName, setDataFirstName] = useState("");
-    const [modalLastName, setDataLastName] = useState("");
-    const [modalEmail, setDataEmail] = useState("");
+    const [modalId, setModalId] = useState("");
 
-    const roles = [
-        { label: "kasir", value: 1 },
-        { label: "admin", value: 2 },
-    ];
+    // body data
+    const [kasirData , setKasirData] = useState(onlykasir || [])
+
+
+    // modal data
+    const [modalFirstName, setModalFirstName] = useState("");
+    const [modalLastName, setModalLastName] = useState("");
+    const [modalEmail, setModalEmail] = useState("");
+
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -84,10 +53,10 @@ function Kasir({ users, onlykasir, setModalData }) {
 
     function detailHandler(id, first_name, last_name, email) {
         setOpenModal(!openModal);
-        setDataId(id);
-        setDataFirstName(first_name);
-        setDataLastName(last_name);
-        setDataEmail(email);
+        setModalId(id);
+        setModalFirstName(first_name);
+        setModalLastName(last_name);
+        setModalEmail(email);
     }
 
     // Fungsi handleDelete yang baru
@@ -99,14 +68,37 @@ function Kasir({ users, onlykasir, setModalData }) {
         }
     };
 
+    // input handler
+    const inputHandler = (value , setter) => {
+        setter(value)
+    }
+
+    const changeNameHandler = (dataLink , dataChange) => {
+        const kasir = kasirData.find(items => items.id == modalId)
+        const newData = {...kasir , [dataLink] : dataChange}
+        const newKasir = kasirData.map(kasir => {
+            if(kasir.id == modalId){
+                return {...newData}
+            }else{
+                return kasir
+            }
+        })
+        setKasirData(newKasir)
+    }
+
+    useEffect(()=>{
+        console.log(modalFirstName)
+    },[modalFirstName , kasirData])
+
     return (
         <BodyLayout>
             <div
                 className={`flex justify-center relative transition-all duration-1000 ${
-                    openModal ? "translate-x-0 z-10" : "-translate-x-[2000px]"
+                    openModal ? "translate-x-0 z-10" : "-translate-x-[1500px]"
                 }`}
             >
-                <div className="  h-[400px] w-[400px] absolute z-10 mt-[200px] rounded-2xl bg-white border-[3px] border-gray-400">
+            {/* Modal */}
+                <div className=" h-fit w-[400px] absolute z-10 mt-[100px] rounded-2xl bg-white border-[3px] border-gray-400 pb-5">
                     <div className="font-bold pt-3 flex-row items-center">
                         <button
                             className="w-[105px] py-[7px] rounded-xl border-2 border-[#9ca3af] bg-white text-[#9ca3af] my-[5px] mx-3"
@@ -123,24 +115,27 @@ function Kasir({ users, onlykasir, setModalData }) {
                         <p>Lihat Detail 😀</p>
                     </div>
 
-                    <div className="grid grid-cols-2 mt-10 px-5">
-                        <p className="font-bold text-gray-700">Nama Depan:</p>
-                        <p className="font-bold text-right">{modalFirstName}</p>
-                        <p className="font-bold text-gray-700">
-                            Nama Belakang:
-                        </p>
-                        <p className="font-bold text-right">{modalLastName}</p>
-                        <p className="font-bold text-gray-700">Email:</p>
-                        <p className="font-bold text-right">{modalEmail}</p>
+                    <div className="w-full flex-1 px-5 mb-2">
+                        <div className="w-full relative">
+                            <label htmlFor="" className="block mb-2">First Name</label>
+                            <input type="text" name="" id="" value={modalFirstName} onChange={(e) => {inputHandler(e.target.value, setModalFirstName)}} className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required/>
+                            <button className="absolute right-5 bottom-2 transition-all duration-500 opacity-50 hover:opacity-100" onClick={() =>{changeNameHandler('first_name' , modalFirstName)}}>Ubah</button>
+                        </div>
+                    </div>
+                    <div className="w-full flex-1 px-5 mb-2">
+                        <div className="w-full relative">
+                            <label htmlFor="" className="block mb-2">Last Name</label>
+                            <input type="text" name="" id="" value={modalLastName} onChange={(e) => {inputHandler(e.target.value, setModalLastName)}} className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required/>
+                            <button className="absolute right-5 bottom-2 transition-all duration-500 opacity-50 hover:opacity-100" onClick={() =>{changeNameHandler('last_name' , modalLastName)}}>Ubah</button>
+                        </div>
+                    </div>
+                    <div className="w-full flex-1 px-5">
+                        <div className="w-full relative">
+                            <label htmlFor="" className="block mb-2">Email</label>
+                            <input type="email" name="" id="" value={modalEmail}  className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm" required/>
+                        </div>
                     </div>
                     <div className="mt-10 grid grid-cols-1 px-5 gap-2 font-bold text-[#747474]">
-                        <button
-                            className="bg-[#e8e8e8] py-3  rounded-xl flex justify-center"
-                            onClick={() => setOpen(true)}
-                        >
-                            <PencilSvg />
-                            Edit
-                        </button>
                         <button
                             className="bg-[#e8e8e8] py-3  rounded-xl flex justify-center"
                             onClick={() => handleDelete(modalId)} // Panggilan handleDelete dengan modalId
@@ -152,6 +147,7 @@ function Kasir({ users, onlykasir, setModalData }) {
                 </div>
             </div>
 
+            {/* header & body */}
             <div className="w-full  sm:px-[20px] lg:px-[35px] lg:flex-row lg:gap-x-[30px]">
                 <div className="w-full h-fit pt-[50px] lg:grow lg:basis-1/2">
                     <LogoDate />
@@ -175,16 +171,16 @@ function Kasir({ users, onlykasir, setModalData }) {
                         </th>
                         <th></th>
                     </tr>
-                    {onlykasir.map((onlykasir) => {
+                    {kasirData.map((kasirData) => {
                         return (
-                            <tr className="h-fit border-bottom-1 border-x-[1px] border-gray-300 border-b-[1px]">
-                                <TableData text={onlykasir.first_name} />
+                            <tr className="h-fit border-bottom-1 border-x-[1px] border-gray-300 border-b-[1px]" key={kasirData.id}>
+                                <TableData text={kasirData.first_name} />
                                 <TableData
                                     className={"hidden lg:table-cell"}
-                                    text={onlykasir.last_name}
+                                    text={kasirData.last_name}
                                 />
                                 <TableData
-                                    text={onlykasir.email}
+                                    text={kasirData.email}
                                     className={"hidden lg:table-cell"}
                                 />
                                 <div className="h-[60px] w-[100%] flex items-center justify-center">
@@ -192,10 +188,10 @@ function Kasir({ users, onlykasir, setModalData }) {
                                         className="w-[100px] py-[7px] bg-[#ECEDFE] text-[#747474] rounded-xl"
                                         onClick={() =>
                                             detailHandler(
-                                                onlykasir.id,
-                                                onlykasir.first_name,
-                                                onlykasir.last_name,
-                                                onlykasir.email
+                                                kasirData.id,
+                                                kasirData.first_name,
+                                                kasirData.last_name,
+                                                kasirData.email
                                             )
                                         }
                                     >
@@ -207,6 +203,8 @@ function Kasir({ users, onlykasir, setModalData }) {
                     })}
                 </table>
             </div>
+
+            {/* adding User */}
             <div className="mt-10">
                     <h1 className="text-xl font-[1000]">Tambah Kasir</h1>
                     <p>Tambah Akun Kasir Atau Admin Anda 😀</p>

@@ -8,16 +8,37 @@ import { Inertia } from '@inertiajs/inertia'
 import { Head } from '@inertiajs/react'
 
 function Settings({ loginuser }) {
-    const [dataLoginUser, setLoginUser] = useState(loginuser);
-    console.log(dataLoginUser);
+    console.log(loginuser)
+    const [dataUser, setDataUser] = useState({
+        id: loginuser.id,
+        firstName: loginuser.first_name,
+        lastName: loginuser.last_name,
+        email: loginuser.email,
+        password: loginuser.password
+    });
+    const [firstName , setFirstName] = useState(dataUser.firstName)
+    const [lastName , setLastName] = useState(dataUser.lastName)
+    const [email , setEmail] = useState(dataUser.email)
+    
+    console.log(dataUser);
 
     // Fungsi untuk logout
     const handleLogout = () => {
         // Lakukan logout menggunakan Inertia
         Inertia.post('/logout');
     };
+    // inputChange
+    const inputChange = (value , setter) => {
+        setter(value)
+    }
 
-    console.log(dataLoginUser)
+    const nameChange = (dataLink , dataChange) => {
+        setDataUser({
+            ...dataUser,
+            [dataLink] : dataChange
+        })
+    }
+
 
     return (
         <BodyLayout className={'pt-[40px] px-[40px]'}>
@@ -26,22 +47,43 @@ function Settings({ loginuser }) {
             <div className="flex flex-col w-full mt-[45px]">
                 <div className="flex items-center">
                     <div className="h-[100px] w-[100px] bg-gray-200 rounded-full"></div>
-                    <p className='text-[30px] font-bold ml-[25px]'>{dataLoginUser.first_name} {dataLoginUser.last_name}</p>
+                    <p className='text-[30px] font-bold ml-[25px]'>{dataUser.firstName} {dataUser.lastName}</p>
                 </div>
                 <p className='mt-[15px]'>Disini adalah tempat anda mengatur akun anda dan lainnya ✒️</p>
             </div>
             <div className="flex flex-col gap-x-[30px] mt-[0px] md:flex-row md:mt-[50px]">
-          <SettingInput header={'First Name'} initialValues={dataLoginUser.first_name} placeholder='First Name' user={loginuser} setUser={setLoginUser} selection={'firstName'} className='mt-[30px] md:flex-1'/>
-          <SettingInput header={'Last Name'} initialValues={dataLoginUser.last_name} placeholder='Last Name' user={loginuser} setUser={setLoginUser} selection={'lastName'} className='mt-[30px] md:flex-1'/>
-        </div>
+                {/* firstname */}
+                <div className='w-full'>
+                    <p>First Name</p>
+                    <div className="w-full h-fit bg-sky-100  mt-[10px] relative">
+                        <input type="text" className='w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' value={firstName} onChange={(e) => inputChange(e.target.value , setFirstName)}/>
+                        <div className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer" onClick={(e) => nameChange('firstName' , firstName)}>Ubah</div>
+                    </div>
+                </div>
+                {/* lastname */}
+                <div className='w-full mt-[30px] md:mt-0'>
+                    <p>Last Name</p>
+                    <div className="w-full h-fit bg-sky-100  mt-[10px] relative">
+                        <input type="text" className='w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' value={lastName} onChange={(e) => inputChange(e.target.value , setLastName)}/>
+                        <div className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer" onClick={(e) => nameChange('lastName' , lastName)}>Ubah</div>
+                    </div>
+                </div>
+            </div>
+            {/* email */}
             <div className="mt-[30px]">
                 <p>Email</p>
-                <TextInput value={'Email'} placeholder='Email' type='email' className='w-full mt-[10px]' />
+                <div className="w-full h-fit bg-sky-100  mt-2 relative">
+                    <input type="email" className='w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' value={email} />
+                </div>
             </div>
+            {/* password */}
             <div className="mt-[30px]">
                 <p>Password</p>
-                <TextInput value={'password'} placeholder='password' type='password' className='w-full mt-[10px]' />
+                <input type="password" className='w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' value={dataUser.password} />
             </div>
+
+
+            {/* printer */}
             <div className="bg-[#FFF4F4] w-full h-[130px] my-[20px] px-[40px] py-[35px] flex justify-between rounded-xl overflow-scroll">
                 <div className="">
                     <p className='font-bold text-xl'>Sandingkan dengan printer</p>
