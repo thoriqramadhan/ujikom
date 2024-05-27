@@ -12,16 +12,17 @@ function Chart() {
           </div>
           <div className="w-full h-[286px] pt-[20px] flex justify-evenly items-end  relative">
             <ChartIndicator/>
-            <TabData day={'Senin'} value={50}/>
+            <TabData day={'Senin'} value={51}/>
             <TabData day={'Selasa'} value={70}/>
             <TabData day={'Rabu'} value={60}/>
-            <TabData day={'Kamis'} value={43}/>
-            <TabData day={"Jum'at"} value={71}/>
+            <TabData day={'Kamis'} value={50}/>
+            <TabData day={"Jum'at"} value={70}/>
             <TabData day={'Sabtu'} value={30}/>
             <TabData day={'Minggu'} value={100}/>
           </div>
 
         </div>
+
   )
 }
 
