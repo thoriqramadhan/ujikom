@@ -27,18 +27,27 @@ function Settings({ loginuser }) {
         // Lakukan logout menggunakan Inertia
         Inertia.post('/logout');
     };
-    // inputChange
-    const inputChange = (value , setter) => {
-        setter(value)
-    }
 
-    const nameChange = (dataLink , dataChange) => {
-        setDataUser({
-            ...dataUser,
-            [dataLink] : dataChange
-        })
-    }
-
+    // Fungsi untuk mengirim data user yang telah diubah ke backend
+    const handleEdit = () => {
+        // Persiapkan data yang akan dikirim
+        const userData = {
+            id: dataUser.id,
+            firstName: firstName,
+            lastName: lastName,
+            email: email
+        };
+    
+        // Kirim permintaan PUT menggunakan Inertia dengan format JSON
+        Inertia.put(`/kasir/${dataUser.id}`, userData, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        }).then(() => {
+            // Lakukan sesuatu setelah data berhasil diperbarui, misalnya reload halaman
+            Inertia.reload();
+        });
+    };
 
     return (
         <BodyLayout className={'pt-[40px] px-[40px]'}>
@@ -56,16 +65,16 @@ function Settings({ loginuser }) {
                 <div className='w-full'>
                     <p>First Name</p>
                     <div className="w-full h-fit bg-sky-100  mt-[10px] relative">
-                        <input type="text" className='w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' value={firstName} onChange={(e) => inputChange(e.target.value , setFirstName)}/>
-                        <div className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer" onClick={(e) => nameChange('firstName' , firstName)}>Ubah</div>
+                        <input type="text" className='w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' value={firstName} onChange={(e) => setFirstName(e.target.value)}/>
+                        <div className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer" onClick={handleEdit}>Ubah</div>
                     </div>
                 </div>
                 {/* lastname */}
                 <div className='w-full mt-[30px] md:mt-0'>
                     <p>Last Name</p>
                     <div className="w-full h-fit bg-sky-100  mt-[10px] relative">
-                        <input type="text" className='w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' value={lastName} onChange={(e) => inputChange(e.target.value , setLastName)}/>
-                        <div className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer" onClick={(e) => nameChange('lastName' , lastName)}>Ubah</div>
+                        <input type="text" className='w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' value={lastName} onChange={(e) => setLastName(e.target.value)}/>
+                        <div className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer" onClick={handleEdit}>Ubah</div>
                     </div>
                 </div>
             </div>
@@ -73,7 +82,7 @@ function Settings({ loginuser }) {
             <div className="mt-[30px]">
                 <p>Email</p>
                 <div className="w-full h-fit bg-sky-100  mt-2 relative">
-                    <input type="email" className='w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' value={email} />
+                    <input type="email" className='w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm ' value={email} onChange={(e) => setEmail(e.target.value)}/>
                 </div>
             </div>
             {/* password */}
@@ -102,4 +111,4 @@ function Settings({ loginuser }) {
     )
 }
 
-export default Settings
+export default Settings;
