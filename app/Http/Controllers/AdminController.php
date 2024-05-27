@@ -47,8 +47,30 @@ class AdminController extends Controller
         $uangBulanan = Order::where('status','selesai')->whereMonth('order_time', $currentMonth)->whereYear('order_time', $currentYear)->sum('totalHarga');
         $uangTahunan = Order::where('status','selesai')->whereYear('order_time', $currentYear)->sum('totalHarga');
 
+        $menuSales = [];
 
+        foreach ($orderselesai as $order) {
+            $orderData = json_decode($order->data, true);
+            if (is_array($orderData)) {
+                foreach ($orderData as $item) {
+                    if (isset($item['id']) && isset($item['items'])) { // Menyesuaikan dengan kunci yang ada
+                        $menu = Menu::find($item['id']);
+                        if ($menu) {
+                            $menuName = $menu->nama;
+                            $quantity = $item['items']; // Menyesuaikan dengan kunci yang ada
+        
+                            if (!isset($menuSales[$menuName])) {
+                                $menuSales[$menuName] = 0;
+                            }
+        
+                            $menuSales[$menuName] += $quantity;
+                        }
+                    }
+                }
+            }
+        }
 
+        // dd($menuSales);
 
         return Inertia::render('Admin/Admin', [
             'users' => $users,
@@ -60,6 +82,7 @@ class AdminController extends Controller
             'uangBulanan' => $uangBulanan,
             'uangTahunan' => $uangTahunan,
             'orderselesai' => $orderselesai,
+            'menuSales' => $menuSales,
         ]);
     }
 
