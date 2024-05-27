@@ -242,7 +242,6 @@ function Menu({ menus, categories, order }) {
                     </div>
                 </div>
             </div>
-            // modal
             <div className={`absolute top-0 left-0 w-full h-full flex justify-center duration-1000  ${
   OpenModalCashless ? "-translate-y-[1000px]" : "translate-y-10 fixed"} transition-all`}>
                 <div className="bg- bg-white border-[#d9d9d9] border-2 h-[450px] w-[1000px] my-[10%] rounded-xl px-[50px] py-[20px] text-center flex-row">
