@@ -170,17 +170,17 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   },[searchOutputModal])
   // modal function
   const handlePayment = () => {
-    Inertia.post(`/kasir/${tes}`).then(() => {
+    // Temukan order yang akan dibayar
+    const orderToPay = ordersData.find(order => order.id === tes);
+
+    // Kirim data terbaru ke backend
+    Inertia.post(`/kasir/${tes}`, {
+      data: orderToPay.data
+    }).then(() => {
       console.log('Order marked as paid successfully.');
-      // Tambahkan tindakan lain jika diperlukan setelah pesanan berhasil diperbarui
-  
-      // Reset atau lakukan tindakan lainnya setelah pembayaran berhasil
-  
-      // Refresh halaman untuk mendapatkan daftar pesanan terbaru
       Inertia.reload();
     }).catch((error) => {
       console.error('Failed to mark order as paid:', error);
-      // Tangani kesalahan jika gagal memperbarui pesanan
     });
   };
 
@@ -192,11 +192,11 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
       return
     }
     const reformatSelectedMenu = {
-      harga: selectedMenu.harga,
       id: selectedMenu.id,
-      items: 1,
       name: selectedMenu.nama,
-      totalHarga : selectedMenu.harga
+      harga: selectedMenu.harga,
+      totalHarga : selectedMenu.harga,
+      items: 1
     }
     setEditModalData(
       [
@@ -209,18 +209,17 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
   }
 
   const saveNewMenuHandler = () => {
-    const orderNow = ordersData.find(order => order.id === idNow)
-    const newOrders = ordersData.map(orders => {
-      if(orders.id == orderNow.id){
-        return {...orders, data:editModalData}
-      }else{
-        return orders
+    const newOrders = ordersData.map(order => {
+      if (order.id == idNow) {
+        return { ...order, data: editModalData };
+      } else {
+        return order;
       }
-    })
-    setOrdersData(newOrders)
-    setOpenModalEdit(!openModalEdit)
-    setModalData(newOrders)
-    setEditModalData([])
+    });
+    setOrdersData(newOrders);
+    setOpenModalEdit(!openModalEdit);
+    setModalData(newOrders);
+    setEditModalData([]);
   }
 
   const closeHandler = () => {
