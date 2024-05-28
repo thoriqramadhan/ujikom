@@ -42,7 +42,7 @@ function Home({ onlykasir, uangHarian, uangBulanan, uangTahunan, menuSales = {} 
               </div>
               <div className="ml-2">
                 <p className="font-bold text-[18px]">{formatRupiah(uangHarian)}</p>
-                <p className="opacity-50">Pendapatan Harian</p>
+                <p className="opacity-50">Pendapatan Hari Ini!</p>
               </div>
             </div>
             <div className="h-[85px] w-full bg-[#F1F1F1] border-2 rounded-3xl cursor-pointer flex items-center px-[17px] lg:px-[10px] lg:justify-center">
@@ -51,7 +51,7 @@ function Home({ onlykasir, uangHarian, uangBulanan, uangTahunan, menuSales = {} 
               </div>
               <div className="ml-2">
                 <p className="font-bold text-[18px]">{formatRupiah(uangBulanan)}</p>
-                <p className="opacity-50">Pendapatan Bulanan</p>
+                <p className="opacity-50">Pendapatan Bulan Ini!</p>
               </div>
             </div>
             <div className="h-[85px] w-full bg-[#F1F1F1] border-2 rounded-3xl cursor-pointer flex items-center px-[17px] lg:px-[10px] lg:justify-center">
@@ -60,7 +60,7 @@ function Home({ onlykasir, uangHarian, uangBulanan, uangTahunan, menuSales = {} 
               </div>
               <div className="ml-2">
                 <p className="font-bold text-[18px]">{formatRupiah(uangTahunan)}</p>
-                <p className="opacity-50">Pendapatan Tahunan</p>
+                <p className="opacity-50">Pendapatan Tahun Ini!</p>
               </div>
             </div>
           </div>
