@@ -10,7 +10,7 @@ import TableData from "../TableData";
 import TrashSvg from "../svgComp/TrashSvg";
 
 function Menu({ menus, categories }) {
-    const [openModal, setOpenModal] = useState(true);
+    const [openModal, setOpenModal] = useState(false);
     const [modalCategories, setModalCategories] = useState(true);
     const [categoriesData, setCategoriesData] = useState(categories || []);
     const [nama, setNama] = useState("");
@@ -95,7 +95,11 @@ function Menu({ menus, categories }) {
         setEditKategori(categorieObj.kategori);
         setIdCategorie(id);
     };
-    const saveCatgorieHandler = () => {
+    function saveCategorieHandler(){
+      if(editKategori == ''){
+        return
+      }
+      setModalCategories(!modalCategories);
         const categorieObj = categoriesData.find(
             (item) => item.id == idCategorie
         );
@@ -110,7 +114,6 @@ function Menu({ menus, categories }) {
             }
         });
         setCategoriesData(newCategoriesData);
-        setModalCategories(!modalCategories);
     };
     const deleteCategorieHandler = (id) => {
         const newCategoriesData = categoriesData.filter(
@@ -260,7 +263,7 @@ function Menu({ menus, categories }) {
                                             <th className="w-[60%]"></th>
                                         </tr>
                                         {categoriesData.length == 0 ? (
-                                            <p>Tidak dada data wir</p>
+                                            <p>Tidak ada data Kategori</p>
                                         ) : (
                                             categoriesData.map((categorie) => (
                                                 <tr className="h-fit w-full border-bottom border">
@@ -365,8 +368,8 @@ function Menu({ menus, categories }) {
             </div>
             {/* modal edit categoires */}
             <div
-                className={`w-fill h-fill bg-white border-[3px] transition-all duration-1000 justify-center flex-row  mx-auto z-50 rounded-xl md:w-[30vw] md:h-fill ${
-                  modalCategories ? "translate-y-[1000px]" : "translate-y-10 "
+                className={`w-full h-[50vh] -left-[0px] bottom-[115px] absolute bg-white shadow-lg transition-all duration-1000 justify-center flex-row  mx-auto z-50 rounded-t-xl md:w-[80vw] md:left-28 md:h-fill md:pb-[20px] md:h-fit md:bottom-[200px] ${
+                  modalCategories ? "-translate-y-[1000px]" : "translate-y-10 "
                 } transition-all `}
             >
                 <div className="w-full flex-row text-center mt-[20px] md:mt-[40px]">
@@ -392,19 +395,18 @@ function Menu({ menus, categories }) {
                         className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "
                     />
                 </div>
-                <div className="w-full flex justify-center items-end gap-x-[10px] py-[20px] flex-1 md:mt-5">
+                <div className="w-full flex flex-col justify-center items-end gap-x-[10px] py-[20px] flex-1 px-[20px] md:mt-5 md:flex-row">
                     <button
-                        className="px-[30px] h-[40px] bg-[#7d5e42] border-2  rounded-lg  flex items-center cursor-pointer"
+                        className="px-[30px] h-[40px] w-full bg-[#7d5e42] border-2  rounded-lg  flex items-center cursor-pointer "
                         onClick={() => {
                             setModalCategories(!modalCategories);
                         }}
                     >
                         <p className="text-lg font-bold text-white ]">Kembali</p>
                     </button>
-                    <button className="px-[30px] h-[40px] bg-[#7d5e42] border-2  rounded-lg  flex items-center cursor-pointer">
+                    <button className="px-[30px] h-[40px] w-full bg-[#7d5e42] border-2  rounded-lg  flex items-center cursor-pointer" onClick={() => {saveCategorieHandler()}}>
                         <p
                             className="text-lg font-semibold text-white ]"
-                            onClick={saveCatgorieHandler}
                         >
                             Simpan
                         </p>
