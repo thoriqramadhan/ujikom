@@ -47,6 +47,7 @@ class AdminController extends Controller
         $uangBulanan = Order::where('status','selesai')->whereMonth('order_time', $currentMonth)->whereYear('order_time', $currentYear)->sum('totalHarga');
         $uangTahunan = Order::where('status','selesai')->whereYear('order_time', $currentYear)->sum('totalHarga');
 
+
         $menuSales = [];
 
         foreach ($orderselesai as $order) {
