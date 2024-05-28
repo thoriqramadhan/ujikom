@@ -244,6 +244,8 @@ function Menu({ menus, categories }) {
       <div className={`w-full ${openModal ? 'hidden' : 'block'}`}>
         <MenuTab searchOutput={searchOutput} categories={categories} menus={menus} />
       </div>
+
+      
     </BodyLayout>
   );
 }
