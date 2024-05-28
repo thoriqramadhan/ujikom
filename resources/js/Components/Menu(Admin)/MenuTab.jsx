@@ -7,7 +7,7 @@ import Checklist from "../svgComp/Checklist";
 function MenuTab({ searchOutput, categories, menus }) {
     const [activeTab, setActiveTab] = useState("Semua");
     const [menu, setMenu] = useState(menus);
-    const [openModalEditMenu, setOpenModalEditMenu] = useState(false);
+    const [openModalEditMenu, setOpenModalEditMenu] = useState(true);
 
     
     // dataModal
