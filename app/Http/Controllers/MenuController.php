@@ -94,17 +94,7 @@ class MenuController extends Controller
         // Redirect atau response lainnya
         return redirect('/kasir');
     }
-    
-    
-    
-    
-    
-
-
-
-
-
-
+ 
     /**
      * Display the specified resource.
      */
@@ -116,16 +106,45 @@ class MenuController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit(Request $request,$id)
     {
-        // dd($id);
+
+        $orderData = $request->input('data', []);
+        
+        // Temukan pesanan berdasarkan ID
         $order = Order::find($id);
-        if ($order) {
-            $order->status = 'selesai';
-            $order->save();
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
         }
-    
-        // Redirect atau response lainnya
+
+        // Jika $orderData adalah string (JSON), konversikan ke array
+        if (is_string($orderData)) {
+            $orderData = json_decode($orderData, true);
+        }
+
+        // Pastikan $orderData adalah array
+        if (!is_array($orderData)) {
+            return response()->json(['message' => 'Invalid data format'], 400);
+        }
+
+        // Simpan item pesanan baru sebagai JSON
+        $order->data = json_encode($orderData);
+
+        // Hitung ulang total pesanan dan pajak
+        $subTotal = array_reduce($orderData, function ($carry, $item) {
+            return $carry + $item['totalHarga'];
+        }, 0);
+
+        $tax = $subTotal * 0.1;  // Pajak 10%
+        $total = $subTotal + $tax;
+
+        // Perbarui pesanan
+        $order->tax = $tax;
+        $order->totalHarga = $total;
+        $order->status = 'selesai';  // Set status to 'selesai'
+        $order->save();
+
         return redirect()->back();
     }
 
@@ -141,7 +160,6 @@ class MenuController extends Controller
         $validatedData = $request->validate([
             'firstName' => 'required|string|max:255',
             'lastName' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
             // Anda bisa menambahkan validasi untuk password jika diperlukan
         ]);
 
