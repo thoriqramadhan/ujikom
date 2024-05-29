@@ -9,6 +9,7 @@ import { Inertia } from "@inertiajs/inertia";
 import TableData from "../TableData";
 import TrashSvg from "../svgComp/TrashSvg";
 
+
 function Menu({ menus, categories }) {
     const [openModal, setOpenModal] = useState(false);
     const [modalCategories, setModalCategories] = useState(true);
@@ -116,12 +117,47 @@ function Menu({ menus, categories }) {
         setCategoriesData(newCategoriesData);
     };
     const deleteCategorieHandler = (id) => {
-        const newCategoriesData = categoriesData.filter(
-            (items) => items.id != id
-        );
-        setCategoriesData(newCategoriesData);
+        // Tampilkan pop up konfirmasi
+        const isConfirmed = window.confirm("Anda yakin akan menghapus kategori ini?");
+        if (!isConfirmed) {
+            return; // Jika pengguna membatalkan, hentikan penghapusan
+        }
+    
+        // Kirim permintaan DELETE menggunakan Inertia.delete atau fungsi serupa
+        Inertia.delete(`/admindeletekategori/${id}`)
+            .then(() => {
+                // Jika penghapusan berhasil, update data kategori yang ditampilkan
+                const newCategoriesData = categoriesData.filter(
+                    (item) => item.id !== id
+                );
+                setCategoriesData(newCategoriesData);
+            })
+            .catch((error) => {
+                // Tangani kesalahan jika ada
+                console.error('Error deleting kategori:', error);
+            });
     };
 
+    const handleEditKategori = () => {
+        // Pastikan editKategori tidak kosong
+        if (editKategori === '') {
+            return;
+        }
+    
+        // Kirim permintaan PUT menggunakan Inertia.put
+        Inertia.put(`/admineditkategori/${idCategorie}`, { kategori: editKategori })
+            .then(() => {
+                // Setelah berhasil mengedit, lakukan langkah-langkah berikut:
+                // 1. Tutup modal
+                setModalCategories(!modalCategories);
+                // 2. Lakukan reload data atau langkah lain yang diperlukan
+                //    Di sini Anda dapat melakukan hal seperti memperbarui state kategori setelah pengeditan
+            })
+            .catch((error) => {
+                // Tangani kesalahan jika ada
+                console.error('Error editing kategori:', error);
+            });
+    };
     useEffect(() => {
         console.log(categories_id);
     }, [categories_id]);
@@ -404,7 +440,9 @@ function Menu({ menus, categories }) {
                     >
                         <p className="text-lg font-bold text-white ]">Kembali</p>
                     </button>
-                    <button className="px-[30px] h-[40px] w-full bg-[#7d5e42] border-2  rounded-lg  flex items-center cursor-pointer" onClick={() => {saveCategorieHandler()}}>
+                    <button className="px-[30px] h-[40px] w-full bg-[#7d5e42] border-2  rounded-lg  flex items-center cursor-pointer" onClick={() => {
+        handleEditKategori();
+    }}>
                         <p
                             className="text-lg font-semibold text-white ]"
                         >

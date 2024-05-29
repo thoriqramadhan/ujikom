@@ -3,6 +3,7 @@ import MenuItemTab from "../Menu/MenuItemTab";
 import { formatRupiah } from "@/module/rupiah-formater";
 import Checkbox from "../Checkbox";
 import Checklist from "../svgComp/Checklist";
+import { Inertia } from "@inertiajs/inertia";
 
 function MenuTab({ searchOutput, categories, menus }) {
     const [activeTab, setActiveTab] = useState("Semua");
@@ -52,6 +53,39 @@ function MenuTab({ searchOutput, categories, menus }) {
         console.log("setDataModal:", harga)
     }
     
+    const handleDeleteMenu = (id) => {
+        // Kirim permintaan DELETE menggunakan Inertia.delete
+        Inertia.delete(`/admindeletemenu/${id}`).then(() => {
+            // Setelah penghapusan berhasil, lakukan reload data atau langkah lain yang diperlukan
+            // Di sini Anda dapat melakukan hal seperti memperbarui state kasir setelah penghapusan
+            const updatedKasirData = kasirData.filter((kasir) => kasir.id !== id);
+            setKasirData(updatedKasirData);
+        }).catch(error => {
+            // Tangani kesalahan jika ada
+            console.error('Error deleting kasir:', error);
+        });
+    };
+
+    const handleEditMenu = () => {
+        // Data yang akan dikirim ke backend
+        const formData = {
+            nama: dataModalMenu,
+            categories_id: dataModalKategori,
+            harga: dataModalHarga,
+        };
+        
+        // Kirim permintaan PUT menggunakan Inertia.put
+        Inertia.put(`/admineditmenu/${dataModalId}`, formData).then(() => {
+            // Setelah berhasil mengedit, lakukan langkah-langkah berikut:
+            // 1. Tutup modal
+            setOpenModalEditMenu(!openModalEditMenu);
+            // 2. Lakukan reload data atau langkah lain yang diperlukan
+        }).catch(error => {
+            // Tangani kesalahan jika ada
+            console.error('Error editing menu:', error);
+        });
+    };
+     
     return (
         <>
             {/* categories */}
@@ -191,11 +225,11 @@ function MenuTab({ searchOutput, categories, menus }) {
                         </div>
                     </div>
                     <div className="flex justify-evenly mt-[15px] w-full ">
-                        <button className="w-[90px] bg-[#7d5e42] text-white rounded-[8px]  px-1 py-2 md:w-[120px] md:text-xl">
+                        <button className="w-[90px] bg-[#7d5e42] text-white rounded-[8px]  px-1 py-2 md:w-[120px] md:text-xl" onClick={handleEditMenu}>
                             {" "}
                             Simpan{" "}
                         </button>
-                        <button className="w-[90px] bg-[#7d5e42] text-white rounded-[8px]  py-1 md:w-[120px] md:text-xl">
+                        <button className="w-[90px] bg-[#7d5e42] text-white rounded-[8px]  py-1 md:w-[120px] md:text-xl" onClick={() => handleDeleteMenu(dataModalId)}>
                             Hapus
                         </button>
                     </div>
