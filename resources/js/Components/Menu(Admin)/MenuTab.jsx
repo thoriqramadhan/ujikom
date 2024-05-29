@@ -67,23 +67,32 @@ function MenuTab({ searchOutput, categories, menus }) {
     };
 
     const handleEditMenu = () => {
-        // Data yang akan dikirim ke backend
-        const formData = {
-            nama: dataModalMenu,
-            categories_id: dataModalKategori,
-            harga: dataModalHarga,
-        };
-        
-        // Kirim permintaan PUT menggunakan Inertia.put
-        Inertia.put(`/admineditmenu/${dataModalId}`, formData).then(() => {
-            // Setelah berhasil mengedit, lakukan langkah-langkah berikut:
-            // 1. Tutup modal
-            setOpenModalEditMenu(!openModalEditMenu);
-            // 2. Lakukan reload data atau langkah lain yang diperlukan
-        }).catch(error => {
-            // Tangani kesalahan jika ada
-            console.error('Error editing menu:', error);
-        });
+        // Cari kategori berdasarkan nama
+        const selectedCategory = categories.find(
+            (item) => item.kategori === categorieNow
+        );
+    
+        if (selectedCategory) {
+            const formData = {
+                nama: dataModalMenu,
+                categories_id: selectedCategory.id,
+                harga: dataModalHarga,
+            };
+    
+            Inertia.put(`/admineditmenu/${dataModalId}`, formData)
+                .then(() => {
+                    // Setelah berhasil mengedit, lakukan langkah-langkah berikut:
+                    // 1. Tutup modal
+                    setOpenModalEditMenu(!openModalEditMenu);
+                    // 2. Lakukan reload data atau langkah lain yang diperlukan
+                })
+                .catch((error) => {
+                    // Tangani kesalahan jika ada
+                    console.error("Error editing menu:", error);
+                });
+        } else {
+            console.error("Kategori tidak ditemukan:", categorieNow);
+        }
     };
      
     return (
@@ -209,7 +218,7 @@ function MenuTab({ searchOutput, categories, menus }) {
                         />
                         <select name="" id="" value={categorieNow} onChange={(e) => setCategorieNow(e.target.value)} className='mt-1 rounded-xl  md:mt-3 w-full'>
                             {categoriesArr.map(categorie => (
-                                <option value={categorie}>{categorie}</option>
+                                <option key={categorie.id} value={categorie}>{categorie}</option>
                             ))}
                         </select>
                         <div className="flex w-full h-full">
