@@ -419,7 +419,7 @@ function Menu({ menus, categories }) {
                 <MenuTab
                     searchOutput={searchOutput}
                     categories={categories}
-                    menus={menus}
+                    menus={menus} 
                 />
             </div>
         </BodyLayout>
