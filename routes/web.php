@@ -59,6 +59,10 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController
         Route::post('/adminkategori', [AdminController::class, 'createkategori']);
         Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
         Route::put('/admin/{id}', [AdminController::class, 'update']);
+        Route::delete('/admindeletemenu/{id}', [AdminController::class, 'destroyMenu']);
+        Route::put('/admineditmenu/{id}', [AdminController::class, 'edit']);
+        Route::put('/admineditkategori/{id}', [AdminController::class, 'editKategori']);
+        Route::delete('/admindeletekategori/{id}', [AdminController::class, 'destroyKategori']);
     });
 
     

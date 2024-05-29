@@ -164,9 +164,42 @@ public function createkategori(Request $request)
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Admin $admin)
+    public function edit($id, Request $request)
     {
-        //
+        // Temukan menu berdasarkan ID
+        $menu = Menu::findOrFail($id);
+
+        // Validasi data yang diterima dari request
+        $validatedData = $request->validate([
+            'nama' => 'required|string|max:255',
+            'categories_id' => 'required|integer|exists:categories,id',
+            'harga' => 'required|numeric',
+        ]);
+
+        // Update data menu berdasarkan data yang diterima dari request
+        $menu->update($validatedData);
+
+        // Beri respons berhasil
+        return redirect()->back();
+
+    }
+
+    public function editKategori($id, Request $request)
+    {
+        // Temukan menu berdasarkan ID
+        $kategori = Category::findOrFail($id);
+
+        // Validasi data yang diterima dari request
+        $validatedData = $request->validate([
+            'kategori' => 'required|string|max:255',
+        ]);
+
+        // Update data menu berdasarkan data yang diterima dari request
+        $kategori->update($validatedData);
+
+        // Beri respons berhasil
+        return redirect()->back();
+
     }
 
     /**
@@ -201,6 +234,24 @@ public function createkategori(Request $request)
         $hapuskasir = User::findOrFail($id);
 
         $hapuskasir->delete();
+
+        return redirect()->back();
+    }
+
+    public function destroyMenu($id)
+    {
+        $hapusmenu = Menu::findOrFail($id);
+
+        $hapusmenu->delete();
+
+        return redirect()->back();
+    }
+
+    public function destroyKategori($id)
+    {
+        $hapuskategori = Category::findOrFail($id);
+
+        $hapuskategori->delete();
 
         return redirect()->back();
     }
