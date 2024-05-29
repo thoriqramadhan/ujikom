@@ -94,6 +94,25 @@ function Kasir({ users, onlykasir, setModalData }) {
         setKasirData(newKasir)
     }
 
+    const handleDelete = (id) => {
+        // Tampilkan pop-up konfirmasi sebelum menghapus
+        if (window.confirm("Apakah Anda yakin ingin menghapus akun kasir ini?")) {
+            // Kirim permintaan DELETE menggunakan Inertia.delete
+            Inertia.delete(`/admin/${id}`).then(() => {
+                // Setelah penghapusan berhasil, lakukan langkah-langkah berikut:
+                // 1. Filter data kasir untuk menghapus data dengan ID yang sesuai
+                const updatedKasirData = kasirData.filter(
+                    (kasir) => kasir.id !== id
+                );
+                // 2. Perbarui state kasirData dengan data yang telah diperbarui
+                setKasirData(updatedKasirData);
+            }).catch(error => {
+                // Tangani kesalahan jika ada
+                console.error('Error deleting kasir:', error);
+            });
+        }
+    };
+
     return (
         <BodyLayout>
             <div
