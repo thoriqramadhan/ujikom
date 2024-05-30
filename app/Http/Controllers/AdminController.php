@@ -71,7 +71,22 @@ class AdminController extends Controller
             }
         }
 
-        // dd($menuSales);
+        $dailyIncome = [];
+
+        $orders = Order::where('status', 'selesai')->get();
+        foreach ($orders as $order) {
+            $orderDate = Carbon::parse($order->order_time)->format('l'); // Mendapatkan nama hari dari tanggal order
+            $totalHarga = $order->totalHarga;
+    
+            // Jika hari belum ada dalam $dailyIncome, tambahkan dengan nilai pemasukan dari order tersebut
+            if (!isset($dailyIncome[$orderDate])) {
+                $dailyIncome[$orderDate] = $totalHarga;
+            } else {
+                // Jika hari sudah ada dalam $dailyIncome, tambahkan nilai pemasukan dari order tersebut ke total yang sudah ada
+                $dailyIncome[$orderDate] += $totalHarga;
+            }
+        }
+
 
         return Inertia::render('Admin/Admin', [
             'users' => $users,
@@ -84,6 +99,7 @@ class AdminController extends Controller
             'uangTahunan' => $uangTahunan,
             'orderselesai' => $orderselesai,
             'menuSales' => $menuSales,
+            'dailyIncome' => $dailyIncome
         ]);
     }
 
