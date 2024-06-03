@@ -18,6 +18,7 @@ return new class extends Migration
             $table->enum('status', ['belum dibayar', 'selesai'])->default('belum dibayar');
             $table->integer('tax')->default(0);
             $table->integer('totalHarga');
+            $table->string('payment');
             $table->json('data');
             $table->timestamps();
         });

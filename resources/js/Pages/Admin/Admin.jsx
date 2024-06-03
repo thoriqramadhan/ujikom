@@ -30,13 +30,13 @@ import Menu from '@/Components/Menu(Admin)/Menu';
 //   );
 // };
 
-const Admin = ({users, loginuser, onlykasir, menus, categories, uangHarian, uangBulanan, uangTahunan, menuSales, dailyIncome}) => {
+const Admin = ({users, loginuser, onlykasir, menus, categories, uangHarian, uangBulanan, uangTahunan, menuSales, dailyIncome, monthlyIncome}) => {
   const [clickedAt , setClickedAt] = useState('Home')
   const [UI, setUI] = useState(<Home/>)
   const [screenWidth,setScreenWidth] = useState(window.innerWidth || JSON.parse(localStorage.getItem('SCREEN_WiDTH')))
   useEffect(()=>{
     if(clickedAt == 'Home'){
-      setUI(<Home onlykasir={onlykasir} uangHarian={uangHarian} uangBulanan={uangBulanan} uangTahunan={uangTahunan} menuSales={menuSales} dailyIncome={dailyIncome} />)
+      setUI(<Home onlykasir={onlykasir} uangHarian={uangHarian} uangBulanan={uangBulanan} uangTahunan={uangTahunan} menuSales={menuSales} dailyIncome={dailyIncome} monthlyIncome={monthlyIncome} />)
     }else if(clickedAt == 'Kasir'){
       setUI(<Kasir users={users} onlykasir={onlykasir} />)
     }else if(clickedAt == 'Menu'){
