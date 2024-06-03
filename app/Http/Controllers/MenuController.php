@@ -7,6 +7,8 @@ use App\Models\Managements;
 use App\Models\Menu;
 use App\Models\Order;
 use App\Models\OrderItem;
+use App\Models\TargetHarian;
+use App\Models\Tax;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -31,6 +33,8 @@ class MenuController extends Controller
         $orderselesai = Order::where('status','selesai')->whereDate('order_time', $today)->get();
         $users = Auth::user();
         $loginuser = Auth::user();
+        $targetHarian = TargetHarian::all();
+        $tax = Tax::all();
 
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
@@ -39,7 +43,9 @@ class MenuController extends Controller
             'orderbelumdibayar' => $orderbelumdibayar,
             'orderselesai' => $orderselesai,
             'users' => $users,
-            'loginuser' => $loginuser
+            'loginuser' => $loginuser,
+            'targetHarian' => $targetHarian,
+            'tax' => $tax
         ]);
     }
 

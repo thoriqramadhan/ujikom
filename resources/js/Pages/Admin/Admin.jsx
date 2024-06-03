@@ -30,7 +30,7 @@ import Menu from '@/Components/Menu(Admin)/Menu';
 //   );
 // };
 
-const Admin = ({users, loginuser, onlykasir, menus, categories, uangHarian, uangBulanan, uangTahunan, menuSales, dailyIncome, monthlyIncome}) => {
+const Admin = ({users, loginuser, onlykasir, menus, categories, uangHarian, uangBulanan, uangTahunan, menuSales, dailyIncome, monthlyIncome, targetHarian, tax}) => {
   const [clickedAt , setClickedAt] = useState('Home')
   const [UI, setUI] = useState(<Home/>)
   const [screenWidth,setScreenWidth] = useState(window.innerWidth || JSON.parse(localStorage.getItem('SCREEN_WiDTH')))
