@@ -53,11 +53,11 @@ class AdminController extends Controller
         $orderData = json_decode($order->data, true);
         if (is_array($orderData)) {
             foreach ($orderData as $item) {
-                if (isset($item['id']) && isset($item['items'])) {
+                if (isset($item['id']) && isset($item['items'])) { // Menyesuaikan dengan kunci yang ada
                     $menu = Menu::find($item['id']);
                     if ($menu) {
                         $menuName = $menu->nama;
-                        $quantity = $item['items'];
+                        $quantity = $item['items']; // Menyesuaikan dengan kunci yang ada
     
                         if (!isset($menuSales[$menuName])) {
                             $menuSales[$menuName] = 0;
@@ -74,7 +74,7 @@ class AdminController extends Controller
 
     $orders = Order::where('status', 'selesai')->get();
     foreach ($orders as $order) {
-        $orderDate = Carbon::parse($order->order_time)->format('l');
+        $orderDate = Carbon::parse($order->order_time)->format('l'); // Mendapatkan nama hari dari tanggal order
         $totalHarga = $order->totalHarga;
 
         if (!isset($dailyIncome[$orderDate])) {
@@ -94,9 +94,11 @@ class AdminController extends Controller
         ];
     }
 
+    // Initialize monthly income with all months set to 0
     $monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
     $monthlyIncome = array_fill_keys($monthsOfYear, 0);
 
+    // Calculate monthly income
     foreach ($orders as $order) {
         $orderMonth = Carbon::parse($order->order_time)->format('F'); // Get the month name
         $totalHarga = $order->totalHarga;
@@ -112,6 +114,7 @@ class AdminController extends Controller
             'value' => $monthlyIncome[$month]
         ];
     }
+
 
 
     return Inertia::render('Admin/Admin', [
