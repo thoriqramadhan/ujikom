@@ -137,7 +137,7 @@ function Settings({ loginuser }) {
             </div> */}
             <div className=" mt-[2%]">
                 <p className="text-2xl font-black w-full">
-                    Minimal Pendapatan Bulanan
+                    Pengaturan Admin
                 </p>
                 {/* MinimalPendapatanBulanan */}
                 <div className="flex">
