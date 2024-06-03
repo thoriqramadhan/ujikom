@@ -87,6 +87,7 @@ class AdminController extends Controller
     $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     $formattedDailyIncome = [];
 
+
     foreach ($daysOfWeek as $day) {
         $formattedDailyIncome[] = (object) [
             'day' => $day,
@@ -113,6 +114,7 @@ class AdminController extends Controller
             'month' => $month,
             'value' => $monthlyIncome[$month]
         ];
+
     }
 
 
