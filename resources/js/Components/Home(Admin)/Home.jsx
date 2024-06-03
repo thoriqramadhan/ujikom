@@ -21,7 +21,7 @@ const barData = [
   { label: 'Minggu', value: 50 },
 ];
 
-function Home({ onlykasir, uangHarian, uangBulanan, uangTahunan, menuSales = {} }) {
+function Home({ onlykasir, uangHarian, uangBulanan, uangTahunan, menuSales = {}, dailyIncome }) {
   // Convert menuSales object to an array
   const menuSalesArray = Object.entries(menuSales).map(([menuName, quantity]) => ({
     menuName,
@@ -65,7 +65,7 @@ function Home({ onlykasir, uangHarian, uangBulanan, uangTahunan, menuSales = {} 
             </div>
           </div>
           {/* Pendapatan harian */}
-          <Chart />
+          <Chart dailyIncome={dailyIncome}/>
         </div>
 
         <div className="w-full h-fit flex flex-col gap-y-[15px] mt-[15px] pb-[80px] lg:basis-1/3 lg:mt-[145px]">
