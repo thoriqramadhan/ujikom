@@ -31,7 +31,7 @@ function Menu({ menus, categories, order }) {
         menu: ["Ayam", "Sapi"],
     });
     const [OpenModalCashless, setOpenModalCashless] = useState(true);
-     
+
     const [buyersMoney, setBuyersMoney] = useState(0);
     let total = buyersMoney - parseFloat(modalData.total) || 0;
     function clientHandler(e) {
@@ -67,6 +67,8 @@ function Menu({ menus, categories, order }) {
     const [searchInput, setSearchInput] = useState("");
     const [searchOutput, setSearchOutput] = useState([]);
     const [popUpMsg, setPopUpMsg] = useState("");
+    const [openModalPay, setOpenModalPay] = useState(true)
+    
     const handlePopUp = (msg) => {
         setCondition(!condition);
         setPopUpMsg(msg);
@@ -88,9 +90,14 @@ function Menu({ menus, categories, order }) {
     };
 
     const modalCashlessHandler = () => {
-      setOpenModalCashless(!OpenModalCashless);
-      setOpenModal(!openModal);
-    }
+        setOpenModalCashless(!OpenModalCashless);
+        setOpenModal(!openModal);
+    };
+
+    const modalPayHandler = () => {
+        setOpenModalPay(!openModalPay);
+        setOpenModalCashless(!OpenModalCashless)
+    };
 
     return (
         <>
@@ -159,8 +166,7 @@ function Menu({ menus, categories, order }) {
                 <p>Langsung bayar pesanan punya {modalData.name}</p>
                 <p
                     className="text-xl absolute top-10 right-10 cursor-pointer"
-                    onClick={() => 
-                      setOpenModal(!openModal)}
+                    onClick={() => setOpenModal(!openModal)}
                 >
                     X
                 </p>
@@ -230,7 +236,10 @@ function Menu({ menus, categories, order }) {
                                 {formatRupiah(total) || 0}
                             </p>
                         </div>
-                        <button className="w-full rounded-[18px] py-[15px] mb-[10px] font-bold text-[#7D5E42] border-[#7D5E42] border" onClick={modalCashlessHandler}>
+                        <button
+                            className="w-full rounded-[18px] py-[15px] mb-[10px] font-bold text-[#7D5E42] border-[#7D5E42] border"
+                            onClick={modalCashlessHandler}
+                        >
                             Bayar Cashless
                         </button>
                         <button
@@ -242,8 +251,14 @@ function Menu({ menus, categories, order }) {
                     </div>
                 </div>
             </div>
-            <div className={`absolute top-0 left-0 w-full h-full flex justify-center duration-1000  ${
-  OpenModalCashless ? "-translate-y-[1000px]" : "translate-y-10 fixed"} transition-all`}>
+            {/* modalChoosePayment */}
+            <div
+                className={`absolute top-0 left-0 w-full h-full flex justify-center duration-1000  ${
+                    OpenModalCashless
+                        ? "-translate-y-[1000px]"
+                        : "translate-y-10 fixed"
+                } transition-all`}
+            >
                 <div className="bg- bg-white border-[#d9d9d9] border-2 h-[450px] w-[1000px] my-[10%] rounded-xl px-[50px] py-[20px] text-center flex-row">
                     <p className="font-bold text-3xl">
                         Pilih Metoda Pembayaran
@@ -253,35 +268,88 @@ function Menu({ menus, categories, order }) {
                     </p>
                     <div className="mt-7">
                         <div className=" group hover:bg-slate-200 focus:bg-slate-200 w-full border-[#d9d9d9] border-2 h-fill mb-5 rounded-xl flex justify-between px-10 py-4 peer-checked/draft:bg-sky-500">
-                          <div className="flex justify-between">
-                            <img src="./resources/assets/img/qris.jpg" alt="Qris" className="h-[50px] w-[50px] mr-5 rounded-full bg-[#d9d9d9]"/>
-                            
-                          <p className="font-bold text-[30px] my-auto">Q-Ris</p>
-                        
-                          
-                          </div>
-                          <input id="draft" class="peer/draft" type="radio" name="status" className="my-auto " checked />
-                          
+                            <div className="flex justify-between">
+                                <img
+                                    src="./resources/assets/img/qris.jpg"
+                                    alt="Qris"
+                                    className="h-[50px] w-[50px] mr-5 rounded-full bg-[#d9d9d9]"
+                                />
+
+                                <p className="font-bold text-[30px] my-auto">
+                                    Q-Ris
+                                </p>
+                            </div>
+                            <input
+                                id="draft"
+                                class="peer/draft"
+                                type="radio"
+                                name="status"
+                                className="my-auto "
+                                checked
+                            />
                         </div>
 
                         <div className=" group hover:bg-slate-200 focus:bg-slate-200 w-full border-[#d9d9d9] border-2 h-fill mb-5 rounded-xl flex justify-between px-10 py-4">
-                          <div className="flex justify-between">
-                            <img src="" alt="Qris" className="h-[50px] w-[50px] mr-5 rounded-full bg-[#d9d9d9]"/>
-                          <p className="font-bold text-[30px] my-auto">BriMo</p>
-                          
-                          
-                          </div>
-                          <input id="published" class="peer/published" type="radio" name="status" className="my-auto" />
+                            <div className="flex justify-between">
+                                <img
+                                    src=""
+                                    alt="Qris"
+                                    className="h-[50px] w-[50px] mr-5 rounded-full bg-[#d9d9d9]"
+                                />
+                                <p className="font-bold text-[30px] my-auto">
+                                    BriMo
+                                </p>
+                            </div>
+                            <input
+                                id="published"
+                                class="peer/published"
+                                type="radio"
+                                name="status"
+                                className="my-auto"
+                            />
                         </div>
-                        
-                        
-                        <button className="bg-white border-[#d9d9d9] border-2 font-bold text-[#d9d9d9] text-md py-2 px-[100px] rounded-2xl mt-12 hover:bg-[#7d5e42] hover:text-white">
-                          Lanjut
+
+                        <button className="bg-white border-[#d9d9d9] border-2 font-bold text-[#d9d9d9] text-md py-2 px-[100px] rounded-2xl mt-12 hover:bg-[#7d5e42] hover:text-white" onClick={modalPayHandler}>
+                            Lanjut
                         </button>
-                        <button className="bg-white border-[#d9d9d9] border-2 font-bold text-[#d9d9d9] text-md py-2 px-3 rounded-2xl mt-12 hover:bg-[#7d5e42] hover:text-white ml-3" onClick={modalCashlessHandler}>
-                          Kembali
+                        <button
+                            className="bg-white border-[#d9d9d9] border-2 font-bold text-[#d9d9d9] text-md py-2 px-3 rounded-2xl mt-12 hover:bg-[#7d5e42] hover:text-white ml-3"
+                            onClick={modalCashlessHandler}
+                        >
+                            Kembali
                         </button>
                     </div>
+                </div>
+            </div>
+            {/* modalDetailPayment */}
+            <div
+                className={`absolute w-full h-full flex ${
+                    openModalPay
+                        ? "-translate-y-[1000px]"
+                        : "translate-y-10 fixed"
+                } transition-all duration-1000`}
+            >
+                <div className="bg-white border-[3px] border-[#d9d9d9] w-[1000px] h-fill mx-auto my-auto rounded-xl flex-row py-10 relative">
+                    <div className="flex-row justify-center pb-5 ">
+                        <p className="text-3xl font-black text-center">
+                            Tunggu Bukti Pembayaran
+                        </p>
+                        <p className="text-xl font-black text-center">
+                            Minta tanda bukti pembayaran ke pelanggan 😀
+                        </p>
+                    </div>
+                    <div className=" w-[300px] h-[300px] bg-white border-[3px] border-[#d9d9d9] mx-auto my-auto rounded-xl flex-row content-center mb-5">
+                        <div className="mx-auto my-auto h-[100px] w-[100px] mb-5 bg-[#d9d9d9] rounded-full"></div>
+                        <p className="text-center font-black text-3xl">BRI</p>
+                    </div>
+                    <div className="w-full justify-center flex">
+                        <button className="bg-[#7d5e42] rounded-md py-3 px-[100px] text-white font-bold">
+                            Print & Bayar
+                        </button>
+                    </div>
+                <button className="absolute top-0 right-3 font-black text-red-500 text-3xl" onClick={() => {
+                    setOpenModalPay(!openModalPay)
+                }}>X</button>
                 </div>
             </div>
         </>
