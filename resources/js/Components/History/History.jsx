@@ -185,6 +185,7 @@ function History({ orderselesai, orderitems }) {
                     <th className="flex-1 opacity-60">Nama Pembeli</th>
                     <th className="flex-1 opacity-60">Waktu</th>
                     <th className="flex-2 opacity-60">Status</th>
+                    <th className="flex-2 opacity-60">Pembayaran</th>
                     <th></th>
                 </tr>
                 {searchOutput.length == 0 ? (
@@ -199,6 +200,7 @@ function History({ orderselesai, orderitems }) {
                                     />
                                     <TableData text={orderselesai.order_time} />
                                     <TableData text={orderselesai.status} />
+                                    <TableData text={orderselesai.payment} />
                                     <td>
                                         <div
                                             className="h-[60px] w-[100%] flex items-center justify-center"
@@ -227,6 +229,7 @@ function History({ orderselesai, orderitems }) {
                                 <TableData text={orderselesai.customer_name} />
                                 <TableData text={orderselesai.order_time} />
                                 <TableData text={orderselesai.status} />
+                                <TableData text={orderselesai.payment} />
                                 <td>
                                     <div
                                         className="h-[60px] w-[100%] flex items-center justify-center"
