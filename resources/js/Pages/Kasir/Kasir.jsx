@@ -18,9 +18,9 @@ export default function Kasir({menus , categories , orders, users, orderselesai,
     if(clickedAt == 'Menu'){
       setUI(<Menu menus={menus} categories={categories} tax={tax}/>)
     }else if(clickedAt == 'Order'){
-      setUI(<Order menus={menus} orders={orders} managements={managements} orderitems={orderitems} orderbelumdibayar={orderbelumdibayar}/>)
+      setUI(<Order menus={menus} orders={orders} managements={managements} orderitems={orderitems} orderbelumdibayar={orderbelumdibayar} tax={tax}/>)
     }else if(clickedAt == 'History'){
-      setUI(<History orderselesai={orderselesai} orderitems={orderitems}/>)
+      setUI(<History orderselesai={orderselesai} orderitems={orderitems} tax={tax}/>)
     }else{
       setUI(<Settings users={users} loginuser={loginuser}/>)
     }

@@ -9,12 +9,12 @@ import { Head } from '@inertiajs/react';
 import { formatRupiah } from '@/module/rupiah-formater';
 
 function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood, onSubmitOrder , handlePopUp , tax}) {
+  console.log(tax)
   const [customerName, setCustomerName] = useState('');
   const subHarga = selectedFood.reduce((total, item) => {
     return total + item.totalHarga;
   }, 0);
-  const taxs = subHarga * (tax / 100);
-  console.log(tax)
+  const taxs = subHarga * (parseFloat(tax.tax) / 100);
   
 
 
@@ -33,8 +33,8 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
     setModalData({
       name: customerName,
       subTotal : `${subHarga}`,
-      tax: `${tax}`,
-      total: `${subHarga + tax}`,
+      tax: `${taxs}`,
+      total: `${subHarga + taxs}`,
       menu: selectedFood.map(food => {
         return {
           name : food.name,

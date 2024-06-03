@@ -10,7 +10,8 @@ import { Head } from '@inertiajs/react'
 import {Inertia} from '@inertiajs/inertia'
 import { formatRupiah } from '@/module/rupiah-formater'
 
-function Order({menus, orders, orderitems, orderbelumdibayar}) {
+function Order({menus, orders, orderitems, orderbelumdibayar , tax}) {
+  const [taxs, setTaxs] = useState(tax || []);
   const [currentPage , setcurrentPage] = useState(1)
   const [postPerPage,  setPostPerPage] = useState(5)
   const [openModalPayment , setOpenModalPayment] = useState(true)
@@ -106,13 +107,17 @@ function Order({menus, orders, orderitems, orderbelumdibayar}) {
     const subTotal = modalData.reduce((init, current) => init + current.totalHarga, 0);
     setBill({
       subTotal: subTotal,
-      tax: subTotal * 0.1,
-      total: subTotal + (subTotal * 0.1)
+      tax: subTotal * (parseFloat(taxs.tax) / 100),
+      total: subTotal + (subTotal * (parseFloat(taxs.tax) / 100))
     });   
   },[modalData])
+
   useEffect(()=>{
-    console.log(editModalData)
-  },[editModalData,modalData])
+    if(tax){
+        setTaxs(...tax)
+        console.log(taxs)
+    }
+})
 
   const [orderStatus, setOrderStatus] = useState({});
 
