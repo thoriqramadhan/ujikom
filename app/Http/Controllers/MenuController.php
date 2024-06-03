@@ -82,6 +82,7 @@ class MenuController extends Controller
             'customer_name' => $orderData['customerName'],
             'tax' => $orderData['tax'],
             'totalHarga' => $orderData['totalHarga'],
+            'payment' => 'cash',
             'data' => json_encode($orderData['data']),
             // Ubah array menjadi string JSON sebelum menyimpannya
         ]);
@@ -92,7 +93,7 @@ class MenuController extends Controller
         $order->save();
         
         // Redirect atau response lainnya
-        return redirect('/kasir');
+        return redirect()->back();
     }
  
     /**
