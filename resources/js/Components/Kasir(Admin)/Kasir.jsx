@@ -117,7 +117,7 @@ function Kasir({ users, onlykasir, setModalData }) {
         <BodyLayout>
             <div
                 className={`flex justify-center relative transition-all duration-1000 ${
-                    openModal ? "translate-x-0 z-10" : "-translate-x-[1500px]"
+                    openModal ? "translate-x-0 z-10" : "-translate-x-[1500px] z-10"
                 }`}
             >
             {/* Modal */}
