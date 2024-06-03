@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('target_harians', function (Blueprint $table) {
             $table->id();
-            $table->string('target');
+            $table->string('target')->default(0);
             $table->timestamps();
         });
     }

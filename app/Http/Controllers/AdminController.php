@@ -214,30 +214,40 @@ public function createkategori(Request $request)
     /**
      * Display the specified resource.
      */
-    public function storeTax(Request $request)
-    {
-        $validatedData = $request->validate([
-            'tax' => 'required',
-        ]);
-    
-        Tax::create([
-            'tax' => $validatedData['tax'],
-        ]);
+    public function storeTax(Request $request, $id)
+{
+    $validatedData = $request->validate([
+        'tax' => 'required',
+    ]);
 
-        return redirect()->back();
+    $tax = Tax::find($id);
+
+    if ($tax) {
+        $tax->update($validatedData);
+    } else {
+        Tax::create($validatedData);
     }
 
-    public function storeTargetHarian (Request $request)
-    {
-        $validatedData = $request->validate([
-            'target' => 'required',
-        ]);
-    
-        TargetHarian::create([
-            'target' => $validatedData['target'],
-        ]);
+    return redirect()->back()->with('success', 'Tax saved successfully.');
+}
 
-        return redirect()->back();
+    public function storeTargetHarian (Request $request, $id)
+    {
+
+    $validatedData = $request->validate([
+        'target' => 'required',
+    ]);
+
+
+    $target = TargetHarian::find($id);
+
+    if ($target) {
+        $target->update($validatedData);
+    } else {
+        TargetHarian::create($validatedData);
+    }
+
+    return redirect()->back()->with('success', 'Tax saved successfully.');
     }
 
     /**

@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('taxes', function (Blueprint $table) {
             $table->id();
-            $table->string('tax'); 
+            $table->string('tax')->default(0); 
             $table->timestamps();
         });
     }
