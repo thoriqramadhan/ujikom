@@ -19,9 +19,10 @@ function Settings({ loginuser }) {
     const [firstName, setFirstName] = useState(dataUser.firstName);
     const [lastName, setLastName] = useState(dataUser.lastName);
     const [email, setEmail] = useState(dataUser.email);
+    const [idTax, setIdTax] = useState(1);
+    const [idTarget, setIdTarget] = useState(1);
     const [tax, setTax] = useState("");
     const [target, setTarget] = useState("");
-
     console.log(dataUser);
 
     const handleSubmitTax = (e) => {
@@ -36,7 +37,7 @@ function Settings({ loginuser }) {
         formData.append("tax", tax);
 
         // Mengirim permintaan POST menggunakan Inertia.postFormData
-        Inertia.post("/admintax", formData).then(() => {
+        Inertia.put(`/admintax/${idTax}`, {tax : tax}).then(() => {
             setTax("");
             Inertia.reload();
         });
@@ -54,7 +55,7 @@ function Settings({ loginuser }) {
         formData.append("target", target);
 
         // Mengirim permintaan POST menggunakan Inertia.postFormData
-        Inertia.post("/admintargetharian", formData).then(() => {
+        Inertia.put(`/admintargetharian/${idTarget}`, {target : target}).then(() => {
             setTarget("");
             Inertia.reload();
         });
