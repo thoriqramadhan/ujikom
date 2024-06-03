@@ -14,9 +14,9 @@ import { formatRupiah } from "@/module/rupiah-formater";
 import Checkbox from "../Checkbox";
 
 function Menu({ menus, categories, order , tax}) {
-    console.log(tax)
     const [openSide, setOpenSide] = useState(false);
     const [openModal, setOpenModal] = useState(true);
+    const [taxs, setTaxs] = useState(tax || []);
     // const [openModalPayment, setOpenModalPayment] = useState(true);
     const strg = JSON.parse(localStorage.getItem("ORDER_HISTORY"));
     const [selectedFood, setSelectedFood] = useState(strg || []);
@@ -100,6 +100,12 @@ function Menu({ menus, categories, order , tax}) {
         setOpenModalCashless(!OpenModalCashless)
     };
 
+    useEffect(()=>{
+        if(tax){
+            setTaxs(...tax)
+            console.log(taxs)
+        }
+    })
     return (
         <>
             <Head title="Menu" />
@@ -148,6 +154,7 @@ function Menu({ menus, categories, order , tax}) {
                 setOpenSide={setOpenSide}
                 selectedFood={selectedFood}
                 setSelectedFood={setSelectedFood}
+                tax={taxs}
             />
             <div
                 onClick={() => setOpenSide(true)}
