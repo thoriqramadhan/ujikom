@@ -22,87 +22,122 @@ class AdminController extends Controller
      * Display a listing of the resource.
      */
     public function index()
-    {
-        $users = User::all();
-        $loginuser = Auth::user();
-        $onlykasir = User::where('role', 'kasir')->get();
-        $menus = Menu::all();
-        $categories = Category::all();
-        
-        foreach ($onlykasir as $kasir) {
-            if (Cache::has('user-is-online-' . $kasir->id)) {
-                $kasir['user-is-online'] = true;
-            } else {
-                $kasir['user-is-online'] = false;
-            }
+{
+    $users = User::all();
+    $loginuser = Auth::user();
+    $onlykasir = User::where('role', 'kasir')->get();
+    $menus = Menu::all();
+    $categories = Category::all();
+    
+    foreach ($onlykasir as $kasir) {
+        if (Cache::has('user-is-online-' . $kasir->id)) {
+            $kasir['user-is-online'] = true;
+        } else {
+            $kasir['user-is-online'] = false;
         }
-        
-        $today = Carbon::today();
-        $currentMonth = Carbon::now()->month;
-        $currentYear = Carbon::now()->year;
-        
-        $orderselesai = Order::where('status','selesai')->whereDate('order_time', $today)->get();
+    }
+    
+    $today = Carbon::today();
+    $currentMonth = Carbon::now()->month;
+    $currentYear = Carbon::now()->year;
+    
+    $orderselesai = Order::where('status', 'selesai')->whereDate('order_time', $today)->get();
 
-        $uangHarian = Order::where('status','selesai')->whereDate('order_time', $today)->sum('totalHarga');
-        $uangBulanan = Order::where('status','selesai')->whereMonth('order_time', $currentMonth)->whereYear('order_time', $currentYear)->sum('totalHarga');
-        $uangTahunan = Order::where('status','selesai')->whereYear('order_time', $currentYear)->sum('totalHarga');
+    $uangHarian = Order::where('status', 'selesai')->whereDate('order_time', $today)->sum('totalHarga');
+    $uangBulanan = Order::where('status', 'selesai')->whereMonth('order_time', $currentMonth)->whereYear('order_time', $currentYear)->sum('totalHarga');
+    $uangTahunan = Order::where('status', 'selesai')->whereYear('order_time', $currentYear)->sum('totalHarga');
 
+    $menuSales = [];
 
-        $menuSales = [];
-
-        foreach ($orderselesai as $order) {
-            $orderData = json_decode($order->data, true);
-            if (is_array($orderData)) {
-                foreach ($orderData as $item) {
-                    if (isset($item['id']) && isset($item['items'])) { // Menyesuaikan dengan kunci yang ada
-                        $menu = Menu::find($item['id']);
-                        if ($menu) {
-                            $menuName = $menu->nama;
-                            $quantity = $item['items']; // Menyesuaikan dengan kunci yang ada
-        
-                            if (!isset($menuSales[$menuName])) {
-                                $menuSales[$menuName] = 0;
-                            }
-        
-                            $menuSales[$menuName] += $quantity;
+    foreach ($orderselesai as $order) {
+        $orderData = json_decode($order->data, true);
+        if (is_array($orderData)) {
+            foreach ($orderData as $item) {
+                if (isset($item['id']) && isset($item['items'])) { // Menyesuaikan dengan kunci yang ada
+                    $menu = Menu::find($item['id']);
+                    if ($menu) {
+                        $menuName = $menu->nama;
+                        $quantity = $item['items']; // Menyesuaikan dengan kunci yang ada
+    
+                        if (!isset($menuSales[$menuName])) {
+                            $menuSales[$menuName] = 0;
                         }
+    
+                        $menuSales[$menuName] += $quantity;
                     }
                 }
             }
         }
-
-        $dailyIncome = [];
-
-        $orders = Order::where('status', 'selesai')->get();
-        foreach ($orders as $order) {
-            $orderDate = Carbon::parse($order->order_time)->format('l'); // Mendapatkan nama hari dari tanggal order
-            $totalHarga = $order->totalHarga;
-    
-            // Jika hari belum ada dalam $dailyIncome, tambahkan dengan nilai pemasukan dari order tersebut
-            if (!isset($dailyIncome[$orderDate])) {
-                $dailyIncome[$orderDate] = $totalHarga;
-            } else {
-                // Jika hari sudah ada dalam $dailyIncome, tambahkan nilai pemasukan dari order tersebut ke total yang sudah ada
-                $dailyIncome[$orderDate] += $totalHarga;
-            }
-        }
-
-
-
-        return Inertia::render('Admin/Admin', [
-            'users' => $users,
-            'loginuser' => $loginuser,
-            'onlykasir' => $onlykasir,
-            'menus' => $menus,
-            'categories' => $categories,
-            'uangHarian' => $uangHarian,
-            'uangBulanan' => $uangBulanan,
-            'uangTahunan' => $uangTahunan,
-            'orderselesai' => $orderselesai,
-            'menuSales' => $menuSales,
-            'dailyIncome' => $dailyIncome
-        ]);
     }
+
+    $dailyIncome = [];
+
+    $orders = Order::where('status', 'selesai')->get();
+    foreach ($orders as $order) {
+        $orderDate = Carbon::parse($order->order_time)->format('l'); // Mendapatkan nama hari dari tanggal order
+        $totalHarga = $order->totalHarga;
+
+        if (!isset($dailyIncome[$orderDate])) {
+            $dailyIncome[$orderDate] = $totalHarga;
+        } else {
+            $dailyIncome[$orderDate] += $totalHarga;
+        }
+    }
+
+    $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    $formattedDailyIncome = [];
+
+
+    foreach ($daysOfWeek as $day) {
+        $formattedDailyIncome[] = (object) [
+            'day' => $day,
+            'value' => $dailyIncome[$day] ?? 0
+        ];
+    }
+
+    // Initialize monthly income with all months set to 0
+    $monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    $monthlyIncome = array_fill_keys($monthsOfYear, 0);
+
+    // Calculate monthly income
+    foreach ($orders as $order) {
+        $orderMonth = Carbon::parse($order->order_time)->format('F'); // Get the month name
+        $totalHarga = $order->totalHarga;
+
+        $monthlyIncome[$orderMonth] += $totalHarga;
+    }
+
+    $formattedMonthlyIncome = [];
+
+    foreach ($monthsOfYear as $month) {
+        $formattedMonthlyIncome[] = (object) [
+            'month' => $month,
+            'value' => $monthlyIncome[$month]
+        ];
+
+    }
+
+
+
+    return Inertia::render('Admin/Admin', [
+        'users' => $users,
+        'loginuser' => $loginuser,
+        'onlykasir' => $onlykasir,
+        'menus' => $menus,
+        'categories' => $categories,
+        'uangHarian' => $uangHarian,
+        'uangBulanan' => $uangBulanan,
+        'uangTahunan' => $uangTahunan,
+        'orderselesai' => $orderselesai,
+        'menuSales' => $menuSales,
+        'dailyIncome' => $formattedDailyIncome,
+        'monthlyIncome' => $formattedMonthlyIncome
+    ]);
+}
+
+
+
+
 
     /**
      * Show the form for creating a new resource.
