@@ -64,6 +64,7 @@ class MenuController extends Controller
             'customer_name' => $orderData['customerName'],
             'tax' => $orderData['tax'],
             'totalHarga' => $orderData['totalHarga'],
+            'payment' => '',
             'data' => json_encode($orderData['data']), // Ubah array menjadi string JSON sebelum menyimpannya
         ]);
 
