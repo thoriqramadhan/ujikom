@@ -4,24 +4,7 @@ import LogoDate from '../Logo_date';
 import Chart from './Chart';
 import { formatRupiah } from '@/module/rupiah-formater';
 
-const dailySell = [
-  { name: 'Fachry', value: 11 },
-  { name: 'Fachry', value: 11 },
-  { name: 'Fachry', value: 11 },
-  { name: 'Fachry', value: 11 },
-];
-
-const barData = [
-  { label: 'Senin', value: 50 },
-  { label: 'Selasa', value: 50 },
-  { label: 'Rabu', value: 50 },
-  { label: 'Kamis', value: 50 },
-  { label: 'Jumat', value: 50 },
-  { label: 'Sabtu', value: 50 },
-  { label: 'Minggu', value: 50 },
-];
-
-function Home({ onlykasir, uangHarian, uangBulanan, uangTahunan, menuSales = {}, dailyIncome }) {
+function Home({ onlykasir, uangHarian, uangBulanan, uangTahunan, menuSales = {}, dailyIncome, incomeTarget }) {
   // Convert menuSales object to an array
   const menuSalesArray = Object.entries(menuSales).map(([menuName, quantity]) => ({
     menuName,
@@ -65,7 +48,7 @@ function Home({ onlykasir, uangHarian, uangBulanan, uangTahunan, menuSales = {},
             </div>
           </div>
           {/* Pendapatan harian */}
-          <Chart dailyIncome={dailyIncome}/>
+          <Chart dailyIncome={dailyIncome} incomeTarget={incomeTarget}/>
         </div>
 
         <div className="w-full h-fit flex flex-col gap-y-[15px] mt-[15px] pb-[80px] lg:basis-1/3 lg:mt-[145px]">

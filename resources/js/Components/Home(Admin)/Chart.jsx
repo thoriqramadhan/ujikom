@@ -3,15 +3,17 @@ import React, { useEffect, useState } from 'react'
 import ChartIndicator from './ChartIndicator'
 import TabData from './TabData'
 
-function Chart ({dailyIncome}){
+function Chart ({dailyIncome , incomeTarget}){
   const [dailyIncomes , setDailyIncomes] = useState(dailyIncome || [])
-  const dailyTarget = 1000000;
+  const [incomeTargets , setIncomeTargets] = useState(0)
   const dailyPercentage = (value , target) => {
     return Math.round((value / target) * 100);
   }
   useEffect(() => {
-    if (dailyIncome) {
+    if (dailyIncome || incomeTarget) {
       setDailyIncomes(dailyIncome);
+      let income = incomeTarget[0]
+      setIncomeTargets(parseFloat(income.target))
     }
   }, [dailyIncome]);
   
@@ -24,7 +26,7 @@ function Chart ({dailyIncome}){
           <div className="w-full h-[286px] pt-[20px] flex justify-evenly items-end  relative">
             <ChartIndicator/>
             {dailyIncomes.map((item, index) => (
-              <TabData key={index} day={item.day} percentage={dailyPercentage(item.value , dailyTarget)} value={item.value}/>
+              <TabData key={index} day={item.day} percentage={dailyPercentage(item.value , incomeTargets)} value={item.value}/>
             ))}
           </div>
 
