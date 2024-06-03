@@ -122,6 +122,78 @@ function Home({ onlykasir, uangHarian, uangBulanan, uangTahunan, menuSales = {},
           </div>
         </div>
       </div>
+      <div className="border-[1px] border-[#e5e7eb] px-[40px] mx-[36px] py-[30px] rounded-xl mb-5">
+                <div className="flex w-full justify-between">
+                    <div>
+                        <p className="font-bold text-2xl">Pendapatan Bulanan</p>
+                        <p>Lihat pendapatan bulanan kamu disini</p>
+                    </div>
+                    <div>
+                        <select
+                            name=""
+                            id=""
+                            className="hidden h-fit py-[12px] border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg shadow-sm mr-5 md:block"
+                        >
+                            <option value="Menu">2024</option>
+                            <option value="Kategori">2025</option>
+                        </select>
+                    </div>
+                </div>
+                <div className="w-full bg-white h-fill mt-5 flex ">
+                    <div className="w-full basis-1/2 mr-2">
+                        <div className="w-full flex justify-between bg-[#e5e7eb] px-3 py-1 rounded-md">
+                            <p>Januari</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                        <div className="w-full flex justify-between px-3 py-1 rounded-md">
+                            <p>Februari</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                        <div className="w-full flex justify-between bg-[#e5e7eb] px-3 py-1 rounded-md">
+                            <p>Maret</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                        <div className="w-full flex justify-between px-3 py-1 rounded-md">
+                            <p>April</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                        <div className="w-full flex justify-between bg-[#e5e7eb] px-3 py-1 rounded-md">
+                            <p>Mei</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                        <div className="w-full flex justify-between px-3 py-1 rounded-md">
+                            <p>Juni</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                    </div>
+                    <div className="w-full basis-1/2 ml-2">
+                        <div className="w-full flex justify-between bg-[#e5e7eb] px-3 py-1 rounded-md">
+                            <p>Juli</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                        <div className="w-full flex justify-between px-3 py-1 rounded-md">
+                            <p>Agustus</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                        <div className="w-full flex justify-between bg-[#e5e7eb] px-3 py-1 rounded-md">
+                            <p>September</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                        <div className="w-full flex justify-between px-3 py-1 rounded-md">
+                            <p>Oktober</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                        <div className="w-full flex justify-between bg-[#e5e7eb] px-3 py-1 rounded-md">
+                            <p>November</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                        <div className="w-full flex justify-between px-3 py-1 rounded-md">
+                            <p>Desember</p>
+                            <p>Rp.10.000.000</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
     </BodyLayout>
   );
 }
