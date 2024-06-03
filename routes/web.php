@@ -57,6 +57,8 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController
         Route::post('/admin', [AdminController::class, 'store']);
         Route::post('/adminstore', [AdminController::class, 'create']);
         Route::post('/adminkategori', [AdminController::class, 'createkategori']);
+        Route::post('/admintax', [AdminController::class, 'storeTax']);
+        Route::post('/admintargetharian', [AdminController::class, 'storeTargetHarian']);
         Route::delete('/admin/{id}', [AdminController::class, 'destroy']);
         Route::put('/admin/{id}', [AdminController::class, 'update']);
         Route::delete('/admindeletemenu/{id}', [AdminController::class, 'destroyMenu']);

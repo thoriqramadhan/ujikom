@@ -19,9 +19,46 @@ function Settings({ loginuser }) {
     const [firstName, setFirstName] = useState(dataUser.firstName);
     const [lastName, setLastName] = useState(dataUser.lastName);
     const [email, setEmail] = useState(dataUser.email);
+    const [tax, setTax] = useState("");
+    const [target, setTarget] = useState("");
 
     console.log(dataUser);
 
+    const handleSubmitTax = (e) => {
+        e.preventDefault();
+
+        if ( tax === "") {
+            alert("Data belum komplit!");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("tax", tax);
+
+        // Mengirim permintaan POST menggunakan Inertia.postFormData
+        Inertia.post("/admintax", formData).then(() => {
+            setTax("");
+            Inertia.reload();
+        });
+    };
+
+    const handleSubmitTargetHarian = (e) => {
+        e.preventDefault();
+
+        if ( target === "") {
+            alert("Data belum komplit!");
+            return;
+        }
+
+        const formData = new FormData();
+        formData.append("target", target);
+
+        // Mengirim permintaan POST menggunakan Inertia.postFormData
+        Inertia.post("/admintargetharian", formData).then(() => {
+            setTarget("");
+            Inertia.reload();
+        });
+    };
     // Fungsi untuk logout
     const handleLogout = () => {
         // Lakukan logout menggunakan Inertia
@@ -140,17 +177,22 @@ function Settings({ loginuser }) {
                 {/* MinimalPendapatanBulanan */}
                 <div className="flex mt-5">
                     <div className="w-full mt-[30px] md:mt-0 basis-1/2 mr-2">
-                        <p>Pendapatan Bulanan</p>
+                        <p>Target Harian</p>
                         <div className="w-full h-fit bg-sky-100  mt-[10px] relative">
-                            <input
-                                type="number"
-                                className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "
-                            />
+                        <TextInput
+                                            className="w-full"
+                                            placeholder="Masukkan Target Harian"
+                                            value={target}
+                                            onChange={(e) =>
+                                                setTarget(e.target.value)
+                                            }
+                                            required
+                                        />
                             <div
                                 className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer"
-                                onClick={handleEdit}
+                                onClick={handleSubmitTargetHarian}
                             >
-                                Ubah
+                                Submit
                             </div>
                         </div>
                     </div>
@@ -158,15 +200,20 @@ function Settings({ loginuser }) {
                     <div className="w-full mt-[30px] md:mt-0 basis-1/2 ml-2">
                         <p>Pajak</p>
                         <div className="w-full h-fit bg-sky-100  mt-[10px] relative">
-                            <input
-                                type="number"
-                                className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "
-                            />
+                        <TextInput
+                                            className="w-full"
+                                            placeholder="Masukkan Pajak"
+                                            value={tax}
+                                            onChange={(e) =>
+                                                setTax(e.target.value)
+                                            }
+                                            required
+                                        />
                             <div
                                 className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer"
-                                onClick={handleEdit}
+                                onClick={handleSubmitTax}
                             >
-                                Ubah
+                                Submit
                             </div>
                         </div>
                     </div>

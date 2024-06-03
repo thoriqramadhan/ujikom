@@ -10,7 +10,7 @@ import MenuSvg from '@/Components/svgComp/MenuSvg';
 import OrderSvg from '@/Components/svgComp/OrderSvg';
 import HistorySvg from '@/Components/svgComp/HistorySvg';
 
-export default function Kasir({menus , categories , orders, users, orderselesai, managements, orderitems, loginuser, orderbelumdibayar, targetHarian, tax}) {
+export default function Kasir({menus , categories , orders, users, orderselesai, managements, orderitems, loginuser, orderbelumdibayar, target, tax}) {
   const [clickedAt , setClickedAt] = useState('Menu')
   const [UI , setUI] = useState(<Menu menus={menus} categories={categories}/>)
   console.log(orderselesai)
