@@ -24,7 +24,7 @@ function Chart ({dailyIncome}){
           <div className="w-full h-[286px] pt-[20px] flex justify-evenly items-end  relative">
             <ChartIndicator/>
             {dailyIncomes.map((item, index) => (
-              <TabData key={index} day={item.day} value={dailyPercentage(item.value , dailyTarget)} />
+              <TabData key={index} day={item.day} percentage={dailyPercentage(item.value , dailyTarget)} value={item.value}/>
             ))}
           </div>
 

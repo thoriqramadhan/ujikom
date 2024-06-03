@@ -16,7 +16,7 @@ export default function Kasir({menus , categories , orders, users, orderselesai,
   console.log(orderselesai)
   useEffect(()=> {
     if(clickedAt == 'Menu'){
-      setUI(<Menu menus={menus} categories={categories}/>)
+      setUI(<Menu menus={menus} categories={categories} tax={tax}/>)
     }else if(clickedAt == 'Order'){
       setUI(<Order menus={menus} orders={orders} managements={managements} orderitems={orderitems} orderbelumdibayar={orderbelumdibayar}/>)
     }else if(clickedAt == 'History'){

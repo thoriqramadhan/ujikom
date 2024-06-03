@@ -13,7 +13,8 @@ import PopUp from "../PopUp";
 import { formatRupiah } from "@/module/rupiah-formater";
 import Checkbox from "../Checkbox";
 
-function Menu({ menus, categories, order }) {
+function Menu({ menus, categories, order , tax}) {
+    console.log(tax)
     const [openSide, setOpenSide] = useState(false);
     const [openModal, setOpenModal] = useState(true);
     // const [openModalPayment, setOpenModalPayment] = useState(true);
