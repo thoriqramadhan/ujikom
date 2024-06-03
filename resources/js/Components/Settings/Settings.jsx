@@ -136,27 +136,39 @@ function Settings({ loginuser }) {
                 </div>
             </div> */}
             <div className=" mt-[2%]">
-                <p className="text-2xl font-black w-full">
-                    Pengaturan Admin
-                </p>
+                <p className="text-2xl font-black w-full">Pengaturan Admin</p>
                 {/* MinimalPendapatanBulanan */}
-                <div className="flex">
-                    <div className="mt-[30px] basis-1/2 mr-2">
-                        <p>Minimal Pendapatan Bulanan</p>
-                        <input
-                            type="number"
-                            className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "
-                            
-                        />
+                <div className="flex mt-5">
+                    <div className="w-full mt-[30px] md:mt-0 basis-1/2 mr-2">
+                        <p>Pendapatan Bulanan</p>
+                        <div className="w-full h-fit bg-sky-100  mt-[10px] relative">
+                            <input
+                                type="number"
+                                className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "
+                            />
+                            <div
+                                className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer"
+                                onClick={handleEdit}
+                            >
+                                Ubah
+                            </div>
+                        </div>
                     </div>
                     {/* Pajak */}
-                    <div className="mt-[30px] basis-1/2 ml-2">
+                    <div className="w-full mt-[30px] md:mt-0 basis-1/2 ml-2">
                         <p>Pajak</p>
-                        <input
-                            type="number"
-                            className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "
-                            
-                        />
+                        <div className="w-full h-fit bg-sky-100  mt-[10px] relative">
+                            <input
+                                type="number"
+                                className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "
+                            />
+                            <div
+                                className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer"
+                                onClick={handleEdit}
+                            >
+                                Ubah
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
