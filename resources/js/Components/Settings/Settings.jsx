@@ -142,9 +142,9 @@ function Settings({ loginuser }) {
                 {/* MinimalPendapatanBulanan */}
                 <div className="flex">
                     <div className="mt-[30px] basis-1/2 mr-2">
-                        <p>Password</p>
+                        <p>Minimal Pendapatan Bulanan</p>
                         <input
-                            type="password"
+                            type="number"
                             className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "
                             
                         />
@@ -153,7 +153,7 @@ function Settings({ loginuser }) {
                     <div className="mt-[30px] basis-1/2 ml-2">
                         <p>Pajak</p>
                         <input
-                            type="password"
+                            type="number"
                             className="w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm "
                             
                         />
