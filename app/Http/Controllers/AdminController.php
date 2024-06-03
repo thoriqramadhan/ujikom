@@ -6,6 +6,8 @@ use App\Models\Admin;
 use App\Models\Category;
 use App\Models\Menu;
 use App\Models\Order;
+use App\Models\TargetHarian;
+use App\Models\Tax;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Auth\Events\Registered;
@@ -28,6 +30,8 @@ class AdminController extends Controller
     $onlykasir = User::where('role', 'kasir')->get();
     $menus = Menu::all();
     $categories = Category::all();
+    $targetHarian = TargetHarian::all();
+    $tax = Tax::all();
     
     foreach ($onlykasir as $kasir) {
         if (Cache::has('user-is-online-' . $kasir->id)) {
@@ -131,7 +135,9 @@ class AdminController extends Controller
         'orderselesai' => $orderselesai,
         'menuSales' => $menuSales,
         'dailyIncome' => $formattedDailyIncome,
-        'monthlyIncome' => $formattedMonthlyIncome
+        'monthlyIncome' => $formattedMonthlyIncome,
+        'targetHarian' => $targetHarian,
+        'tax' => $tax
     ]);
 }
 
@@ -208,9 +214,30 @@ public function createkategori(Request $request)
     /**
      * Display the specified resource.
      */
-    public function show(Admin $admin)
+    public function storeTax(Request $request)
     {
-        
+        $validatedData = $request->validate([
+            'tax' => 'required',
+        ]);
+    
+        Tax::create([
+            'tax' => $validatedData['tax'],
+        ]);
+
+        return redirect()->back();
+    }
+
+    public function storeTargetHarian (Request $request)
+    {
+        $validatedData = $request->validate([
+            'target' => 'required',
+        ]);
+    
+        TargetHarian::create([
+            'target' => $validatedData['target'],
+        ]);
+
+        return redirect()->back();
     }
 
     /**
