@@ -30,6 +30,10 @@ function Kasir({ users, onlykasir, setModalData }) {
     const [modalLastName, setModalLastName] = useState("");
     const [modalEmail, setModalEmail] = useState("");
 
+    // search data
+    const [searchInput, setSearchInput] = useState("");
+    const [searchOutput, setSearchOutput] = useState([]);
+
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData();
@@ -113,6 +117,21 @@ function Kasir({ users, onlykasir, setModalData }) {
         }
     };
 
+    const searchHandler = (value) => {
+        setSearchInput(value);
+        if (value.trim() === "") {
+            console.log("in kosong");
+            setSearchOutput([]);
+            return;
+        }
+        const trimmedValue = value.replace(/\s+/g, "").toLowerCase();
+        const searchResult = onlykasir.filter((kasir) => {
+            const trimmedKasirName = kasir.first_name.replace(/\s+/g, "").toLowerCase(); // Menghapus semua spasi dari nama Kasir dan ubah ke huruf kecil
+            return trimmedKasirName.includes(trimmedValue);
+        });
+        setSearchOutput(searchResult);
+    };
+
     return (
         <BodyLayout>
             <div
@@ -138,6 +157,7 @@ function Kasir({ users, onlykasir, setModalData }) {
                         <p>Lihat Detail 😀</p>
                     </div>
                     <form onSubmit={() => handleEdit(modalId)} encType="multipart/form-data">
+
                 <div className="w-full flex-1 px-5 mb-2">
                     <div className="w-full relative">
                         <label htmlFor="" className="block mb-2">First Name</label>
@@ -179,6 +199,10 @@ function Kasir({ users, onlykasir, setModalData }) {
                         <TextInput
                             placeholder={"Cari Kasir Anda!"}
                             className="w-[366px] h-[50px] pl-[40px]"
+                            value={searchInput}
+                            onChange={(e) => {
+                                searchHandler(e.target.value);
+                            }}
                         />
                         <SearchSvg />
                     </div>
@@ -195,7 +219,8 @@ function Kasir({ users, onlykasir, setModalData }) {
                         </th>
                         <th></th>
                     </tr>
-                    {kasirData.map((kasirData) => {
+                    {searchOutput.length == 0 ? 
+                    kasirData.map((kasirData) => {
                         return (
                             <tr className="h-fit border-bottom-1 border-x-[1px] border-gray-300 border-b-[1px]" key={kasirData.id}>
                                 <TableData text={kasirData.first_name} />
@@ -224,7 +249,39 @@ function Kasir({ users, onlykasir, setModalData }) {
                                 </div>
                             </tr>
                         );
-                    })}
+                    })
+                    :
+                    searchOutput.map((kasirData) => {
+                        return (
+                            <tr className="h-fit border-bottom-1 border-x-[1px] border-gray-300 border-b-[1px]" key={kasirData.id}>
+                                <TableData text={kasirData.first_name} />
+                                <TableData
+                                    className={"hidden lg:table-cell"}
+                                    text={kasirData.last_name}
+                                />
+                                <TableData
+                                    text={kasirData.email}
+                                    className={"hidden lg:table-cell"}
+                                />
+                                <div className="h-[60px] w-[100%] flex items-center justify-center">
+                                    <button
+                                        className="w-[100px] py-[7px] bg-[#ECEDFE] text-[#747474] rounded-xl"
+                                        onClick={() =>
+                                            detailHandler(
+                                                kasirData.id,
+                                                kasirData.first_name,
+                                                kasirData.last_name,
+                                                kasirData.email
+                                            )
+                                        }
+                                    >
+                                        Detail
+                                    </button>
+                                </div>
+                            </tr>
+                        );
+                    })
+                    }
                 </table>
             </div>
 
