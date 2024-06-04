@@ -8,12 +8,13 @@ import axios from 'axios';
 import { Head } from '@inertiajs/react';
 import { formatRupiah } from '@/module/rupiah-formater';
 
-function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood, onSubmitOrder , handlePopUp}) {
+function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenSide, selectedFood, setSelectedFood, onSubmitOrder , handlePopUp , tax}) {
+  console.log(tax)
   const [customerName, setCustomerName] = useState('');
   const subHarga = selectedFood.reduce((total, item) => {
     return total + item.totalHarga;
   }, 0);
-  const tax = subHarga * 0.1;
+  const taxs = subHarga * (parseFloat(tax.tax) / 100);
   
 
 
@@ -32,8 +33,8 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
     setModalData({
       name: customerName,
       subTotal : `${subHarga}`,
-      tax: `${tax}`,
-      total: `${subHarga + tax}`,
+      tax: `${taxs}`,
+      total: `${subHarga + taxs}`,
       menu: selectedFood.map(food => {
         return {
           name : food.name,
@@ -76,8 +77,8 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
         // Membuat objek FormData untuk mengirim data formulir
         const order = {
             customerName: customerName,
-            tax: tax,
-            totalHarga: subHarga + tax,
+            tax: taxs,
+            totalHarga: subHarga + taxs,
             data: [...selectedFood],
         };
 
@@ -125,12 +126,12 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
           </div>
           <div className="w-full flex justify-between">
             <p className='opacity-30 font-bold'>{'Pajak (10%)'}</p>
-            <p className='font-bold'>{formatRupiah(tax)}</p>
+            <p className='font-bold'>{formatRupiah(taxs)}</p>
           </div>
           <DashedLine />
           <div className="w-full flex justify-between mt-[20px]">
             <p className='opacity-30 font-bold'>Total</p>
-            <p className='font-bold'>{formatRupiah(subHarga + tax)}</p>
+            <p className='font-bold'>{formatRupiah(subHarga + taxs)}</p>
           </div>
         </div>
         <div className="mb-[20px] mx-[20px] h-[50px] mt-[20px] flex gap-3 justify-center">
