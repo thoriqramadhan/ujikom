@@ -186,7 +186,7 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
     const handlePayment = () => {
         // Temukan order yang akan dibayar
         const orderToPay = ordersData.find((order) => order.id === tes);
-
+        printReceipt(); //
         // Kirim data terbaru ke backend
         Inertia.post(`/kasir/${tes}`, {
             data: orderToPay.data,
@@ -244,6 +244,113 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
         setOpenModalPayment(!openModalPayment);
         setOpenModalPaymentCashless(!openModalPaymentCashless);
     };
+
+    const printReceipt = () => {
+        const receiptWindow = window.open("", "PRINT", "height=450,width=150");
+            receiptWindow.document.write(`<html><head><title>Receipt</title>`);
+            receiptWindow.document.write(`
+                <style>
+                @page {
+                    size: auto;
+                    margin: 0;
+                }
+                    body {
+                        font-family: 'Courier New', Courier, monospace;
+                        width: 58mm;
+                        margin: 0 auto;
+                        padding: 10px;
+                        font-size: 12px;
+                        line-height: 1.5;
+                    }
+                    .header, .footer {
+                        text-align: center;
+                        margin-bottom: 10px;
+                    }
+                    .content {
+                        margin-bottom: 10px;
+                    }
+                    .line {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                    .line p {
+                        margin: 0;
+                    }
+                    .total {
+                        font-weight: bold;
+                    }
+                    .dashed-line {
+                        border-top: 1px dashed #000;
+                        margin: 10px 0;
+                    }
+                    h1 {
+                        margin: 0;
+                        font-size: 16px;
+                    }
+                </style>
+            `);
+            receiptWindow.document.write("</head><body>");
+            receiptWindow.document.write(`
+                <div class="header">
+                    <h1>Menata Cafe</h1>
+                    <p>Lampung, Indonesia</p>
+                  
+                </div>
+                <div class="dashed-line"></div>
+                <div class="content">
+                    <p>${new Date().toLocaleDateString()}</p>
+                    <p>${modalData.name}</p>
+                    <p>${new Date().toLocaleTimeString()}</p>
+                    <p>No.0-1</p>
+                </div>
+                <div class="dashed-line"></div>
+            `);
+        
+            modalData.menu.forEach(order => {
+                receiptWindow.document.write(`
+                    <div class="content">
+                        <p>${order.name}</p>
+                        <div class="line">
+                            <p>${order.items} x ${formatRupiah(order.total / order.items)}</p>
+                            <p>${formatRupiah(order.total)}</p>
+                        </div>
+                    </div>
+                `);
+            });
+        
+            receiptWindow.document.write(`
+                <div class="dashed-line"></div>
+                <div class="content">
+                    <div class="line">
+                        <p>Total</p>
+                        <p>${formatRupiah(orderitems.name)}</p>
+                    </div>
+                    <div class="line">
+                        <p>Bayar</p>
+                        <p>${formatRupiah(buyersMoney)}</p>
+                    </div>
+                    <div class="line">
+                        <p>Kembali</p>
+                        <p>${formatRupiah(total)}</p>
+                    </div>
+                </div>
+                <div class="dashed-line"></div>
+                <div class="footer">
+                    <p>Link Kritik dan Saran:</p>
+                    <p>kpntnr.com/f/</p>
+                </div>
+                <div class="footer">
+                    
+                <img src="https://tse4.mm.bing.net/th?id=OIP.Gu1NStDpNVmWisgSKKBzewHaEK&pid=Api&P=0&h=180" alt="Kasir Pintar" style="width: 50px;">
+                <img src="https://tse4.mm.bing.net/th?id=OIP.Gu1NStDpNVmWisgSKKBzewHaEK&pid=Api&P=0&h=180" alt="Google Play" style="width: 50px;">
+    
+                </div>
+            `);
+        
+            receiptWindow.document.write("</body></html>");
+            receiptWindow.document.close();
+            receiptWindow.print();
+        };
 
     return (
         <BodyLayout className={"pt-[40px] px-[40px]"}>
