@@ -91,7 +91,6 @@ class AdminController extends Controller
     $daysOfWeek = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
     $formattedDailyIncome = [];
 
-
     foreach ($daysOfWeek as $day) {
         $formattedDailyIncome[] = (object) [
             'day' => $day,
@@ -100,28 +99,42 @@ class AdminController extends Controller
     }
 
     // Initialize monthly income with all months set to 0
-    $monthsOfYear = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-    $monthlyIncome = array_fill_keys($monthsOfYear, 0);
+    $monthlyIncome = [];
 
     // Calculate monthly income
     foreach ($orders as $order) {
         $orderMonth = Carbon::parse($order->order_time)->format('F'); // Get the month name
+        $orderYear = Carbon::parse($order->order_time)->format('Y'); // Get the year
         $totalHarga = $order->totalHarga;
 
-        $monthlyIncome[$orderMonth] += $totalHarga;
+        if (!isset($monthlyIncome[$orderYear])) {
+            $monthlyIncome[$orderYear] = [];
+        }
+
+        if (!isset($monthlyIncome[$orderYear][$orderMonth])) {
+            $monthlyIncome[$orderYear][$orderMonth] = 0;
+        }
+
+        $monthlyIncome[$orderYear][$orderMonth] += $totalHarga;
     }
 
     $formattedMonthlyIncome = [];
 
-    foreach ($monthsOfYear as $month) {
+    foreach ($monthlyIncome as $year => $months) {
+        $monthData = [];
+        foreach ($months as $monthName => $value) {
+            $monthData[] = (object) [
+                'name' => $monthName,
+                'value' => $value
+            ];
+        }
+
         $formattedMonthlyIncome[] = (object) [
-            'month' => $month,
-            'value' => $monthlyIncome[$month]
+            'year' => $year,
+            'month' => $monthData
         ];
-
     }
-
-
+    
 
     return Inertia::render('Admin/Admin', [
         'users' => $users,
@@ -140,6 +153,7 @@ class AdminController extends Controller
         'tax' => $tax
     ]);
 }
+
 
 
 

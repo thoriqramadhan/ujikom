@@ -45,6 +45,7 @@ function Menu({ menus, categories, order , tax}) {
             alert("Not enough money!");
             return;
         }
+         printReceipt(); //
         const tax = Number(modalData.tax);
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
@@ -52,6 +53,8 @@ function Menu({ menus, categories, order , tax}) {
             totalHarga: subHarga + tax,
             data: [...selectedFood],
         };
+
+  
 
         console.log("ini order:", order);
 
