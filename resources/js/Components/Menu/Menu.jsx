@@ -423,7 +423,7 @@ function Menu({ menus, categories, order , tax}) {
                     </div>
                     <div className=" w-[300px] h-[300px] bg-white border-[3px] border-[#d9d9d9] mx-auto my-auto rounded-xl flex-row content-center mb-5">
                         <div className="mx-auto my-auto h-[100px] w-[100px] mb-5 bg-[#d9d9d9] rounded-full"></div>
-                        <p className="text-center font-black text-3xl">BRI</p>
+                        <p className="text-center font-black text-3xl">{paymentMethod[0].paymentMethod}</p>
                     </div>
                     <div className="w-full justify-center flex">
                         <button className="bg-[#7d5e42] rounded-md py-3 px-[100px] text-white font-bold">
