@@ -60,12 +60,13 @@ const itemPost = [
     },
 ];
 
-function History({ orderselesai, orderitems }) {
+function History({ orderselesai, orderitems , tax }) {
     const [dataOrderSelesai, setDataOrderSelesai] = useState(
         orderselesai || ""
     );
     const [currentPage, setcurrentPage] = useState(1);
     const [postPerPage, setPostPerPage] = useState(5);
+    const [taxs, setTaxs] = useState(tax || []);
     const [menu, setMenu] = useState([]);
     const [bill, setBill] = useState({
         total: 0,
@@ -133,6 +134,7 @@ function History({ orderselesai, orderitems }) {
         });
         setSearchOutput(searchResult);
     };
+    
 
     useEffect(() => {
         const bill = menu.reduce(

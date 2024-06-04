@@ -1,3 +1,49 @@
+
+import BodyLayout from '@/Layouts/BodyLayout'
+import React, { useEffect, useState } from 'react'
+import LogoDate from '../Logo_date'
+import SearchSvg from '../svgComp/SearchSvg'
+import TextInput from '../TextInput'
+import TableData from '../TableData'
+import DashedLine from '../DashedLine'
+import ModalHistoryCard from './ModalHistoryCard'
+import { Head } from '@inertiajs/react'
+import {Inertia} from '@inertiajs/inertia'
+import { formatRupiah } from '@/module/rupiah-formater'
+
+function Order({menus, orders, orderitems, orderbelumdibayar , tax}) {
+  const [taxs, setTaxs] = useState(tax || []);
+  const [currentPage , setcurrentPage] = useState(1)
+  const [postPerPage,  setPostPerPage] = useState(5)
+  const [openModalPayment , setOpenModalPayment] = useState(true)
+  const [ordersData , setOrdersData] = useState(orderbelumdibayar)
+  const [idNow, setIdNow] = useState(0)
+  // paymnet history data
+  const [buyersMoney , setBuyersMoney] = useState(0)
+  const [bill , setBill] = useState({
+    subTotal : 0,
+    tax: 0,
+    total: 0
+  })
+  let change = buyersMoney  -  bill.total|| 0
+  // 
+  const pageNumbers = []
+  
+  for (let i = 1; i <= Math.ceil(orderbelumdibayar.length / postPerPage); i++) {
+    pageNumbers.push(i);
+  }
+  function editHandler(id){
+    const orderNow = orders.find(order => order.id === id)
+    let newOrdersData = ordersData.find(order => order.id === id)
+    const typeOfOrder = newOrdersData.data
+    setIdNow(id)
+
+    setModalName(orderNow.customer_name)
+    if(typeof typeOfOrder == 'string'){
+      setEditModalData(JSON.parse(typeOfOrder))
+    }else{
+      setEditModalData(typeOfOrder)
+    }
 import BodyLayout from "@/Layouts/BodyLayout";
 import React, { useEffect, useState } from "react";
 import LogoDate from "../Logo_date";
@@ -53,6 +99,57 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
 
         setOpenModalEdit(!openModalEdit);
     }
+    setcurrentPage(prevState => prevState - 1)
+  }
+  function clientHandler(e){
+    setBuyersMoney(parseFloat(e.target.value))
+  }
+  
+  const indexOfLastPost = currentPage * postPerPage;
+  const indexOfFirstPost = indexOfLastPost - postPerPage;
+  const currentPosts = ordersData.slice(indexOfFirstPost, indexOfLastPost);
+  useEffect(()=>{
+    const subTotal = modalData.reduce((init, current) => init + current.totalHarga, 0);
+    setBill({
+      subTotal: subTotal,
+      tax: subTotal * (parseFloat(taxs.tax) / 100),
+      total: subTotal + (subTotal * (parseFloat(taxs.tax) / 100))
+    });   
+  },[modalData])
+
+  useEffect(()=>{
+    if(tax){
+        setTaxs(...tax)
+        console.log(taxs)
+    }
+})
+
+  const [orderStatus, setOrderStatus] = useState({});
+
+  useEffect(() => {
+    // Inisialisasi status pesanan saat komponen dimuat
+    const initialOrderStatus = {};
+    orders.forEach(order => {
+      initialOrderStatus[order.id] = order.status;
+    });
+    setOrderStatus(initialOrderStatus);
+  }, [orders]);
+
+  const updateOrderStatus = (orderId, newStatus) => {
+    setOrderStatus(prevStatus => ({
+      ...prevStatus,
+      [orderId]: newStatus,
+    }));
+  };
+
+  const searchHandler = (value)=>{
+    setSearchInput(value)
+    console.log(searchInput)
+    console.log(orders)
+    if(value.trim() === ''){
+      console.log('in kosong')
+      setSearchOutput([])
+      return
     const [tes, setTes] = useState("");
     function paymentHandler(id) {
         setTes(id);
@@ -75,6 +172,7 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
         }
 
         setOpenModalPayment(!openModalPayment);
+
     }
     // modal datas
     const [openModalEdit, setOpenModalEdit] = useState(true);
@@ -238,11 +336,6 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
     const closeHandler = () => {
         setOpenModalEdit(!openModalEdit);
         setEditModalData([]);
-    };
-
-    const cashlessHandler = () => {
-        setOpenModalPayment(!openModalPayment);
-        setOpenModalPaymentCashless(!openModalPaymentCashless);
     };
 
     return (
@@ -602,57 +695,7 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
                         : "translate-y-10 fixed"
                 } `}
             >
-                <div className="w-fill h-fill bg-white my-auto mx-auto rounded-xl border-2  border-[#d9d9d9]">
-                    <div className="p-[30px] text-center flex-row">
-                        <p className="font-black text-2xl">
-                            Pilih Metode Pembayaran
-                        </p>
-                        <p>Apa yang bakal diagunain untuk membayar 😀</p>
-                    </div>
-                    <div className="flex-row">
-                        <div className="w-fill h-fill flex justify-between mx-10 rounded-xl border-2 border-[#d9d9d9]">
-                            <div className="flex content-center py-3 px-5">
-                                <div className="w-10 h-10 rounded-full bg-[#f3f3f3] mr-10"></div>
-                                <p className="my-auto">Q-Ris</p>
-                            </div>
-                            <input
-                                id="published"
-                                class="peer/published"
-                                type="radio"
-                                name="status"
-                                className="my-auto mr-5 rounded-full"
-                            />
-                        </div>
-                        <div className="w-fill h-fill flex justify-between mx-10 rounded-xl border-2 border-[#d9d9d9] mt-5">
-                            <div className="flex content-center py-3 px-5">
-                                <div className="w-10 h-10 rounded-full bg-[#f3f3f3] mr-10"></div>
-                                <p className="my-auto">BriMo</p>
-                            </div>
-                            <input
-                                id="published"
-                                class="peer/published"
-                                type="radio"
-                                name="status"
-                                className="my-auto mr-5 rounded-full"
-                            />
-                        </div>
-                        
-                        <div className="w-full h-fit justify-center flex my-5 ">
-                            <button
-                                className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold mr-2"
-                                onClick={() => {
-                                    cashlessHandler();
-                                }}
-                            >
-                                Kembali
-                            </button>
-                            <button className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold ml-2">
-                                Print & Bayar
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
+                
         </BodyLayout>
     );
 }
