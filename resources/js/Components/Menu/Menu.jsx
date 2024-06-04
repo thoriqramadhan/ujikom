@@ -50,7 +50,7 @@ function Menu({ menus, categories, order , tax}) {
         const tax = Number(modalData.tax);
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
-            tax: tax,
+            tax: taxs,
             totalHarga: subHarga + tax,
             data: [...selectedFood],
         };
@@ -81,6 +81,37 @@ function Menu({ menus, categories, order , tax}) {
     useEffect(()=>{
         console.log(paymentMethod)
     },[paymentMethod])
+
+    const handleSubmitCashless = (e) => {
+        e.preventDefault();
+        console.log(buyersMoney, total);
+        if (buyersMoney < modalData.total) {
+            alert("Not enough money!");
+            return;
+        }
+         printReceipt(); //
+        const tax = Number(modalData.tax);
+        const order = {
+            customerName: modalData.name, // Menggunakan modalData.customerName
+            tax: taxs,
+            paymentMethod:paymentMethod,
+            totalHarga: subHarga + tax,
+            data: [...selectedFood],
+        };
+
+  
+
+        console.log("ini order:", order);
+
+        const formData = new FormData();
+        formData.append("order", JSON.stringify(order));
+        setSelectedFood([]);
+        localStorage.setItem("ORDER_HISTORY", JSON.stringify([]));
+
+        Inertia.post("/kasircashless", formData).then(() => {
+            Inertia.reload();
+        });
+    };
     
     const handlePopUp = (msg) => {
         setCondition(!condition);
@@ -433,7 +464,9 @@ function Menu({ menus, categories, order , tax}) {
                         <p className="text-center font-black text-3xl">{paymentMethod[0].paymentMethod}</p>
                     </div>
                     <div className="w-full justify-center flex">
-                        <button className="bg-[#7d5e42] rounded-md py-3 px-[100px] text-white font-bold">
+                        <button className="bg-[#7d5e42] rounded-md py-3 px-[100px] text-white font-bold"
+                        onClick={handleSubmitCashless}
+                        >
                             Print & Bayar
                         </button>
                     </div>

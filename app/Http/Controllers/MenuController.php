@@ -83,13 +83,41 @@ class MenuController extends Controller
     {
         // Ubah string JSON order menjadi array PHP
         $orderData = json_decode($request->input('order'), true);
+        $taxValue = $orderData['tax']['tax'];
         
         // Buat order baru dan simpan data pelanggan
         $order = Order::create([
             'customer_name' => $orderData['customerName'],
-            'tax' => $orderData['tax'],
+            'tax' => $taxValue,
             'totalHarga' => $orderData['totalHarga'],
             'payment' => 'cash',
+            'data' => json_encode($orderData['data']),
+            // Ubah array menjadi string JSON sebelum menyimpannya
+        ]);
+        
+
+        // Ubah status order menjadi 'selesai'
+        $order->status = 'selesai';
+        $order->save();
+        
+        // Redirect atau response lainnya
+        return redirect()->back();
+    }
+ 
+    public function storeCashless(Request $request)
+    {
+        // Ubah string JSON order menjadi array PHP
+        $orderData = json_decode($request->input('order'), true);
+
+        $taxValue = $orderData['tax']['tax'];
+        $paymentMethodValue = $orderData['paymentMethod'][0]['paymentMethod'];
+        
+        // Buat order baru dan simpan data pelanggan
+        $order = Order::create([
+            'customer_name' => $orderData['customerName'],
+            'tax' =>$taxValue,
+            'totalHarga' => $orderData['totalHarga'],
+            'payment' => $paymentMethodValue,
             'data' => json_encode($orderData['data']),
             // Ubah array menjadi string JSON sebelum menyimpannya
         ]);
