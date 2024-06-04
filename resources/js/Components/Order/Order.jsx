@@ -623,19 +623,20 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
                                 className="my-auto mr-5 rounded-full"
                             />
                         </div>
-                        <div className="w-fill h-fill flex justify-between mx-10 mt-10 rounded-xl border-2 border-[#d9d9d9]">
+                        <div className="w-fill h-fill flex justify-between mx-10 rounded-xl border-2 border-[#d9d9d9] mt-5">
                             <div className="flex content-center py-3 px-5">
-                                <div className="w-10 h-10 rounded-full bg-[#f3f3f3] mr-10 "></div>
+                                <div className="w-10 h-10 rounded-full bg-[#f3f3f3] mr-10"></div>
                                 <p className="my-auto">BriMo</p>
                             </div>
                             <input
-                                className="my-auto mr-5 rounded-full"
                                 id="published"
                                 class="peer/published"
                                 type="radio"
                                 name="status"
+                                className="my-auto mr-5 rounded-full"
                             />
                         </div>
+                        
                         <div className="w-full h-fit justify-center flex my-5 ">
                             <button
                                 className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold mr-2"
