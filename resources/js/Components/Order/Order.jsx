@@ -17,8 +17,9 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
     const [openModalPayment, setOpenModalPayment] = useState(true);
     const [ordersData, setOrdersData] = useState(orderbelumdibayar);
     const [idNow, setIdNow] = useState(0);
-    const [openModalPaymentCashless, setOpenModalPaymentCashless] = useState(true);
-        useState(false);
+    const [openModalPaymentCashless, setOpenModalPaymentCashless] =
+        useState(true);
+    useState(false);
     // paymnet history data
     const [buyersMoney, setBuyersMoney] = useState(0);
     const [bill, setBill] = useState({
@@ -594,11 +595,13 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
                 </div>
             </div>
 
-            <div className={`absolute w-full h-full flex transition-all duration-1000 ${
+            <div
+                className={`absolute w-full h-full flex transition-all duration-1000 ${
                     openModalPaymentCashless
                         ? "-translate-y-[1000px]"
                         : "translate-y-10 fixed"
-                } `}>
+                } `}
+            >
                 <div className="w-fill h-fill bg-white my-auto mx-auto rounded-xl border-2  border-[#d9d9d9]">
                     <div className="p-[30px] text-center flex-row">
                         <p className="font-black text-2xl">
@@ -611,21 +614,40 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
                             <div className="flex content-center py-3 px-5">
                                 <div className="w-10 h-10 rounded-full bg-[#f3f3f3] mr-10"></div>
                                 <p className="my-auto">Q-Ris</p>
-                                
                             </div>
-                            <input type="checkbox" className="my-auto mr-5 rounded-full"/>
+                            <input
+                                id="published"
+                                class="peer/published"
+                                type="radio"
+                                name="status"
+                                className="my-auto mr-5 rounded-full"
+                            />
                         </div>
                         <div className="w-fill h-fill flex justify-between mx-10 mt-10 rounded-xl border-2 border-[#d9d9d9]">
                             <div className="flex content-center py-3 px-5">
                                 <div className="w-10 h-10 rounded-full bg-[#f3f3f3] mr-10 "></div>
                                 <p className="my-auto">BriMo</p>
-                                
                             </div>
-                            <input type="checkbox" className="my-auto mr-5 rounded-full"/>
+                            <input
+                                className="my-auto mr-5 rounded-full"
+                                id="published"
+                                class="peer/published"
+                                type="radio"
+                                name="status"
+                            />
                         </div>
                         <div className="w-full h-fit justify-center flex my-5 ">
-                          <button className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold mr-2" onClick={() => {cashlessHandler()}}>Kembali</button>
-                          <button className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold ml-2">Print & Bayar</button>
+                            <button
+                                className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold mr-2"
+                                onClick={() => {
+                                    cashlessHandler();
+                                }}
+                            >
+                                Kembali
+                            </button>
+                            <button className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold ml-2">
+                                Print & Bayar
+                            </button>
                         </div>
                     </div>
                 </div>
