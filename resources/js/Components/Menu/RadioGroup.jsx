@@ -19,7 +19,7 @@ function RadioGroup({setPaymentMethod}) {
                                 />
 
                                 <p className="font-bold text-[30px] my-auto">
-                                    Q-Ris
+                                    BriMo
                                 </p>
                             </div>
                             <input
@@ -40,7 +40,7 @@ function RadioGroup({setPaymentMethod}) {
                                     className="h-[50px] w-[50px] mr-5 rounded-full bg-[#d9d9d9]"
                                 />
                                 <p className="font-bold text-[30px] my-auto">
-                                    BriMo
+                                    Qris
                                 </p>
                             </div>
                             <input
