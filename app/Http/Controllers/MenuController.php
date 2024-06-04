@@ -150,7 +150,8 @@ class MenuController extends Controller
         // Perbarui pesanan
         $order->tax = $tax;
         $order->totalHarga = $total;
-        $order->status = 'selesai';  // Set status to 'selesai'
+        $order->status = 'selesai'; 
+        $order->payment = 'cash';
         $order->save();
 
         return redirect()->back();
