@@ -12,6 +12,7 @@ import { Inertia } from "@inertiajs/inertia";
 import PopUp from "../PopUp";
 import { formatRupiah } from "@/module/rupiah-formater";
 import Checkbox from "../Checkbox";
+import RadioGroup from "./RadioGroup";
 
 function Menu({ menus, categories, order , tax}) {
     const [openSide, setOpenSide] = useState(false);
@@ -72,6 +73,14 @@ function Menu({ menus, categories, order , tax}) {
     const [searchOutput, setSearchOutput] = useState([]);
     const [popUpMsg, setPopUpMsg] = useState("");
     const [openModalPay, setOpenModalPay] = useState(true)
+
+    // paymentData
+    const [paymentMethod , setPaymentMethod] = useState([{
+        paymentMethod: 'qris'
+    }])
+    useEffect(()=>{
+        console.log(paymentMethod)
+    },[paymentMethod])
     
     const handlePopUp = (msg) => {
         setCondition(!condition);
@@ -371,6 +380,7 @@ function Menu({ menus, categories, order , tax}) {
                     </div>
                 </div>
             </div>
+
             {/* modalChoosePayment */}
             <div
                 className={`absolute top-0 left-0 w-full h-full flex justify-center duration-1000  ${
@@ -384,50 +394,10 @@ function Menu({ menus, categories, order , tax}) {
                         Pilih Metoda Pembayaran
                     </p>
                     <p className="text-xl">
-                        Apa yang bakal dia gunain buat bayar pesanan
+                        Pilih metode pembayaran yang di gunakan pelanggan!
                     </p>
                     <div className="mt-7">
-                        <div className=" group hover:bg-slate-200 focus:bg-slate-200 w-full border-[#d9d9d9] border-2 h-fill mb-5 rounded-xl flex justify-between px-10 py-4 peer-checked/draft:bg-sky-500">
-                            <div className="flex justify-between">
-                                <img
-                                    src="./resources/assets/img/qris.jpg"
-                                    alt="Qris"
-                                    className="h-[50px] w-[50px] mr-5 rounded-full bg-[#d9d9d9]"
-                                />
-
-                                <p className="font-bold text-[30px] my-auto">
-                                    Q-Ris
-                                </p>
-                            </div>
-                            <input
-                                id="draft"
-                                class="peer/draft"
-                                type="radio"
-                                name="status"
-                                className="my-auto "
-                                checked
-                            />
-                        </div>
-
-                        <div className=" group hover:bg-slate-200 focus:bg-slate-200 w-full border-[#d9d9d9] border-2 h-fill mb-5 rounded-xl flex justify-between px-10 py-4">
-                            <div className="flex justify-between">
-                                <img
-                                    src=""
-                                    alt="Qris"
-                                    className="h-[50px] w-[50px] mr-5 rounded-full bg-[#d9d9d9]"
-                                />
-                                <p className="font-bold text-[30px] my-auto">
-                                    BriMo
-                                </p>
-                            </div>
-                            <input
-                                id="published"
-                                class="peer/published"
-                                type="radio"
-                                name="status"
-                                className="my-auto"
-                            />
-                        </div>
+                        <RadioGroup paymenthMethod={paymentMethod} setPaymentMethod={setPaymentMethod}/>
 
                         <button className="bg-white border-[#d9d9d9] border-2 font-bold text-[#d9d9d9] text-md py-2 px-[100px] rounded-2xl mt-12 hover:bg-[#7d5e42] hover:text-white" onClick={modalPayHandler}>
                             Lanjut
@@ -460,7 +430,7 @@ function Menu({ menus, categories, order , tax}) {
                     </div>
                     <div className=" w-[300px] h-[300px] bg-white border-[3px] border-[#d9d9d9] mx-auto my-auto rounded-xl flex-row content-center mb-5">
                         <div className="mx-auto my-auto h-[100px] w-[100px] mb-5 bg-[#d9d9d9] rounded-full"></div>
-                        <p className="text-center font-black text-3xl">BRI</p>
+                        <p className="text-center font-black text-3xl">{paymentMethod[0].paymentMethod}</p>
                     </div>
                     <div className="w-full justify-center flex">
                         <button className="bg-[#7d5e42] rounded-md py-3 px-[100px] text-white font-bold">
