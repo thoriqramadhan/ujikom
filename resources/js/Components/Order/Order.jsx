@@ -177,7 +177,6 @@ function Order({menus, orders, orderitems, orderbelumdibayar , tax}) {
   const handlePayment = () => {
     // Temukan order yang akan dibayar
     const orderToPay = ordersData.find(order => order.id === tes);
-
     // Kirim data terbaru ke backend
     Inertia.post(`/kasir/${tes}`, {
       data: orderToPay.data
@@ -216,7 +215,7 @@ function Order({menus, orders, orderitems, orderbelumdibayar , tax}) {
   const saveNewMenuHandler = () => {
     const newOrders = ordersData.map(order => {
       if (order.id == idNow) {
-        return { ...order, data: editModalData };
+        return { ...order, data: editModalData , tax: taxs};
       } else {
         return order;
       }
