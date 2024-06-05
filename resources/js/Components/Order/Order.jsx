@@ -53,29 +53,86 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
 
         setOpenModalEdit(!openModalEdit);
     }
-    const [tes, setTes] = useState("");
-    function paymentHandler(id) {
-        setTes(id);
-        const orderNow = orders.find((order) => order.id === id);
-        let newOrdersData = ordersData.find((order) => order.id === id);
-        const typeOfOrder = newOrdersData.data;
-        if (!orderNow) {
-            console.error(`Order with id ${id} not found`);
-            return;
-        }
-        // tes = orderNow
-        const parsedData = JSON.parse(orderNow.data);
-        console.log(orderNow, parsedData);
+    setcurrentPage((prevState) => prevState - 1);
+}
+function clientHandler(e) {
+    setBuyersMoney(parseFloat(e.target.value));
+}
 
-        setModalName(orderNow.customer_name);
-        if (typeof typeOfOrder == "string") {
-            setModalData(JSON.parse(typeOfOrder));
-        } else {
-            setModalData(typeOfOrder);
-        }
+const indexOfLastPost = currentPage * postPerPage;
+const indexOfFirstPost = indexOfLastPost - postPerPage;
+const currentPosts = ordersData.slice(indexOfFirstPost, indexOfLastPost);
+useEffect(() => {
+    const subTotal = modalData.reduce(
+        (init, current) => init + current.totalHarga,
+        0
+    );
+    setBill({
+        subTotal: subTotal,
+        tax: subTotal * (parseFloat(taxs.tax) / 100),
+        total: subTotal + subTotal * (parseFloat(taxs.tax) / 100),
+    });
+}, [modalData]);
 
-        setOpenModalPayment(!openModalPayment);
+useEffect(() => {
+    if (tax) {
+        setTaxs(...tax);
+        console.log(taxs);
     }
+});
+
+const [orderStatus, setOrderStatus] = useState({});
+
+useEffect(() => {
+    // Inisialisasi status pesanan saat komponen dimuat
+    const initialOrderStatus = {};
+    orders.forEach((order) => {
+        initialOrderStatus[order.id] = order.status;
+    });
+    setOrderStatus(initialOrderStatus);
+}, [orders]);
+
+const updateOrderStatus = (orderId, newStatus) => {
+    setOrderStatus((prevStatus) => ({
+        ...prevStatus,
+        [orderId]: newStatus,
+    }));
+};
+
+const searchHandler = (value) => {
+    setSearchInput(value);
+    console.log(searchInput);
+    console.log(orders);
+    if (value.trim() === "") {
+        console.log("in kosong");
+        setSearchOutput([]);
+        return;
+        const [tes, setTes] = useState("");
+        function paymentHandler(id) {
+            setTes(id);
+            const orderNow = orders.find((order) => order.id === id);
+            printReceipt(); //
+            let newOrdersData = ordersData.find((order) => order.id === id);
+            const typeOfOrder = newOrdersData.data;
+            if (!orderNow) {
+                console.error(`Order with id ${id} not found`);
+                return;
+            }
+            // tes = orderNow
+            const parsedData = JSON.parse(orderNow.data);
+            console.log(orderNow, parsedData);
+
+            setModalName(orderNow.customer_name);
+            if (typeof typeOfOrder == "string") {
+                setModalData(JSON.parse(typeOfOrder));
+            } else {
+                setModalData(typeOfOrder);
+            }
+
+            setOpenModalPayment(!openModalPayment);
+        }
+    }
+
     // modal datas
     const [openModalEdit, setOpenModalEdit] = useState(true);
     const [modalData, setModalData] = useState(ordersData);
@@ -186,7 +243,7 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
     const handlePayment = () => {
         // Temukan order yang akan dibayar
         const orderToPay = ordersData.find((order) => order.id === tes);
-        printReceipt(); //
+
         // Kirim data terbaru ke backend
         Inertia.post(`/kasir/${tes}`, {
             data: orderToPay.data,
@@ -247,110 +304,112 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
 
     const printReceipt = () => {
         const receiptWindow = window.open("", "PRINT", "height=450,width=150");
-            receiptWindow.document.write(`<html><head><title>Receipt</title>`);
-            receiptWindow.document.write(`
-                <style>
-                @page {
-                    size: auto;
-                    margin: 0;
-                }
-                    body {
-                        font-family: 'Courier New', Courier, monospace;
-                        width: 58mm;
-                        margin: 0 auto;
-                        padding: 10px;
-                        font-size: 12px;
-                        line-height: 1.5;
-                    }
-                    .header, .footer {
-                        text-align: center;
-                        margin-bottom: 10px;
-                    }
-                    .content {
-                        margin-bottom: 10px;
-                    }
-                    .line {
-                        display: flex;
-                        justify-content: space-between;
-                    }
-                    .line p {
+        receiptWindow.document.write(`<html><head><title>Receipt</title>`);
+        receiptWindow.document.write(`
+                    <style>
+                    @page {
+                        size: auto;
                         margin: 0;
                     }
-                    .total {
-                        font-weight: bold;
-                    }
-                    .dashed-line {
-                        border-top: 1px dashed #000;
-                        margin: 10px 0;
-                    }
-                    h1 {
-                        margin: 0;
-                        font-size: 16px;
-                    }
-                </style>
-            `);
-            receiptWindow.document.write("</head><body>");
-            receiptWindow.document.write(`
-                <div class="header">
-                    <h1>Menata Cafe</h1>
-                    <p>Lampung, Indonesia</p>
-                  
-                </div>
-                <div class="dashed-line"></div>
-                <div class="content">
-                    <p>${new Date().toLocaleDateString()}</p>
-                    <p>${modalData.name}</p>
-                    <p>${new Date().toLocaleTimeString()}</p>
-                    <p>No.0-1</p>
-                </div>
-                <div class="dashed-line"></div>
-            `);
-        
-            modalData.menu.forEach(order => {
-                receiptWindow.document.write(`
+                        body {
+                            font-family: 'Courier New', Courier, monospace;
+                            width: 58mm;
+                            margin: 0 auto;
+                            padding: 10px;
+                            font-size: 12px;
+                            line-height: 1.5;
+                        }
+                        .header, .footer {
+                            text-align: center;
+                            margin-bottom: 10px;
+                        }
+                        .content {
+                            margin-bottom: 10px;
+                        }
+                        .line {
+                            display: flex;
+                            justify-content: space-between;
+                        }
+                        .line p {
+                            margin: 0;
+                        }
+                        .total {
+                            font-weight: bold;
+                        }
+                        .dashed-line {
+                            border-top: 1px dashed #000;
+                            margin: 10px 0;
+                        }
+                        h1 {
+                            margin: 0;
+                            font-size: 16px;
+                        }
+                    </style>
+                `);
+        receiptWindow.document.write("</head><body>");
+        receiptWindow.document.write(`
+                    <div class="header">
+                        <h1>Menata Cafe</h1>
+                        <p>Lampung, Indonesia</p>
+                      
+                    </div>
+                    <div class="dashed-line"></div>
                     <div class="content">
-                        <p>${order.name}</p>
+                        <p>${new Date().toLocaleDateString()}</p>
+                        <p>${modalData.name}</p>
+                        <p>${new Date().toLocaleTimeString()}</p>
+                        <p>No.0-1</p>
+                    </div>
+                    <div class="dashed-line"></div>
+                `);
+
+        modalData.menu.forEach((order) => {
+            receiptWindow.document.write(`
+                        <div class="content">
+                            <p>${order.name}</p>
+                            <div class="line">
+                                <p>${order.items} x ${formatRupiah(
+                order.total / order.items
+            )}</p>
+                                <p>${formatRupiah(order.total)}</p>
+                            </div>
+                        </div>
+                    `);
+        });
+
+        receiptWindow.document.write(`
+                    <div class="dashed-line"></div>
+                    <div class="content">
                         <div class="line">
-                            <p>${order.items} x ${formatRupiah(order.total / order.items)}</p>
-                            <p>${formatRupiah(order.total)}</p>
+                            <p>Total</p>
+                            <p>${formatRupiah(orderitems.name)}</p>
+                        </div>
+                        <div class="line">
+                            <p>Bayar</p>
+                            <p>${formatRupiah(buyersMoney)}</p>
+                        </div>
+                        <div class="line">
+                            <p>Kembali</p>
+                            <p>${formatRupiah(total)}</p>
                         </div>
                     </div>
+                    <div class="dashed-line"></div>
+                    <div class="footer">
+                        <p>Link Kritik dan Saran:</p>
+                        <p>kpntnr.com/f/</p>
+                    </div>
+                    <div class="footer">
+                        
+                    <img src="https://tse4.mm.bing.net/th?id=OIP.Gu1NStDpNVmWisgSKKBzewHaEK&pid=Api&P=0&h=180" alt="Kasir Pintar" style="width: 50px;">
+                    <img src="https://tse4.mm.bing.net/th?id=OIP.Gu1NStDpNVmWisgSKKBzewHaEK&pid=Api&P=0&h=180" alt="Google Play" style="width: 50px;">
+        
+                    </div>
                 `);
-            });
-        
-            receiptWindow.document.write(`
-                <div class="dashed-line"></div>
-                <div class="content">
-                    <div class="line">
-                        <p>Total</p>
-                        <p>${formatRupiah(orderitems.name)}</p>
-                    </div>
-                    <div class="line">
-                        <p>Bayar</p>
-                        <p>${formatRupiah(buyersMoney)}</p>
-                    </div>
-                    <div class="line">
-                        <p>Kembali</p>
-                        <p>${formatRupiah(total)}</p>
-                    </div>
-                </div>
-                <div class="dashed-line"></div>
-                <div class="footer">
-                    <p>Link Kritik dan Saran:</p>
-                    <p>kpntnr.com/f/</p>
-                </div>
-                <div class="footer">
-                    
-                <img src="https://tse4.mm.bing.net/th?id=OIP.Gu1NStDpNVmWisgSKKBzewHaEK&pid=Api&P=0&h=180" alt="Kasir Pintar" style="width: 50px;">
-                <img src="https://tse4.mm.bing.net/th?id=OIP.Gu1NStDpNVmWisgSKKBzewHaEK&pid=Api&P=0&h=180" alt="Google Play" style="width: 50px;">
-    
-                </div>
-            `);
-        
-            receiptWindow.document.write("</body></html>");
-            receiptWindow.document.close();
-            receiptWindow.print();
-        };
+
+        receiptWindow.document.write("</body></html>");
+        receiptWindow.document.close();
+        receiptWindow.print();
+    };
 
     return (
         <BodyLayout className={"pt-[40px] px-[40px]"}>
@@ -702,66 +761,57 @@ function Order({ menus, orders, orderitems, orderbelumdibayar }) {
                 </div>
             </div>
 
-            <div
-                className={`absolute w-full h-full flex transition-all duration-1000 ${
-                    openModalPaymentCashless
-                        ? "-translate-y-[1000px]"
-                        : "translate-y-10 fixed"
-                } `}
-            >
-                <div className="w-fill h-fill bg-white my-auto mx-auto rounded-xl border-2  border-[#d9d9d9]">
-                    <div className="p-[30px] text-center flex-row">
-                        <p className="font-black text-2xl">
-                            Pilih Metode Pembayaran
-                        </p>
-                        <p>Apa yang bakal diagunain untuk membayar 😀</p>
+            <div className="w-fill h-fill bg-white my-auto mx-auto rounded-xl border-2  border-[#d9d9d9]">
+                <div className="p-[30px] text-center flex-row">
+                    <p className="font-black text-2xl">
+                        Pilih Metode Pembayaran
+                    </p>
+                    <p>Apa yang bakal diagunain untuk membayar 😀</p>
+                </div>
+                <div className="flex-row">
+                    <div className="w-fill h-fill flex justify-between mx-10 rounded-xl border-2 border-[#d9d9d9]">
+                        <div className="flex content-center py-3 px-5">
+                            <div className="w-10 h-10 rounded-full bg-[#f3f3f3] mr-10"></div>
+                            <p className="my-auto">Q-Ris</p>
+                        </div>
+                        <input
+                            id="published"
+                            class="peer/published"
+                            type="radio"
+                            name="status"
+                            className="my-auto mr-5 rounded-full"
+                        />
                     </div>
-                    <div className="flex-row">
-                        <div className="w-fill h-fill flex justify-between mx-10 rounded-xl border-2 border-[#d9d9d9]">
-                            <div className="flex content-center py-3 px-5">
-                                <div className="w-10 h-10 rounded-full bg-[#f3f3f3] mr-10"></div>
-                                <p className="my-auto">Q-Ris</p>
-                            </div>
-                            <input
-                                id="published"
-                                class="peer/published"
-                                type="radio"
-                                name="status"
-                                className="my-auto mr-5 rounded-full"
-                            />
+                    <div className="w-fill h-fill flex justify-between mx-10 rounded-xl border-2 border-[#d9d9d9] mt-5">
+                        <div className="flex content-center py-3 px-5">
+                            <div className="w-10 h-10 rounded-full bg-[#f3f3f3] mr-10"></div>
+                            <p className="my-auto">BriMo</p>
                         </div>
-                        <div className="w-fill h-fill flex justify-between mx-10 rounded-xl border-2 border-[#d9d9d9] mt-5">
-                            <div className="flex content-center py-3 px-5">
-                                <div className="w-10 h-10 rounded-full bg-[#f3f3f3] mr-10"></div>
-                                <p className="my-auto">BriMo</p>
-                            </div>
-                            <input
-                                id="published"
-                                class="peer/published"
-                                type="radio"
-                                name="status"
-                                className="my-auto mr-5 rounded-full"
-                            />
-                        </div>
-                        
-                        <div className="w-full h-fit justify-center flex my-5 ">
-                            <button
-                                className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold mr-2"
-                                onClick={() => {
-                                    cashlessHandler();
-                                }}
-                            >
-                                Kembali
-                            </button>
-                            <button className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold ml-2">
-                                Print & Bayar
-                            </button>
-                        </div>
+                        <input
+                            id="published"
+                            class="peer/published"
+                            type="radio"
+                            name="status"
+                            className="my-auto mr-5 rounded-full"
+                        />
+                    </div>
+
+                    <div className="w-full h-fit justify-center flex my-5 ">
+                        <button
+                            className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold mr-2"
+                            onClick={() => {
+                                cashlessHandler();
+                            }}
+                        >
+                            Kembali
+                        </button>
+                        <button className="bg-[#7d5e42] py-3 px-5 rounded-xl text-white font-semibold ml-2">
+                            Print & Bayar
+                        </button>
                     </div>
                 </div>
             </div>
         </BodyLayout>
     );
-}
-
+};
 export default Order;
