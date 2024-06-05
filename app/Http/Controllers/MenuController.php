@@ -107,7 +107,7 @@ class MenuController extends Controller
     {
         // Ubah string JSON order menjadi array PHP
         $orderData = json_decode($request->input('order'), true);
-        $paymentMethodValue = $orderData['paymentMethod'][0]['paymentMethod'];
+        $paymentMethodValue = $orderData['payment'][0]['paymentMethod'];
         
         // Buat order baru dan simpan data pelanggan
         $order = Order::create([

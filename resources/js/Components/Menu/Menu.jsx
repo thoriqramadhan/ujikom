@@ -97,7 +97,7 @@ function Menu({ menus, categories, order , tax}) {
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
             tax: taxs,
-            Method:paymentMethod,
+            payment:paymentMethod,
             totalHarga: subHarga + taxs,
             data: [...selectedFood],
         };
