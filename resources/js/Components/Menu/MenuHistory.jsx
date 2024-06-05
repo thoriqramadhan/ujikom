@@ -14,7 +14,7 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
   const subHarga = selectedFood.reduce((total, item) => {
     return total + item.totalHarga;
   }, 0);
-  const taxs = subHarga * (parseFloat(tax.tax) / 100);
+  const taxs = subHarga * (parseFloat(tax?.tax || 0) / 100);
   
 
 
