@@ -47,12 +47,12 @@ function Menu({ menus, categories, order , tax}) {
             return;
         }
          printReceipt(); //
-        const tax = taxs?.tax || 0
-        console.log("rawr",tax)
+        const taxs = subHarga * (Number(tax[0]?.tax) / 100);
+        console.log(subHarga * (Number(tax[0]?.tax) / 100))
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
-            tax: tax,
-            totalHarga: subHarga + tax,
+            tax: taxs,
+            totalHarga: subHarga + taxs,
             data: [...selectedFood],
         };
 
@@ -91,12 +91,14 @@ function Menu({ menus, categories, order , tax}) {
             return;
         }
          printReceipt(); //
-         const tax = taxs?.tax || 0
+         const taxs = subHarga * (Number(tax[0]?.tax) || 0/ 100);
+         console.log(taxs , tax[0].tax)
+         console.log(Number(tax[0]?.tax) || 0)
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
-            tax: tax,
-            paymentMethod:paymentMethod,
-            totalHarga: subHarga + tax,
+            tax: taxs,
+            Method:paymentMethod,
+            totalHarga: subHarga + taxs,
             data: [...selectedFood],
         };
 
