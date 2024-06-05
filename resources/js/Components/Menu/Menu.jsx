@@ -47,11 +47,12 @@ function Menu({ menus, categories, order , tax}) {
             return;
         }
          printReceipt(); //
-        const tax = Number(modalData.tax);
+        const tax = taxs?.tax || 0
+        console.log("rawr",tax)
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
-            tax: taxs,
-            totalHarga: subHarga + taxs,
+            tax: tax,
+            totalHarga: subHarga + tax,
             data: [...selectedFood],
         };
 
@@ -90,12 +91,12 @@ function Menu({ menus, categories, order , tax}) {
             return;
         }
          printReceipt(); //
-        const tax = Number(modalData.tax);
+         const tax = taxs?.tax || 0
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
-            tax: taxs,
+            tax: tax,
             paymentMethod:paymentMethod,
-            totalHarga: subHarga + taxs,
+            totalHarga: subHarga + tax,
             data: [...selectedFood],
         };
 

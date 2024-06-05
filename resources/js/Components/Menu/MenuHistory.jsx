@@ -74,10 +74,11 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
             handlePopUp("Pesanan harus di isi!");
             return;
         }
+        const tax = taxs?.tax || 0
         // Membuat objek FormData untuk mengirim data formulir
         const order = {
             customerName: customerName,
-            tax: taxs,
+            tax: tax,
             totalHarga: subHarga + tax,
             data: [...selectedFood],
         };

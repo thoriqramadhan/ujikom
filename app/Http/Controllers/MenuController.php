@@ -62,6 +62,7 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
+        dd($request);
         // Ubah string JSON order menjadi array PHP
         $orderData = json_decode($request->input('order'), true);
         
@@ -83,12 +84,11 @@ class MenuController extends Controller
     {
         // Ubah string JSON order menjadi array PHP
         $orderData = json_decode($request->input('order'), true);
-        $taxValue = $orderData['tax']['tax'];
         
         // Buat order baru dan simpan data pelanggan
         $order = Order::create([
             'customer_name' => $orderData['customerName'],
-            'tax' => $taxValue,
+            'tax' => $orderData['tax'],
             'totalHarga' => $orderData['totalHarga'],
             'payment' => 'cash',
             'data' => json_encode($orderData['data']),
@@ -108,14 +108,12 @@ class MenuController extends Controller
     {
         // Ubah string JSON order menjadi array PHP
         $orderData = json_decode($request->input('order'), true);
-
-        $taxValue = $orderData['tax']['tax'];
         $paymentMethodValue = $orderData['paymentMethod'][0]['paymentMethod'];
         
         // Buat order baru dan simpan data pelanggan
         $order = Order::create([
             'customer_name' => $orderData['customerName'],
-            'tax' =>$taxValue,
+            'tax' =>$orderData['tax'],
             'totalHarga' => $orderData['totalHarga'],
             'payment' => $paymentMethodValue,
             'data' => json_encode($orderData['data']),
@@ -143,7 +141,7 @@ class MenuController extends Controller
      * Show the form for editing the specified resource.
      */
     public function edit(Request $request,$id)
-    {
+    { 
 
         $orderData = $request->input('data', []);
         
@@ -190,6 +188,7 @@ class MenuController extends Controller
      */
     public function update(Request $request)
     {
+       
         // Dapatkan pengguna yang sedang diautentikasi
         $user = Auth::user();
 

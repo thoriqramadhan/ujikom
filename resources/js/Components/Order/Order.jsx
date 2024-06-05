@@ -107,8 +107,8 @@ function Order({menus, orders, orderitems, orderbelumdibayar , tax}) {
     const subTotal = modalData.reduce((init, current) => init + current.totalHarga, 0);
     setBill({
       subTotal: subTotal,
-      tax: subTotal * (parseFloat(taxs.tax) / 100),
-      total: subTotal + (subTotal * (parseFloat(taxs.tax) / 100))
+      tax: subTotal * (parseFloat(taxs?.tax || 0) / 100),
+      total: subTotal + (subTotal * (parseFloat(taxs?.tax || 0) / 100))
     });   
   },[modalData])
 
@@ -352,7 +352,7 @@ function Order({menus, orders, orderitems, orderbelumdibayar , tax}) {
               <p className='font-bold'>{formatRupiah(bill.subTotal)}</p>
             </div>
             <div className="w-full flex justify-between">
-              <p className='opacity-30 font-bold'>{`Pajak (${taxs.tax}%)`}</p>
+              <p className='opacity-30 font-bold'>{`Pajak (${taxs?.tax || 0}%)`}</p>
               <p className='font-bold'>{formatRupiah(bill.tax)}</p>
             </div>
             <DashedLine />
