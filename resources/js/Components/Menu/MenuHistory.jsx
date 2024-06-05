@@ -78,7 +78,7 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
         const order = {
             customerName: customerName,
             tax: taxs,
-            totalHarga: subHarga + taxs,
+            totalHarga: subHarga + tax,
             data: [...selectedFood],
         };
 
@@ -125,7 +125,7 @@ function MenuHistory({openModal , setOpenModal, setModalData, openSide, setOpenS
             <p className='font-bold'>{formatRupiah(subHarga)}</p>
           </div>
           <div className="w-full flex justify-between">
-            <p className='opacity-30 font-bold'>{'Pajak (10%)'}</p>
+            <p className='opacity-30 font-bold'>{'Pajak'}</p>
             <p className='font-bold'>{formatRupiah(taxs)}</p>
           </div>
           <DashedLine />
