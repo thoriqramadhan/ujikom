@@ -18,7 +18,6 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
     const [openModalPayment, setOpenModalPayment] = useState(true);
     const [ordersData, setOrdersData] = useState(orderbelumdibayar);
     const [idNow, setIdNow] = useState(0);
-    // paymnet history data
     const [buyersMoney, setBuyersMoney] = useState(0);
     const [bill, setBill] = useState({
         subTotal: 0,
@@ -26,25 +25,17 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
         total: 0,
     });
     let change = buyersMoney - bill.total || 0;
-    //
-    const pageNumbers = [];
 
-    const [paymentMethod, setPaymentMethod] = useState([
-        {
-            paymentMethod: "qris",
-        },
-    ]);
+    const pageNumbers = [];
+    const [paymentMethod, setPaymentMethod] = useState([{ paymentMethod: "qris" }]);
     useEffect(() => {
         console.log(paymentMethod);
     }, [paymentMethod]);
 
-    for (
-        let i = 1;
-        i <= Math.ceil(orderbelumdibayar.length / postPerPage);
-        i++
-    ) {
+    for (let i = 1; i <= Math.ceil(orderbelumdibayar.length / postPerPage); i++) {
         pageNumbers.push(i);
     }
+
     function editHandler(id) {
         const orderNow = orders.find((order) => order.id === id);
         let newOrdersData = ordersData.find((order) => order.id === id);
@@ -60,6 +51,7 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
 
         setOpenModalEdit(!openModalEdit);
     }
+
     const [tes, setTes] = useState("");
     function paymentHandler(id) {
         setTes(id);
@@ -70,7 +62,6 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
             console.error(`Order with id ${id} not found`);
             return;
         }
-        // tes = orderNow
         const parsedData = JSON.parse(orderNow.data);
         console.log(orderNow, parsedData);
 
@@ -83,13 +74,13 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
 
         setOpenModalPayment(!openModalPayment);
     }
-    // modal datas
+
+    
     const [openModalEdit, setOpenModalEdit] = useState(true);
     const [modalData, setModalData] = useState(ordersData);
     const [modalName, setModalName] = useState("");
     const [editModalData, setEditModalData] = useState([]);
 
-    // search data
     const [searchInput, setSearchInput] = useState("");
     const [searchOutput, setSearchOutput] = useState([]);
 
@@ -313,6 +304,24 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
         // Kirim data terbaru ke backend
         Inertia.post(`/kasir/${tes}`, {
             data: orderToPay.data,
+        })
+            .then(() => {
+                console.log("Order marked as paid successfully.");
+                Inertia.reload();
+            })
+            .catch((error) => {
+                console.error("Failed to mark order as paid:", error);
+            });
+    };
+
+    const handlePaymentCashlessExecution = () => {
+        // Temukan order yang akan dibayar
+        const orderToPay = ordersData.find((order) => order.id === tes);
+        printReceipt();
+        // Kirim data terbaru ke backend
+        Inertia.patch(`/kasirordercashless/${tes}`, {
+            data: orderToPay.data,
+            payment: paymentMethod[0].paymentMethod,
         })
             .then(() => {
                 console.log("Order marked as paid successfully.");
@@ -602,7 +611,7 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
                         )}
 
                         <button
-                            className="w-full rounded-[18px] py-[15px] font-bold text-white bg-[#7D5E42]"
+                            className="w-full rounded-[18px] py-[15px] font-bold bg-white text-[#7D5E42] border-2 border-[#7D5E42]"
                             onClick={() => handlePaymentCashless()}
                         >
                             Bayar Cashless
@@ -775,6 +784,7 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
                     </div>
                     <div className="w-full justify-center flex">
                         <button className="bg-[#7d5e42] rounded-md py-3 px-[100px] text-white font-bold"
+                        onClick={handlePaymentCashlessExecution}
                         >
                             Print & Bayar
                         </button>

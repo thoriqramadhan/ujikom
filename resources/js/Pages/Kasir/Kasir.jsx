@@ -30,7 +30,7 @@ export default function Kasir({menus , categories , orders, users, orderselesai,
       <Head title='Kasir' />
       <div className="w-full h-[100vh] flex ">
         <SideNav clickedAt={clickedAt} setClickedAt={setClickedAt}>
-            <img src="/img/logo.png" alt="Logo" className='h-[50px] w-[40px]' />
+            <img src="/img/logo.png" alt="Logo" className='h-[50px] w-[50px]' />
             <MenuSvg clickedAt={clickedAt} setClickedAt={setClickedAt}/>
             <OrderSvg clickedAt={clickedAt} setClickedAt={setClickedAt}/>
             <HistorySvg clickedAt={clickedAt} setClickedAt={setClickedAt}/>

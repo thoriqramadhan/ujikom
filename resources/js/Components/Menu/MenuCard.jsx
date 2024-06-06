@@ -13,7 +13,9 @@ function MenuCard({id, nama, harga , selectedFood, setSelectedFood }) {
   }
   return (
     <div className="w-[270px] h-[340px] rounded-[30px] bg-white border shadow-lg px-[20px] pt-[27px] pb-[18px] relative">
-      <div className="h-[156px] w-[230px] bg-[#F4F4F4] rounded-[25px]"></div>
+      <div className="h-[156px] w-[230px] bg-White border-[3px] rounded-[25px] flex justify-center">
+        <img src="/img/logo.png" alt="LOGO" className='h-[100px] w-[100px] my-auto' />
+      </div>
       <div className="h-fit w-full flex justify-between mt-2">
         <p className='font-bold text-[22px]'>{nama}</p>
         <p className='font-bold opacity-60 text-[20px]'>{formatRupiah(harga)}</p>

@@ -15,7 +15,7 @@ function RadioGroup({setPaymentMethod}) {
                                 <img
                                     src="/img/brimo.png"
                                     alt="Qris"
-                                    className="h-[50px] w-[50px] mr-5 rounded-full bg-white"
+                                    className="h-[50px] w-[50px] mr-5 rounded-full bg-white border-2"
                                 />
 
                                 <p className="font-bold text-[30px] my-auto">

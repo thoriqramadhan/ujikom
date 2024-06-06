@@ -51,7 +51,8 @@ function HistoryCard({name , harga , selectedFood, setSelectedFood}) {
       <div onClick={() => deleteHandler(name)} className="w-[25px] h-[25px] absolute right-2 top-2 cursor-pointer">
         <TrashSvg />
       </div>
-                <div className="w-[80px] h-[75px] bg-[#D9D9D9] ml-[12px] rounded-[15px]">
+                <div className="w-[80px] h-[75px] bg-white border-2 ml-[12px] rounded-[15px] flex">
+                <img src="/img/logo.png" alt="LOGO"  className='h-[50px] w-[50px] mx-auto my-auto'/>
                 </div>
                 <div className="flex flex-col ml-[10px]">
                     <p className='text-[20px] font-bold mb-[8px]'>{name}</p>
