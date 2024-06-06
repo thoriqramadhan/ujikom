@@ -34,7 +34,6 @@ class MenuController extends Controller
         $targetHarian = TargetHarian::all();
         $tax = Tax::all();
 
-    
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
             'categories' => $categories,

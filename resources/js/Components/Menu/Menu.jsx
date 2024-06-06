@@ -47,7 +47,7 @@ function Menu({ menus, categories, order , tax}) {
             return;
         }
          printReceipt(); //
-        const tax = taxs?.tax || 0
+         const tax = subHarga * (parseFloat(taxs?.tax || 0) / 100);
         console.log("rawr",tax)
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
@@ -77,7 +77,7 @@ function Menu({ menus, categories, order , tax}) {
 
     // paymentData
     const [paymentMethod , setPaymentMethod] = useState([{
-        paymentMethod: 'qris'
+        paymentMethod: 'brimo'
     }])
     useEffect(()=>{
         console.log(paymentMethod)
@@ -91,7 +91,7 @@ function Menu({ menus, categories, order , tax}) {
             return;
         }
          printReceipt(); //
-         const tax = taxs?.tax || 0
+         const tax = subHarga * (parseFloat(taxs?.tax || 0) / 100)
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
             tax: tax,

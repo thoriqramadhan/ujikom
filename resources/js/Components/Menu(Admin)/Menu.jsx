@@ -27,6 +27,7 @@ function Menu({ menus, categories }) {
     const [searchInput, setSearchInput] = useState("");
     const [searchOutput, setSearchOutput] = useState([]);
 
+    
     const searchHandler = (value) => {
         setSearchInput(value);
         if (value.trim() === "") {

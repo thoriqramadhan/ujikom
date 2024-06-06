@@ -27,7 +27,7 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
     let change = buyersMoney - bill.total || 0;
 
     const pageNumbers = [];
-    const [paymentMethod, setPaymentMethod] = useState([{ paymentMethod: "qris" }]);
+    const [paymentMethod, setPaymentMethod] = useState([{ paymentMethod: "brimo" }]);
     useEffect(() => {
         console.log(paymentMethod);
     }, [paymentMethod]);

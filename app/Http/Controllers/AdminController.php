@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
 
+use function PHPUnit\Framework\isNull;
 
 class AdminController extends Controller
 {
@@ -32,6 +33,7 @@ class AdminController extends Controller
     $categories = Category::all();
     $targetHarian = TargetHarian::all();
     $tax = Tax::all();
+
     
     foreach ($onlykasir as $kasir) {
         if (Cache::has('user-is-online-' . $kasir->id)) {
@@ -234,35 +236,35 @@ public function createkategori(Request $request)
         'tax' => 'required',
     ]);
 
-    $tax = Tax::find($id);
+    // Cek apakah model Tax sudah ada
+    $tax = Tax::first();
 
     if ($tax) {
-        $tax->update($validatedData);
+        // Jika sudah ada, update nilai tax
+        $tax->update(['tax' => $validatedData['tax']]);
     } else {
+        // Jika belum ada, buat model Tax baru
         Tax::create($validatedData);
     }
 
     return redirect()->back()->with('success', 'Tax saved successfully.');
 }
 
-    public function storeTargetHarian (Request $request, $id)
-    {
 
+public function storeTargetHarian(Request $request, $id)
+{
     $validatedData = $request->validate([
         'target' => 'required',
     ]);
 
+    // Gunakan updateOrCreate untuk menemukan atau membuat entri baru
+    TargetHarian::updateOrCreate(
+        ['id' => $id], // Kunci pencarian
+        $validatedData // Data yang akan diperbarui atau dibuat
+    );
 
-    $target = TargetHarian::find($id);
-
-    if ($target) {
-        $target->update($validatedData);
-    } else {
-        TargetHarian::create($validatedData);
-    }
-
-    return redirect()->back()->with('success', 'Tax saved successfully.');
-    }
+    return redirect()->back()->with('success', 'Target saved successfully.');
+}
 
     /**
      * Show the form for editing the specified resource.
