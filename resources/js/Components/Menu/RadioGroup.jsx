@@ -13,9 +13,9 @@ function RadioGroup({setPaymentMethod}) {
         <div className=" group hover:bg-slate-200 focus:bg-slate-200 w-full border-[#d9d9d9] border-2 h-fill mb-5 rounded-xl flex justify-between px-10 py-4 peer-checked/draft:bg-sky-500">
                             <div className="flex justify-between">
                                 <img
-                                    src="./resources/assets/img/qris.jpg"
+                                    src="/img/brimo.png"
                                     alt="Qris"
-                                    className="h-[50px] w-[50px] mr-5 rounded-full bg-[#d9d9d9]"
+                                    className="h-[50px] w-[50px] mr-5 rounded-full bg-white"
                                 />
 
                                 <p className="font-bold text-[30px] my-auto">
@@ -32,12 +32,12 @@ function RadioGroup({setPaymentMethod}) {
                             />
         </div>
 
-        <div className=" group hover:bg-slate-200 focus:bg-slate-200 w-full border-[#d9d9d9] border-2 h-fill mb-5 rounded-xl flex justify-between px-10 py-4">
+        <div className=" group hover:bg-[slate-200] focus:bg-slate-200 w-full border-[#d9d9d9] border-2 h-fill mb-5 rounded-xl flex justify-between px-10 py-4">
                             <div className="flex justify-between">
                                 <img
-                                    src=""
+                                    src="/img/qris.png"
                                     alt="Qris"
-                                    className="h-[50px] w-[50px] mr-5 rounded-full bg-[#d9d9d9]"
+                                    className="h-[50px] w-[50px] mr-5 rounded-full bg-white border-2"
                                 />
                                 <p className="font-bold text-[30px] my-auto">
                                     Qris
