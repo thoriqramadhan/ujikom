@@ -24,8 +24,6 @@ class MenuController extends Controller
     public function index()
     {
         $today = Carbon::today();
-
-
         $menus = Menu::all();
         $categories = Category::all();
         $orders = Order::all();
@@ -36,6 +34,7 @@ class MenuController extends Controller
         $targetHarian = TargetHarian::all();
         $tax = Tax::all();
 
+    
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
             'categories' => $categories,
@@ -107,7 +106,7 @@ class MenuController extends Controller
     {
         // Ubah string JSON order menjadi array PHP
         $orderData = json_decode($request->input('order'), true);
-        $paymentMethodValue = $orderData['payment'][0]['paymentMethod'];
+        $paymentMethodValue = $orderData['paymentMethod'][0]['paymentMethod'];
         
         // Buat order baru dan simpan data pelanggan
         $order = Order::create([
@@ -177,6 +176,49 @@ class MenuController extends Controller
         $order->totalHarga = $total;
         $order->status = 'selesai'; 
         $order->payment = 'cash';
+        $order->save();
+
+        return redirect()->back();
+    }
+
+    public function editCashless(Request $request,$id)
+    { 
+        $orderData = $request->input('data', []);
+        $payment = $request->input('payment', ''); 
+        
+        // Temukan pesanan berdasarkan ID
+        $order = Order::find($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found'], 404);
+        }
+
+        // Jika $orderData adalah string (JSON), konversikan ke array
+        if (is_string($orderData)) {
+            $orderData = json_decode($orderData, true);
+        }
+
+        // Pastikan $orderData adalah array
+        if (!is_array($orderData)) {
+            return response()->json(['message' => 'Invalid data format'], 400);
+        }
+
+        // Simpan item pesanan baru sebagai JSON
+        $order->data = json_encode($orderData);
+
+        // Hitung ulang total pesanan dan pajak
+        $subTotal = array_reduce($orderData, function ($carry, $item) {
+            return $carry + $item['totalHarga'];
+        }, 0);
+
+        $tax = $subTotal * 0.1;  // Pajak 10%
+        $total = $subTotal + $tax;
+
+        // Perbarui pesanan
+        $order->tax = $tax;
+        $order->totalHarga = $total;
+        $order->status = 'selesai'; 
+        $order->payment = $payment;
         $order->save();
 
         return redirect()->back();

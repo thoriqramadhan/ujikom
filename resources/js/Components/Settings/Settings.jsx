@@ -93,7 +93,7 @@ function Settings({ loginuser }) {
             <LogoDate />
             <div className="flex flex-col w-full mt-[45px]">
                 <div className="flex items-center">
-                    <div className="h-[100px] w-[100px] bg-gray-200 rounded-full"></div>
+                    <img src="/img/logo.png" alt="" className="h-[100px] w-[100px] bg-gray-200 rounded-full border-2"/>
                     <p className="text-[30px] font-bold ml-[25px]">
                         {dataUser.firstName} {dataUser.lastName}
                     </p>

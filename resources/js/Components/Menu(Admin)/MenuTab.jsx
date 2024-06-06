@@ -125,8 +125,10 @@ function MenuTab({ searchOutput, categories, menus }) {
                         </p>
                     ) : (
                         menu.map((item) => (
-                            <div className="w-[250px] rounded-[30px] bg-white border shadow-lg px-[20px] pt-[27px] pb-[18px] shrink-0 flex flex-col">
-                                <div className="h-[150px] w-full bg-[#F4F4F4] rounded-[25px]"></div>
+                            <div className="w-[250px] rounded-[30px] border-2 bg-white shadow-lg px-[20px] pt-[27px] pb-[18px] shrink-0 flex flex-col">
+                                <div className="h-[150px] w-full bg-white border-[3px] rounded-[25px] flex justify-center">
+                                <img src="/img/logo.png" alt="LOGO" className='h-[100px] w-[100px] my-auto' />
+                                </div>
 
                                 <div className="flex-1 h-fit w-full flex flex-col mt-2 mb-3">
                                     <p className="font-bold text-[22px]">
@@ -206,7 +208,9 @@ function MenuTab({ searchOutput, categories, menus }) {
                             </button>
                 </div>
                     </div>
-                    <div className="bg-[#d9d9d9] w-[120px] h-[120px] mx-auto rounded-xl"></div>
+                    <div className="bg-white border-[3px] w-[120px] h-[120px] mx-auto rounded-xl flex justify-center">
+                        <img src="/img/logo.png" alt="LOGO" className="my-auto"  />
+                    </div>
                     <div className="flex-col text-center mt-3 md:px-[10px] md:mt-10 md:mx-[75px] mx-[40px]">
                         <input
                             type="text"

@@ -61,7 +61,7 @@ const Admin = ({users, loginuser, onlykasir, menus, categories, uangHarian, uang
       </div> */}
       {UI}
       <SideNav screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}>
-            {screenWidth <= 750 ? '' : <div className="w-[40px] h-[40px] bg-black rounded-full"></div>}
+            {screenWidth <= 750 ? '' : <img src='/img/logo.png' className="w-[50px] h-[50px] rounded-full"/>}
             <HomeSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>
             <KasirSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>
             <MenuSvg screenWidth={screenWidth} clickedAt={clickedAt} setClickedAt={setClickedAt}/>

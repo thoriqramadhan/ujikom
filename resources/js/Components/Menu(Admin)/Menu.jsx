@@ -224,7 +224,9 @@ function Menu({ menus, categories }) {
                             {/* body */}
                             {mode === "Menu" ? (
                                 <>
-                                    <div className="w-[175px] h-[175px] bg-gray-400 rounded-xl"></div>
+                                    <div className="w-[175px] h-[175px] bg-white border-[3px] rounded-xl flex">
+                                        <img src="/img/logo.png" alt="LOGO" className="my-auto" />
+                                    </div>
                                     <div className="flex-1 w-full mb-[100px] md:mb-0">
                                         <form onSubmit={handleSubmit}>
                                             <div className="flex flex-col w-full md:flex-row md:gap-x-[20px]">

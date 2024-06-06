@@ -46,6 +46,7 @@ Route::post('/logout', [App\Http\Controllers\Auth\AuthenticatedSessionController
         Route::post('/kasirstore', [MenuController::class, 'store']);
         Route::patch('/kasir', [MenuController::class, 'updateUser']);
         Route::post('/kasircashless', [MenuController::class, 'storeCashless']);
+        Route::patch('/kasirordercashless/{id}', [MenuController::class, 'editCashless']);
         Route::post('/kasir/{id}', [MenuController::class, 'edit']);
         Route::post('/kasirstorespontan', [MenuController::class, 'storeSpontan']);
         Route::put('/kasir/{id}', [MenuController::class, 'update']);
