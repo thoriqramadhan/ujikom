@@ -334,11 +334,6 @@ function History({ orderselesai, orderitems , tax }) {
                         </div>
                         <div className="">
                                 <button
-                                    className="w-full rounded-[18px] py-[15px] font-bold text-[#797979] bg-[#F3F3F3] border-2 mb-2"
-                                >
-                                    Print Struk
-                                </button>
-                                <button
                                     className="w-full rounded-[18px] py-[15px] font-bold text-[#797979] bg-[#F3F3F3] border-2"
                                     onClick={() => setOpenModal(!openModal)}
                                 >
