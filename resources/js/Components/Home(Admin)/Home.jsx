@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import BodyLayout from "@/Layouts/BodyLayout";
 import LogoDate from "../Logo_date";
 import Chart from "./Chart";
@@ -12,8 +12,13 @@ function Home({
     menuSales = {},
     dailyIncome,
     incomeTarget,
+    monthlyIncome
 }) {
     // Convert menuSales object to an array
+    const [monthlyIncomes , setMonthlyIncomes] = useState(monthlyIncome || [])
+    const [monthData , setMonthData] = useState([])
+    const [selectedYear , setSelectedYear] = useState(2024)
+
     const menuSalesArray = Object.entries(menuSales)
         .map(([menuName, quantity]) => ({
             menuName,
@@ -22,6 +27,22 @@ function Home({
         .sort((a, b) => b.quantity - a.quantity);
     console.log("menuSales:", menuSalesArray);
 
+    useEffect(()=>{
+        setMonthlyIncomes(monthlyIncome)
+        if(monthlyIncome){
+            const monthDatas = monthlyIncome.find(year => year.year == selectedYear)
+            if(monthDatas){ setMonthData(monthDatas.month)}
+        }
+    },[monthlyIncome])
+    //     "monthlyIncome": [
+    //       {
+    //         "year": 2024,
+    //         "month": [
+    //           "{name: \"June\", value: 2330000}"
+    //         ]
+    //       }
+    //     ],
+      
     return (
         <BodyLayout>
             <div className="w-full h-[100vh] sm:px-[20px] lg:px-[35px] lg:flex lg:gap-x-[30px]">
@@ -74,9 +95,9 @@ function Home({
                         dailyIncome={dailyIncome}
                         incomeTarget={incomeTarget}
                     />
-                    <div className=" border h-fill w-[300px] mx-auto pb-[100px] mt-5 rounded-xl md:w-full">
-                        <div className="w-full h-fill flex-row py-2 justify-center  ">
-                            <p className="font-black text-center text-xl">
+                    <div className=" border h-fill mx-auto pb-[100px] mt-5 rounded-xl w-full">
+                        <div className="w-full h-fill flex-col py-3 justify-center flex px-5">
+                            <p className="font-bold text-center text-xl">
                                 Data Pendapatan Bulanan
                             </p>
                             <p className="text-center">
@@ -85,49 +106,28 @@ function Home({
                             <select
                                 name=""
                                 id=""
-                                className="mx-5 my-5 h-fit py-[12px] border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg w-[260px] md:w-[100px] text-center"
+                                className="w-full my-5 h-fit py-[12px] border-gray-200 focus:border-indigo-500 focus:ring-indigo-500 rounded-lg  md:w-[100px] text-center"
+                                value={selectedYear}
+                                onChange={e => {setSelectedYear(e.target.value)}}
                             >
-                                <option value="Menu">2024</option>
-                                <option value="Kategori">2025</option>
+                                {
+                                    monthlyIncomes ? 
+                                    monthlyIncomes.map(obj => (
+                                        <option value={obj.year}>{obj.year}</option>
+                                    )) : 
+                                    <option value="no data">no data</option>
+                                }
                             </select>
                         </div>
-                        <div className="flex-row">
-                            <div className="flex justify-between mx-5 ">
-                                <div className="w-full">
-                                    <p className="px-1 rounded-l-md bg-[#f1f1f1] ">Januari</p>
-                                    <p>Februari</p>
-                                    <p className="px-1 rounded-l-md bg-[#f1f1f1] ">Maret</p>
-                                    <p>April</p>
-                                    <p className="px-1 rounded-l-md bg-[#f1f1f1] ">Mei</p>
-                                    <p>Juni</p>
+                        <div className="flex-row px-5 gap-y-[4px]">
+                            {monthlyIncomes ? 
+                            monthData.map(month => (
+                                <div className="flex px-[5px] py-[5px] border justify-between rounded-lg">
+                                    <p>{month.name}</p>
+                                    <p>{formatRupiah(month.value)}</p>
                                 </div>
-                                <div className="">
-                                    <p  className="px-1 rounded-r-md bg-[#f1f1f1] ">Rp10.000.000</p>
-                                    <p >Rp10.000.000</p>
-                                    <p  className="px-1 rounded-r-md bg-[#f1f1f1] ">Rp10.000.000</p>
-                                    <p>Rp10.000.000</p>
-                                    <p  className="px-1 rounded-r-md bg-[#f1f1f1] ">Rp10.000.000</p>
-                                    <p>Rp10.000.000</p>
-                                </div>
-                            </div>
-                            <div className="flex justify-between mx-5">
-                                <div className="w-full">
-                                    <p  className="px-1 rounded-l-md bg-[#f1f1f1] ">Juli</p>
-                                    <p>Agustus</p>
-                                    <p  className="px-1 rounded-l-md bg-[#f1f1f1] ">September</p>
-                                    <p>Oktober</p>
-                                    <p  className="px-1 rounded-l-md bg-[#f1f1f1] ">November</p>
-                                    <p>Desember</p>
-                                </div>
-                                <div>
-                                    <p  className="px-1 rounded-r-md bg-[#f1f1f1] ">Rp10.000.000</p>
-                                    <p>Rp10.000.000</p>
-                                    <p  className="px-1 rounded-r-md bg-[#f1f1f1] ">Rp10.000.000</p>
-                                    <p>Rp10.000.000</p>
-                                    <p  className="px-1 rounded-r-md bg-[#f1f1f1] ">Rp10.000.000</p>
-                                    <p>Rp10.000.000</p>
-                                </div>
-                            </div>
+                            )) :
+                             <p>No data</p>}
                         </div>
                     </div>
                 </div>
@@ -212,6 +212,6 @@ function Home({
             </div>
         </BodyLayout>
     );
-}
+                                }
 
 export default Home;
