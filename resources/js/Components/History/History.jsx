@@ -141,12 +141,17 @@ function History({ orderselesai, orderitems , tax }) {
             (accumulator, order) => accumulator + order.totalHarga,
             0
         );
-        const tax = bill * 0.1;
+        const tax = bill * (parseFloat(taxs?.tax || 0) / 100);
         setBill({
             total: bill,
             tax: tax,
         });
     }, [menu]);
+    useEffect(()=>{
+        if(tax){
+            setTaxs(...tax)
+            console.log(taxs)
+    }} , [tax])
 
     return (
         <BodyLayout className={"pt-[40px] px-[40px]"}>
@@ -306,7 +311,7 @@ function History({ orderselesai, orderitems , tax }) {
                                     </div>
                                     <div className="w-full flex justify-between">
                                         <p className="opacity-30 font-bold">
-                                            {"Pajak (10%)"}
+                                            {`Pajak (${taxs?.tax || 0}%)`}
                                         </p>
                                         <p className="font-bold">
                                             {formatRupiah(bill.tax)}

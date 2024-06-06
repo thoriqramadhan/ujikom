@@ -62,7 +62,6 @@ class MenuController extends Controller
      */
     public function store(Request $request)
     {
-        dd($request);
         // Ubah string JSON order menjadi array PHP
         $orderData = json_decode($request->input('order'), true);
         
@@ -108,7 +107,7 @@ class MenuController extends Controller
     {
         // Ubah string JSON order menjadi array PHP
         $orderData = json_decode($request->input('order'), true);
-        $paymentMethodValue = $orderData['paymentMethod'][0]['paymentMethod'];
+        $paymentMethodValue = $orderData['payment'][0]['paymentMethod'];
         
         // Buat order baru dan simpan data pelanggan
         $order = Order::create([
@@ -188,7 +187,7 @@ class MenuController extends Controller
      */
     public function update(Request $request)
     {
-       
+    
         // Dapatkan pengguna yang sedang diautentikasi
         $user = Auth::user();
 
