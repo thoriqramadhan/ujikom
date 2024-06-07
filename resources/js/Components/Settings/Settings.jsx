@@ -6,6 +6,7 @@ import Bluetooth from "../svgComp/Bluetooth";
 import TextInput from "../TextInput";
 import { Inertia } from "@inertiajs/inertia";
 import { Head } from "@inertiajs/react";
+import Admin from "@/Pages/Admin/Admin";
 
 function Settings({ loginuser }) {
     console.log(loginuser);
@@ -188,6 +189,7 @@ function Settings({ loginuser }) {
                                                 setTarget(e.target.value)
                                             }
                                             required
+                                            
                                         />
                             <div
                                 className="w-[100px] h-[40px] absolute right-0 top-0 opacity-60 flex items-center justify-center font-bold cursor-pointer"
