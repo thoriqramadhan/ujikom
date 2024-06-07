@@ -33,7 +33,7 @@ class MenuController extends Controller
         $loginuser = Auth::user();
         $targetHarian = TargetHarian::all();
         $tax = Tax::all();
-
+    
         return Inertia::render('Kasir/Kasir', [
             'menus' => $menus,
             'categories' => $categories,
@@ -242,8 +242,7 @@ class MenuController extends Controller
         // Perbarui data pengguna berdasarkan data yang diterima dari request
         $user->update([
             'first_name' => $validatedData['firstName'],
-            'last_name' => $validatedData['lastName'],
-            'email' => $validatedData['email'],
+            'last_name' => $validatedData['lastName']
             // Anda bisa menambahkan logika untuk memperbarui password jika diperlukan
         ]);
 

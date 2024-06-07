@@ -47,7 +47,7 @@ function Home({
         <BodyLayout>
             <div className="w-full h-[100vh] sm:px-[20px] lg:px-[35px] lg:flex lg:gap-x-[30px]">
                 <div className="w-full h-fit pt-[50px] lg:grow lg:basis-1/2">
-                    <LogoDate />
+                        <LogoDate />
                     {/* header */}
                     <div className="w-full h-fit mt-[35px] flex flex-col gap-y-[15px] lg:flex-row lg:gap-x-[20px]">
                         <div className="h-[85px] w-full bg-[#F1F1F1] border-2 rounded-3xl cursor-pointer flex items-center px-[17px] lg:px-[10px] lg:justify-center">
@@ -133,6 +133,7 @@ function Home({
                 </div>
 
                 <div className="w-full h-fit flex flex-col gap-y-[15px] mt-[15px] pb-[80px] lg:basis-1/3 lg:mt-[145px]">
+                                <a href="/kasir" className="w-full h-fill rounded-xl py-4 text-xl font-bold text-center border-2 text-white bg-[#c5a68b] hover:bg-[#927b67] pointer-events-none md:pointer-events-auto">PAGE KASIR</a>
                     <div className="w-full h-[260px] rounded-[25px] bg-white border px-[18px] pt-[28px]">
                         <p className="text-xl font-bold">
                             Pantau Kasir Kamu 📹

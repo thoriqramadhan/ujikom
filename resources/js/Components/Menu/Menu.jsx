@@ -14,7 +14,7 @@ import { formatRupiah } from "@/module/rupiah-formater";
 import Checkbox from "../Checkbox";
 import RadioGroup from "./RadioGroup";
 
-function Menu({ menus, categories, order , tax}) {
+function Menu({ menus, categories, order, tax }) {
     const [openSide, setOpenSide] = useState(false);
     const [openModal, setOpenModal] = useState(true);
     const [taxs, setTaxs] = useState(tax || []);
@@ -46,17 +46,15 @@ function Menu({ menus, categories, order , tax}) {
             alert("Not enough money!");
             return;
         }
-         printReceipt(); //
-         const tax = subHarga * (parseFloat(taxs?.tax || 0) / 100);
-        console.log("rawr",tax)
+        printReceipt(); //
+        const tax = subHarga * (parseFloat(taxs?.tax || 0) / 100);
+        console.log("rawr", tax);
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
             tax: tax,
             totalHarga: subHarga + tax,
             data: [...selectedFood],
         };
-
-  
 
         console.log("ini order:", order);
 
@@ -73,34 +71,30 @@ function Menu({ menus, categories, order , tax}) {
     const [searchInput, setSearchInput] = useState("");
     const [searchOutput, setSearchOutput] = useState([]);
     const [popUpMsg, setPopUpMsg] = useState("");
-    const [openModalPay, setOpenModalPay] = useState(true)
+    const [openModalPay, setOpenModalPay] = useState(true);
 
     // paymentData
-    const [paymentMethod , setPaymentMethod] = useState([{
-        paymentMethod: 'brimo'
-    }])
-    useEffect(()=>{
-        console.log(paymentMethod)
-    },[paymentMethod])
+    const [paymentMethod, setPaymentMethod] = useState([
+        {
+            paymentMethod: "brimo",
+        },
+    ]);
+    useEffect(() => {
+        console.log(paymentMethod);
+    }, [paymentMethod]);
 
     const handleSubmitCashless = (e) => {
         e.preventDefault();
         console.log(buyersMoney, total);
-        if (buyersMoney < modalData.total) {
-            alert("Not enough money!");
-            return;
-        }
-         printReceipt(); //
-         const tax = subHarga * (parseFloat(taxs?.tax || 0) / 100)
+        printReceipt(); //
+        const tax = subHarga * (parseFloat(taxs?.tax || 0) / 100);
         const order = {
             customerName: modalData.name, // Menggunakan modalData.customerName
             tax: tax,
-            paymentMethod:paymentMethod,
+            paymentMethod: paymentMethod,
             totalHarga: subHarga + tax,
             data: [...selectedFood],
         };
-
-  
 
         console.log("ini order:", order);
 
@@ -113,7 +107,7 @@ function Menu({ menus, categories, order , tax}) {
             Inertia.reload();
         });
     };
-    
+
     const handlePopUp = (msg) => {
         setCondition(!condition);
         setPopUpMsg(msg);
@@ -141,21 +135,20 @@ function Menu({ menus, categories, order , tax}) {
 
     const modalPayHandler = () => {
         setOpenModalPay(!openModalPay);
-        setOpenModalCashless(!OpenModalCashless)
+        setOpenModalCashless(!OpenModalCashless);
     };
 
-    useEffect(()=>{
-        if(tax){
-            setTaxs(...tax)
-            console.log(taxs)
+    useEffect(() => {
+        if (tax) {
+            setTaxs(...tax);
+            console.log(taxs);
         }
-    })
+    });
 
-    
     const printReceipt = () => {
-        const receiptWindow = window.open("", "PRINT", "height=450,width=150");
-            receiptWindow.document.write(`<html><head><title>Receipt</title>`);
-            receiptWindow.document.write(`
+        const receiptWindow = window.open("", "PRINT", "height=450,width=300");
+        receiptWindow.document.write(`<html><head><title>Receipt</title>`);
+        receiptWindow.document.write(`
                 <style>
                 @page {
                     size: auto;
@@ -165,7 +158,7 @@ function Menu({ menus, categories, order , tax}) {
                         font-family: 'Courier New', Courier, monospace;
                         width: 58mm;
                         margin: 0 auto;
-                        padding: 10px;
+                        padding: 0px;
                         font-size: 12px;
                         line-height: 1.5;
                     }
@@ -174,7 +167,7 @@ function Menu({ menus, categories, order , tax}) {
                         margin-bottom: 10px;
                     }
                     .content {
-                        margin-bottom: 10px;
+                        
                     }
                     .line {
                         display: flex;
@@ -194,71 +187,85 @@ function Menu({ menus, categories, order , tax}) {
                         margin: 0;
                         font-size: 16px;
                     }
+                    .isi {
+                    display:flex;
+                    justify-content: space-between;
+                    }
+                    .name {
+                    text-align: center;
+                    }
+                    .footer {
+                    text-align: center;
+                    }
+                    .img {
+                    width: 130px;
+                    height:130px;
+                    }
+                    .item {
+                    text-align: center;
+                    }
                 </style>
             `);
-            receiptWindow.document.write("</head><body>");
-            receiptWindow.document.write(`
+        receiptWindow.document.write("</head><body>");
+        receiptWindow.document.write(`
                 <div class="header">
+                <img src="/img/logoKasir.png" class="img"/>
                     <h1>Menata Cafe</h1>
-                    <p>Lampung, Indonesia</p>
+                    <p>Kh. Masmansyur no 103,<br> rawalaut Bandar Lampung</p>
                   
                 </div>
                 <div class="dashed-line"></div>
-                <div class="content">
+                <div class="isi">
                     <p>${new Date().toLocaleDateString()}</p>
-                    <p>${modalData.name}</p>
+
                     <p>${new Date().toLocaleTimeString()}</p>
-                    <p>No.0-1</p>
                 </div>
+                <p class="name"> Belanjaan ${modalData.name}</p>
                 <div class="dashed-line"></div>
+                <p class="item">Nih yang dibeli</p>
             `);
-        
-            modalData.menu.forEach(order => {
-                receiptWindow.document.write(`
+
+        modalData.menu.forEach((order) => {
+            receiptWindow.document.write(`
                     <div class="content">
                         <p>${order.name}</p>
-                        <div class="line">
-                            <p>${order.items} x ${formatRupiah(order.total / order.items)}</p>
+                        <div class="isi">
+                            <p>${order.items} x ${formatRupiah(
+                order.total / order.items
+            )}</p>
                             <p>${formatRupiah(order.total)}</p>
                         </div>
                     </div>
                 `);
-            });
-        
-            receiptWindow.document.write(`
+        });
+
+        receiptWindow.document.write(`
                 <div class="dashed-line"></div>
                 <div class="content">
+                <div class="line">
+                        <p>SubTotal</p>
+                        <p>${formatRupiah(modalData.subTotal)}</p>
+                    </div>
+                    <div class="line">
+                        <p>Pajak</p>
+                        <p>${formatRupiah(modalData.tax)}</p>
+                    </div>
                     <div class="line">
                         <p>Total</p>
                         <p>${formatRupiah(modalData.total)}</p>
                     </div>
-                    <div class="line">
-                        <p>Bayar</p>
-                        <p>${formatRupiah(buyersMoney)}</p>
-                    </div>
-                    <div class="line">
-                        <p>Kembali</p>
-                        <p>${formatRupiah(total)}</p>
-                    </div>
                 </div>
                 <div class="dashed-line"></div>
                 <div class="footer">
-                    <p>Link Kritik dan Saran:</p>
-                    <p>kpntnr.com/f/</p>
-                </div>
-                <div class="footer">
-                    
-                <img src="https://tse4.mm.bing.net/th?id=OIP.Gu1NStDpNVmWisgSKKBzewHaEK&pid=Api&P=0&h=180" alt="Kasir Pintar" style="width: 50px;">
-                <img src="https://tse4.mm.bing.net/th?id=OIP.Gu1NStDpNVmWisgSKKBzewHaEK&pid=Api&P=0&h=180" alt="Google Play" style="width: 50px;">
-    
+                    <p>Terima Kasih Telah Berbelanja</p>
                 </div>
             `);
-        
-            receiptWindow.document.write("</body></html>");
-            receiptWindow.document.close();
-            receiptWindow.print();
-        };
-      
+
+        receiptWindow.document.write("</body></html>");
+        receiptWindow.document.close();
+        receiptWindow.print();
+    };
+
     return (
         <>
             <Head title="Menu" />
@@ -429,9 +436,15 @@ function Menu({ menus, categories, order , tax}) {
                         Pilih metode pembayaran yang di gunakan pelanggan!
                     </p>
                     <div className="mt-7">
-                        <RadioGroup paymenthMethod={paymentMethod} setPaymentMethod={setPaymentMethod}/>
+                        <RadioGroup
+                            paymenthMethod={paymentMethod}
+                            setPaymentMethod={setPaymentMethod}
+                        />
 
-                        <button className="bg-white border-[#d9d9d9] border-2 font-bold text-[#d9d9d9] text-md py-2 px-[100px] rounded-2xl mt-12 hover:bg-[#7d5e42] hover:text-white" onClick={modalPayHandler}>
+                        <button
+                            className="bg-white border-[#d9d9d9] border-2 font-bold text-[#d9d9d9] text-md py-2 px-[100px] rounded-2xl mt-12 hover:bg-[#7d5e42] hover:text-white"
+                            onClick={modalPayHandler}
+                        >
                             Lanjut
                         </button>
                         <button
@@ -461,18 +474,26 @@ function Menu({ menus, categories, order , tax}) {
                         </p>
                     </div>
                     <div className=" w-[300px] h-[300px] bg-white border-[3px] border-[#d9d9d9] mx-auto my-auto rounded-xl flex-row content-center mb-5">
-                        <p className="text-center font-black text-3xl">{paymentMethod[0].paymentMethod}</p>
+                        <p className="text-center font-black text-3xl">
+                            {paymentMethod[0].paymentMethod}
+                        </p>
                     </div>
                     <div className="w-full justify-center flex">
-                        <button className="bg-[#7d5e42] rounded-md py-3 px-[100px] text-white font-bold"
-                        onClick={handleSubmitCashless}
+                        <button
+                            className="bg-[#7d5e42] rounded-md py-3 px-[100px] text-white font-bold"
+                            onClick={handleSubmitCashless}
                         >
                             Print & Bayar
                         </button>
                     </div>
-                <button className="absolute top-0 right-3 font-black text-red-500 text-3xl" onClick={() => {
-                    setOpenModalPay(!openModalPay)
-                }}>X</button>
+                    <button
+                        className="absolute top-0 right-3 font-black text-red-500 text-3xl"
+                        onClick={() => {
+                            setOpenModalPay(!openModalPay);
+                        }}
+                    >
+                        X
+                    </button>
                 </div>
             </div>
         </>

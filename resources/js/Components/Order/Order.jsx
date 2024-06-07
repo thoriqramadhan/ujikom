@@ -27,12 +27,18 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
     let change = buyersMoney - bill.total || 0;
 
     const pageNumbers = [];
-    const [paymentMethod, setPaymentMethod] = useState([{ paymentMethod: "brimo" }]);
+    const [paymentMethod, setPaymentMethod] = useState([
+        { paymentMethod: "brimo" },
+    ]);
     useEffect(() => {
         console.log(paymentMethod);
     }, [paymentMethod]);
 
-    for (let i = 1; i <= Math.ceil(orderbelumdibayar.length / postPerPage); i++) {
+    for (
+        let i = 1;
+        i <= Math.ceil(orderbelumdibayar.length / postPerPage);
+        i++
+    ) {
         pageNumbers.push(i);
     }
 
@@ -75,7 +81,6 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
         setOpenModalPayment(!openModalPayment);
     }
 
-    
     const [openModalEdit, setOpenModalEdit] = useState(true);
     const [modalData, setModalData] = useState(ordersData);
     const [modalName, setModalName] = useState("");
@@ -104,7 +109,7 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
         setBuyersMoney(parseFloat(e.target.value));
     }
     const printReceipt = () => {
-        const receiptWindow = window.open("", "PRINT", "height=450,width=150");
+        const receiptWindow = window.open("", "PRINT", "height=450,width=300");
         receiptWindow.document.write(`<html><head><title>Receipt</title>`);
         receiptWindow.document.write(`
             <style>
@@ -125,7 +130,6 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
                     margin-bottom: 10px;
                 }
                 .content {
-                    margin-bottom: 10px;
                 }
                 .line {
                     display: flex;
@@ -145,23 +149,34 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
                     margin: 0;
                     font-size: 16px;
                 }
+                    .isi{
+                    display: flex;
+                    justify-content: space-between;
+                    }
+                    .name{
+                    text-align: center;
+                    }
+                    .item{
+                    text-align: center;}
             </style>
         `);
         receiptWindow.document.write("</head><body>");
         receiptWindow.document.write(`
             <div class="header">
-                <h1>Menata Cafe</h1>
-                <p>Lampung, Indonesia</p>
-              
-            </div>
-            <div class="dashed-line"></div>
-            <div class="content">
-                <p>${new Date().toLocaleDateString()}</p>
-                <p>${modalName}</p>
-                <p>${new Date().toLocaleTimeString()}</p>
-                <p>No.0-1</p>
-            </div>
-            <div class="dashed-line"></div>
+                <img src="/img/logoKasir.png" class="img"/>
+                    <h1>Menata Cafe</h1>
+                    <p>Kh. Masmansyur no 103,<br> rawalaut Bandar Lampung</p>
+                  
+                </div>
+                <div class="dashed-line"></div>
+                <div class="isi">
+                    <p>${new Date().toLocaleDateString()}</p>
+
+                    <p>${new Date().toLocaleTimeString()}</p>
+                </div>
+                <p class="name"> Belanjaan ${modalName}</p>
+                <div class="dashed-line"></div>
+                <p class="item">Nih yang dibeli</p>
         `);
 
         modalData.forEach((order) => {
@@ -172,39 +187,32 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
                         <p>${order.items} x ${formatRupiah(
                 order.totalHarga / order.items
             )}</p>
-                        <p>${formatRupiah(order.totalHarga * order.items)}</p>
+                        <p>${formatRupiah(order.totalHarga)}</p>
                     </div>
                 </div>
             `);
         });
 
-        modalData.forEach((order) => {
+        ordersData.forEach((order) => {
             receiptWindow.document.write(`
             <div class="dashed-line"></div>
             <div class="content">
                 <div class="line">
-                    <p>Total</p>
+                    <p>SubTotal</p>
                     <p>${formatRupiah(order.totalHarga)}</p>
                 </div>
                 <div class="line">
-                    <p>Bayar</p>
-                    <p>${formatRupiah(buyersMoney)}</p>
+                    <p>Pajak</p>
+                    <p>${formatRupiah(order.tax)}</p>
                 </div>
                 <div class="line">
-                    <p>Kembali</p>
-                    <p>${formatRupiah(order.totalHarga - buyersMoney)}</p>
+                    <p>Total</p>
+                    <p>${formatRupiah(order.totalHarga + order.tax)}</p>
                 </div>
             </div>
             <div class="dashed-line"></div>
             <div class="footer">
-                <p>Link Kritik dan Saran:</p>
-                <p>kpntnr.com/f/</p>
-            </div>
-            <div class="footer">
-                
-            <img src="https://tse4.mm.bing.net/th?id=OIP.Gu1NStDpNVmWisgSKKBzewHaEK&pid=Api&P=0&h=180" alt="Kasir Pintar" style="width: 50px;">
-            <img src="https://tse4.mm.bing.net/th?id=OIP.Gu1NStDpNVmWisgSKKBzewHaEK&pid=Api&P=0&h=180" alt="Google Play" style="width: 50px;">
-
+                <p>Terima Kasih Telah Berbelanja</p>
             </div>
         `);
         });
@@ -218,7 +226,7 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
     const indexOfFirstPost = indexOfLastPost - postPerPage;
     const currentPosts = ordersData.slice(indexOfFirstPost, indexOfLastPost);
     const [openModalPaymentCashless, setOpenModalCashless] = useState(true);
-    const [openModalDetailPayment , setOpenModalDetailPayment] = useState(true)
+    const [openModalDetailPayment, setOpenModalDetailPayment] = useState(true);
     useEffect(() => {
         const subTotal = modalData.reduce(
             (init, current) => init + current.totalHarga,
@@ -377,10 +385,10 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
         setOpenModalCashless(!openModalPaymentCashless);
     };
 
-    const modalDetailPaymentHandler =() => {
-      setOpenModalCashless(!openModalPaymentCashless);
-      setOpenModalDetailPayment(!openModalDetailPayment);
-    }
+    const modalDetailPaymentHandler = () => {
+        setOpenModalCashless(!openModalPaymentCashless);
+        setOpenModalDetailPayment(!openModalDetailPayment);
+    };
 
     return (
         <BodyLayout className={"pt-[40px] px-[40px]"}>
@@ -452,17 +460,17 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
                                             </button>
                                         </div>
                                         <div className="h-[60px] w-[100%] flex items-center justify-center">
-                                            <button className="w-[100px] py-[7px] bg-[#7D5E42] rounded-lg border-gray-400 border text-white">
+                                            <button className="w-[100px] py-[7px] bg-[#7D5E42] rounded-lg border-gray-400 border text-white" onClick={() => {
+                                                        paymentHandler(
+                                                            orders.id
+                                                        );
+                                                    }}>
                                                 <span className="mr-[2px]">
                                                     I
                                                 </span>
                                                 <span
                                                     className=""
-                                                    onClick={() => {
-                                                        paymentHandler(
-                                                            orders.id
-                                                        );
-                                                    }}
+                                                    
                                                 >
                                                     Bayar
                                                 </span>
@@ -732,11 +740,13 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
                 </div>
             </div>
             {/* modalCashless */}
-            <div className={`absolute w-full h-full flex transition-all duration-1000 ${
+            <div
+                className={`absolute w-full h-full flex transition-all duration-1000 ${
                     openModalPaymentCashless
                         ? "-translate-y-[1000px]"
                         : "translate-y-10 fixed"
-                }`} >
+                }`}
+            >
                 <div className="bg-white h-fill w-fill mx-auto my-auto flex rounded-xl border-2 border-slate-200 px-5 py-5">
                     <div className="w-full h-full">
                         <div className="text-center flex-row mx-[250px]">
@@ -756,8 +766,12 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
                             </div>
                         </div>
                         <div className="w-full h-fill flex justify-center">
-                            <button className="bg-[#7d5e42] py-3 rounded-xl px-10 text-white font-bold hover:bg-[#493727]" onClick={modalDetailPaymentHandler}
-                            >Lanjut</button>
+                            <button
+                                className="bg-[#7d5e42] py-3 rounded-xl px-10 text-white font-bold hover:bg-[#493727]"
+                                onClick={modalDetailPaymentHandler}
+                            >
+                                Lanjut
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -780,18 +794,26 @@ function Order({ menus, orders, orderitems, orderbelumdibayar, tax }) {
                         </p>
                     </div>
                     <div className=" w-[300px] h-[300px] bg-white border-[3px] border-[#d9d9d9] mx-auto my-auto rounded-xl flex-row content-center mb-5">
-                        <p className="text-center font-black text-3xl">{paymentMethod[0].paymentMethod}</p>
+                        <p className="text-center font-black text-3xl">
+                            {paymentMethod[0].paymentMethod}
+                        </p>
                     </div>
                     <div className="w-full justify-center flex">
-                        <button className="bg-[#7d5e42] rounded-md py-3 px-[100px] text-white font-bold"
-                        onClick={handlePaymentCashlessExecution}
+                        <button
+                            className="bg-[#7d5e42] rounded-md py-3 px-[100px] text-white font-bold"
+                            onClick={handlePaymentCashlessExecution}
                         >
                             Print & Bayar
                         </button>
                     </div>
-                <button className="absolute top-0 right-3 font-black text-red-500 text-3xl" onClick={() => {
-                  setOpenModalDetailPayment(!openModalDetailPayment)
-                }}>X</button>
+                    <button
+                        className="absolute top-0 right-3 font-black text-red-500 text-3xl"
+                        onClick={() => {
+                            setOpenModalDetailPayment(!openModalDetailPayment);
+                        }}
+                    >
+                        X
+                    </button>
                 </div>
             </div>
         </BodyLayout>
